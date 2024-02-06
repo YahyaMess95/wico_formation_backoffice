@@ -1,0 +1,174 @@
+{
+  "home": {
+    "title": "Accueil"
+  },
+  "backhome": {
+    "title": "Rentrer à l'Accueil"
+  },
+  "training": {
+    "title": "Formation"
+  },
+  "about": {
+    "title": "À propos"
+  },
+  "login_register": {
+    "title": "S'identifier / S'enregistrer"
+  },
+  "contact": {
+    "title": "Contactez-nous"
+  },
+  "message": {
+    "title": "Votre message"
+  },
+
+  "welcomeBack": {
+    "title": "Bienvenue de retour !"
+  },
+  "username": {
+    "title": "Nom d'utilisateur"
+  },
+  "password": {
+    "title": "Mot de passe"
+  },
+  "signin": {
+    "title": "Se connecter"
+  },
+  "forgetpassword": {
+    "title": "Mot de passe oublié ?"
+  },
+  "firstname": {
+    "title": "Prénom"
+  },
+  "lastname": {
+    "title": "Nom"
+  },
+  "email": {
+    "title": "Email"
+  },
+  "confirmpassword": {
+    "title": "Confirmer le mot de passe"
+  },
+  "registeraccount": {
+    "title": "Créer un compte"
+  },
+  "createAnAccount": {
+    "title": "Créer un compte!"
+  },
+  "usernameRequired": { "title": "Le nom d'utilisateur est requis" },
+  "usernameLength": {
+    "title": "Le nom d'utilisateur doit contenir 6 caractères"
+  },
+
+  "REQUIRED_PASSWORD": { "title": "Le mot de passe est requis." },
+  "MIN_PASSWORD_LENGTH": {
+    "title": "Le mot de passe doit contenir 6 caractères."
+  },
+  "REQUIRED_FIRST_NAME": { "title": "Le prénom est requis." },
+  "MIN_FIRST_NAME_LENGTH": { "title": "Le prénom doit contenir 6 caractères." },
+  "REQUIRED_LAST_NAME": { "title": "Le nom est requis." },
+  "REQUIRED_Message": { "title": "Le message est requis" },
+  "MIN_LAST_NAME_LENGTH": { "title": "Le nom doit contenir 6 caractères." },
+  "REQUIRED_EMAIL": { "title": "L'e-mail est requis." },
+  "INVALID_EMAIL": { "title": "L'e-mail est invalide." },
+  "CONFIRM_PASSWORD": { "title": "Confirmer le mot de passe" },
+  "PASSWORDS_DO_NOT_MATCH": {
+    "title": "Les mots de passe ne correspondent pas."
+  },
+  "FORGOT_PASSWORD": { "title": "Mot de passe oublié ?" },
+  "SEND_TO_EMAIL": { "title": "Envoyer à l'e-mail" },
+  "SEND": { "title": "Envoyer" },
+  "Show_More": { "title": "Montre plus" },
+  "WICO": {
+    "title": "WICO est une entreprise tunisienne fondée en 2021 et basée à Tunis en Tunisie. Elle se positionne comme une entreprise spécialisée dans le développement d'applications web et mobiles, l'IoT, les grandes données et l'intelligence commerciale."
+  },
+
+  "services1": {
+    "title": "WICO propose de nombreux services tels que :"
+  },
+
+  "priorityServices1": { "title": "Intégration de solutions informatiques" },
+  "priorityServices2": { "title": "Conseil et Business Intelligence" },
+  "priorityServices3": { "title": "Développement Web et Mobile" },
+  "WICO2": {
+    "title": "WICO utilise les dernières technologies pour offrir à ses clients un service et une qualité de produit très élevés. Il propose des solutions pour créer de nouveaux, meilleurs et plus intelligents services pour les entreprises et les particuliers dans le secteur de l'IT."
+  },
+  "Offices": {
+    "title": "Bureaux dans le monde entier"
+  },
+  "FullTimeColleagues": {
+    "title": "Collaborateurs à temps plein"
+  },
+  "HoursPerWeek": {
+    "title": "Heures par semaine"
+  },
+  "PaidTimeOff": {
+    "title": "Temps off payé"
+  },
+  "Unlimited": {
+    "title": "Illimité"
+  },
+  "technicalSupport": {
+    "title": "Support technique"
+  },
+  "salesQuestions": {
+    "title": "Questions de vente"
+  },
+  "press": {
+    "title": "Presse"
+  },
+  "bugReport": {
+    "title": "Rapport de bug"
+  },
+  "services": {
+    "title": "Services",
+    "description": "Découvrez notre large gamme de services exceptionnels."
+  },
+  "team": {
+    "title": "Notre équipe",
+    "introduction": "Rencontrez nos membres talentueux et dévoués de l'équipe."
+  },
+  "products": {
+    "title": "Produits",
+    "details": "Parcourez nos produits innovants et de haute qualité."
+  },
+  "testimonials": {
+    "title": "Témoignages",
+    "feedback": "Lisez ce que nos clients satisfaits ont à dire sur nous."
+  },
+  "career": {
+    "title": "Carrière",
+    "opportunities": "Découvrez des opportunités de carrière passionnantes avec nous."
+  },
+
+  "blog": {
+    "title": "Blog",
+    "posts": "Découvrez nos derniers articles de blog instructifs."
+  },
+  "events": {
+    "title": "Événements",
+    "schedule": "Consultez nos prochains événements et planifiez votre visite."
+  },
+  "gallery": {
+    "title": "Galerie",
+    "photos": "Explorez notre galerie de photos captivante."
+  },
+  "faq": {
+    "title": "FAQ",
+    "questions": "Trouvez des réponses aux questions fréquemment posées."
+  },
+  "terms": {
+    "title": "Conditions générales",
+    "details": "Lisez nos conditions générales d'utilisation de ce site web."
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "details": "Renseignez-vous sur notre politique de confidentialité et sur la manière dont nous traitons vos informations."
+  },
+  "404": {
+    "title": "404 Non Trouvé",
+    "message": "Oups ! La page que vous recherchez n'existe pas."
+  },
+  "wicoCopyright": {
+    "title": "© Droits d'auteur WICO. Tous droits réservés. Développé par l'équipe WICO."
+  }
+}

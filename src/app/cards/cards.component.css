@@ -1,0 +1,13 @@
+.swiper-container {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.swiper-wrapper {
+  margin: 6em;
+  margin-left: 8em;
+  margin-right: 7em;
+
+  transition: transform 0.5s ease-in-out;
+}

@@ -1,0 +1,165 @@
+{
+  "home": {
+    "title": "Home"
+  },
+  "backhome": {
+    "title": "Go back home"
+  },
+  "training": {
+    "title": "Training"
+  },
+  "about": {
+    "title": "About Us"
+  },
+  "login_register": {
+    "title": "Login / Register"
+  },
+  "contact": {
+    "title": "Contact Us"
+  },
+  "message": {
+    "title": "Your message"
+  },
+
+  "welcomeBack": {
+    "title": "Welcome Back !"
+  },
+  "username": {
+    "title": "Username"
+  },
+  "password": {
+    "title": "Password"
+  },
+  "signin": {
+    "title": "SignIn"
+  },
+  "forgetpassword": {
+    "title": "Forget Password ?"
+  },
+  "firstname": {
+    "title": "Firstname"
+  },
+  "lastname": {
+    "title": "Lastname"
+  },
+  "email": {
+    "title": "Email"
+  },
+  "confirmpassword": {
+    "title": "Confirm password"
+  },
+  "registeraccount": {
+    "title": "Register Account"
+  },
+  "createAnAccount": {
+    "title": "Create an Account!"
+  },
+  "usernameRequired": { "title": "Username is required" },
+  "usernameLength": { "title": "Username should contain 6 characters" },
+
+  "REQUIRED_PASSWORD": { "title": "Password is required." },
+  "MIN_PASSWORD_LENGTH": { "title": "Password should contain 6 characters" },
+  "REQUIRED_FIRST_NAME": { "title": "FirstName is required." },
+  "MIN_FIRST_NAME_LENGTH": { "title": "FirstName should contain 6 characters" },
+  "REQUIRED_LAST_NAME": { "title": "LastName is required." },
+  "REQUIRED_Message": { "title": "Message is required" },
+  "MIN_LAST_NAME_LENGTH": { "title": "LastName should contain 6 characters" },
+  "REQUIRED_EMAIL": { "title": "Email is required." },
+  "INVALID_EMAIL": { "title": "Email is invalid" },
+  "CONFIRM_PASSWORD": { "title": "Confirm Password" },
+  "PASSWORDS_DO_NOT_MATCH": { "title": "Passwords do not match." },
+  "FORGOT_PASSWORD": { "title": "Forgot Password?" },
+  "SEND_TO_EMAIL": { "title": "Send To Email" },
+  "SEND": { "title": "Send" },
+  "Show_More": { "title": "Show More" },
+  "WICO": {
+    "title": "WICO is a Tunisian company founded in 2021 and headquartered in Tunisia. It positions itself as a company specializing in the development of web and mobile applications, IoT, big data and business intelligence."
+  },
+  "services1": {
+    "title": "WICO offers many services such as :"
+  },
+  "priorityServices1": { "title": "IT solutions integration" },
+  "priorityServices2": { "title": "Consultancy and Business Intelligence" },
+  "priorityServices3": { "title": "Web & Mobile Development" },
+  "WICO2": {
+    "title": "WICO uses the latest technology to provide its customers with very high service and product quality. It provides solutions to create new, better and smarter services for companies and individuals in the IT sector."
+  },
+  "Offices": {
+    "title": "Offices worldwide"
+  },
+  "FullTimeColleagues": {
+    "title": "Full-time colleagues"
+  },
+  "HoursPerWeek": {
+    "title": "Hours per week"
+  },
+  "PaidTimeOff": {
+    "title": "Paid time off"
+  },
+  "Unlimited": {
+    "title": "Unlimited"
+  },
+  "technicalSupport": {
+    "title": "Technical support"
+  },
+  "salesQuestions": {
+    "title": "Sales questions"
+  },
+  "press": {
+    "title": "Press"
+  },
+  "bugReport": {
+    "title": "Bug report"
+  },
+  "services": {
+    "title": "Services",
+    "description": "Explore our wide range of exceptional services."
+  },
+  "team": {
+    "title": "Our Team",
+    "introduction": "Meet our talented and dedicated team members."
+  },
+  "products": {
+    "title": "Products",
+    "details": "Browse through our high-quality, innovative products."
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "feedback": "Read what our satisfied customers have to say about us."
+  },
+  "career": {
+    "title": "Career",
+    "opportunities": "Discover exciting career opportunities with us."
+  },
+  "blog": {
+    "title": "Blog",
+    "posts": "Check out our latest insightful blog posts."
+  },
+  "events": {
+    "title": "Events",
+    "schedule": "View our upcoming events and plan your visit."
+  },
+  "gallery": {
+    "title": "Gallery",
+    "photos": "Explore our captivating photo gallery."
+  },
+  "faq": {
+    "title": "FAQ",
+    "questions": "Find answers to commonly asked questions."
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "details": "Read our terms and conditions for using this website."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "details": "Learn about our privacy policy and how we handle your information."
+  },
+  "404": {
+    "title": "404 Not Found",
+    "message": "Oops! The page you are looking for does not exist."
+  },
+  "wicoCopyright": {
+    "title": "© Copyright WICO. All Rights Reserved. Developed by the WICO team."
+  }
+}
