@@ -14,6 +14,7 @@ export const Admin_ROUTES: RouteInfo[] = [
     icon: "dashboard",
     class: "",
   },
+
   {
     path: "/admin/profile",
     title: "Profile",
@@ -23,9 +24,45 @@ export const Admin_ROUTES: RouteInfo[] = [
   {
     path: "/admin/user-list",
     title: "Users List",
-    icon: "content_paste",
+    icon: "people",
     class: "",
   },
+  {
+    path: "/admin/session-list",
+    title: "Session List",
+    icon: " add_to_queue ",
+    class: "",
+  },
+  {
+    path: "/admin/seance-list",
+    title: "Seance List",
+    icon: "cast_for_education",
+    class: "",
+  },
+  {
+    path: "/admin/formation-list",
+    title: "Formation List",
+    icon: "card_membership",
+    class: "",
+  },
+  {
+    path: "/admin/temoignage-list",
+    title: "Temoignage List",
+    icon: "switch_account",
+    class: "",
+  },
+  // {
+  //   path: "/admin/contenu-list",
+  //   title: "Contenu List",
+  //   icon: "source",
+  //   class: "",
+  // },
+  // {
+  //   path: "/admin/seance-list",
+  //   title: "Seance List",
+  //   icon: "content_paste",
+  //   class: "",
+  // },
   // {
   //   path: "/admin/typography",
   //   title: "Typography",

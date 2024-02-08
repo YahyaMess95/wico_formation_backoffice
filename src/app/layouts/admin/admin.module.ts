@@ -11,9 +11,32 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { ComponentsModule } from "app/components/components.module";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { AdminSessionListComponent } from "../../admin_components/admin-session-list/admin-session-list.component";
+import { MatTableModule } from "@angular/material/table";
+import { MatIconModule } from "@angular/material/icon";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+import { AdminSeanceListComponent } from "../../admin_components/admin-seance-list/admin-seance-list.component";
+import { AdminFormationListComponent } from "../../admin_components/admin-formation-list/admin-formation-list.component";
+import { AdminContenuListComponent } from "../../admin_components/admin-contenu-list/admin-contenu-list.component";
+import { AdminTemoignageListComponent } from "../../admin_components/admin-temoignage-list/admin-temoignage-list.component";
+import { AdminDialogComponent } from "../../admin_components/admin-dialog/admin-dialog.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
-  declarations: [AdminDashboardComponent, AdminUserListComponent],
+  declarations: [
+    AdminDashboardComponent,
+    AdminUserListComponent,
+    AdminSessionListComponent,
+    AdminSeanceListComponent,
+    AdminFormationListComponent,
+    AdminContenuListComponent,
+    AdminTemoignageListComponent,
+    AdminDialogComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -26,6 +49,14 @@ import { ComponentsModule } from "app/components/components.module";
     MatSelectModule,
     MatTooltipModule,
     ComponentsModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDialogModule,
+    MatCardModule,
   ],
 })
 export class AdminModule {}

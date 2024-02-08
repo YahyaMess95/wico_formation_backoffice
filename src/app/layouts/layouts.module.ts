@@ -18,6 +18,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { TableListComponent } from "app/table-list/table-list.component";
 import { ComponentsModule } from "app/components/components.module";
 
@@ -58,6 +59,7 @@ import { ComponentsModule } from "app/components/components.module";
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    MatToolbarModule,
   ],
 })
 export class LayoutsModule {}

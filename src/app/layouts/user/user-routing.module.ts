@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: "user_dashboard", component: UserDashboardComponent },
   { path: "profile", component: UserProfileComponent },
   { path: "user-list", component: AdminUserListComponent },
+
   { path: "typography", component: TypographyComponent },
   { path: "icons", component: IconsComponent },
   { path: "maps", component: MapsComponent },

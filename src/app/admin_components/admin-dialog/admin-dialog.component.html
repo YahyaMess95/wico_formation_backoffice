@@ -1,0 +1,76 @@
+<div fxLayout="column" fxLayoutAlign="center center" class="dialog-content">
+  <h1 mat-dialog-title>{{ dialogTitle }}</h1>
+  <div mat-dialog-content class="content-wrapper">
+    <mat-card class="card-wrapper">
+      <div class="image-container">
+        <img
+          class="avatar-image"
+          src="./assets/img/faces/marc.jpg"
+          alt="Avatar"
+        />
+      </div>
+      <div class="data-container">
+        <div class="column data-column">
+          <ng-container
+            *ngFor="
+              let key of objectKeys(data).slice(
+                0,
+                objectKeys(data).length * 0.6
+              )
+            "
+          >
+            <div class="data-item">
+              <div class="sub-data-item">
+                <span class="data-key">{{ key }}:</span> {{ data[key] }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="column data-column">
+          <ng-container
+            *ngFor="
+              let key of objectKeys(data).slice(objectKeys(data).length * 0.6)
+            "
+          >
+            <div class="data-item">
+              <div class="sub-data-item">
+                <span class="data-key">{{ key }}:</span> {{ data[key] }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <mat-card-actions>
+    <button mat-button class="close-button" (click)="closeDialog()">X</button>
+  </mat-card-actions>
+</div>
+
+<!-- <mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>{{ dialogTitle }}</mat-card-title>
+    <mat-card-subtitle>{{ data["location"] }}</mat-card-subtitle>
+  </mat-card-header>
+  <img
+    mat-card-image
+    src="./assets/img/faces/marc.jpg"
+    alt="Photo of {{ dialogTitle }}"
+  />
+  <mat-card-content>
+    <div *ngFor="let key of objectKeys(data)">
+      <p>
+        
+      </p>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary">Follow</button>
+    <button mat-icon-button>
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button>
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card> -->

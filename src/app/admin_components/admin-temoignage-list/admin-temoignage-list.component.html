@@ -4,10 +4,13 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-wicocolor">
-            <h4 class="card-title">Add User</h4>
+            <h4 class="card-title">Add Temoignages</h4>
           </div>
           <div class="card-body">
-            <form [formGroup]="formeusers" (ngSubmit)="Adduser($event)">
+            <form
+              [formGroup]="formetemoignages"
+              (ngSubmit)="Addtemoignage($event)"
+            >
               <div class="row">
                 <div class="col-md-4">
                   <mat-form-field appearance="outline">
@@ -15,9 +18,9 @@
                     <input
                       matInput
                       placeholder="Name"
+                      required
                       formControlName="name"
                       id="name"
-                      required
                       [ngClass]="{
                         'is-invalid':
                           submittedIn && fI['name'] && fI['name'].errors
@@ -30,7 +33,7 @@
                         fI['name'].errors['minlength']
                       "
                     >
-                      Name must contain at least 6 characters
+                      Name must contain 3 characters.
                     </mat-error>
                     <mat-error
                       *ngIf="
@@ -39,7 +42,7 @@
                         fI['name'].errors['required']
                       "
                     >
-                      Name is <strong>required</strong>
+                      Name is <strong>required</strong>.
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -49,9 +52,9 @@
                     <input
                       matInput
                       placeholder="Prenom"
+                      required
                       formControlName="prenom"
                       id="prenom"
-                      required
                       [ngClass]="{
                         'is-invalid':
                           submittedIn && fI['prenom'] && fI['prenom'].errors
@@ -64,7 +67,7 @@
                         fI['prenom'].errors['minlength']
                       "
                     >
-                      Prenom must contain at least 6 characters
+                      Prenom must contain 3 characters.
                     </mat-error>
                     <mat-error
                       *ngIf="
@@ -73,222 +76,7 @@
                         fI['prenom'].errors['required']
                       "
                     >
-                      Prenom is <strong>required</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Address</mat-label>
-                    <input
-                      matInput
-                      placeholder="Address"
-                      type="text"
-                      formControlName="address"
-                      id="address"
-                      required
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['address'] && fI['address'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['address'] &&
-                        fI['address'].errors &&
-                        fI['address'].errors['minlength']
-                      "
-                    >
-                      Address must contain at least 6 characters
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['address'] &&
-                        fI['address'].errors &&
-                        fI['address'].errors['required']
-                      "
-                    >
-                      Address is <strong>required</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter email</mat-label>
-                    <input
-                      matInput
-                      placeholder="pat@example.com"
-                      type="email"
-                      formControlName="email"
-                      id="email"
-                      required
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['email'] && fI['email'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['email'] &&
-                        fI['email'].errors &&
-                        fI['email'].errors['email']
-                      "
-                    >
-                      The email address is invalid.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['email'] &&
-                        fI['email'].errors &&
-                        fI['email'].errors['required']
-                      "
-                    >
-                      Email address is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter login</mat-label>
-                    <input
-                      matInput
-                      placeholder="pat@example.com"
-                      type="login"
-                      formControlName="login"
-                      id="login"
-                      required
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['login'] && fI['login'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['login'] &&
-                        fI['login'].errors &&
-                        fI['login'].errors['minlength']
-                      "
-                    >
-                      login must contain at least 6 characters
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['login'] &&
-                        fI['login'].errors &&
-                        fI['login'].errors['required']
-                      "
-                    >
-                      login is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Password</mat-label>
-                    <input
-                      matInput
-                      placeholder="Password"
-                      type="password"
-                      formControlName="password"
-                      id="password"
-                      required
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['password'] && fI['password'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['password'] &&
-                        fI['password'].errors &&
-                        fI['password'].errors['minlength']
-                      "
-                    >
-                      Password must contain at least 6 characters.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['password'] &&
-                        fI['password'].errors &&
-                        fI['password'].errors['required']
-                      "
-                    >
-                      Password is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Cin</mat-label>
-                    <input
-                      matInput
-                      placeholder="Cin"
-                      type="number"
-                      formControlName="cin"
-                      id="cin"
-                      required
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['cin'] && fI['cin'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['cin'] &&
-                        fI['cin'].errors &&
-                        fI['cin'].errors['minlength']
-                      "
-                    >
-                      Cin must contain 8 number.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['cin'] &&
-                        fI['cin'].errors &&
-                        fI['cin'].errors['required']
-                      "
-                    >
-                      Cin is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Roles</mat-label>
-                    <input
-                      matInput
-                      placeholder="Roles"
-                      type="text"
-                      formControlName="roles"
-                      id="roles"
-                      required
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['roles'] && fI['roles'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['roles'] &&
-                        fI['roles'].errors &&
-                        fI['roles'].errors['minlength']
-                      "
-                    >
-                      Roles must contain 6 characters.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['roles'] &&
-                        fI['roles'].errors &&
-                        fI['roles'].errors['required']
-                      "
-                    >
-                      Roles is <strong>required</strong>.
+                      Prenom is <strong>required</strong>.
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -299,9 +87,9 @@
                       matInput
                       placeholder="Source"
                       type="text"
+                      required
                       formControlName="source"
                       id="source"
-                      required
                       [ngClass]="{
                         'is-invalid':
                           submittedIn && fI['source'] && fI['source'].errors
@@ -329,7 +117,151 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Enter Mention</mat-label>
+                    <input
+                      matInput
+                      placeholder="Mention"
+                      type="text"
+                      required
+                      formControlName="mention"
+                      id="mention"
+                      [ngClass]="{
+                        'is-invalid':
+                          submittedIn && fI['mention'] && fI['mention'].errors
+                      }"
+                    />
+                    <mat-error
+                      *ngIf="
+                        fI['mention'] &&
+                        fI['mention'].errors &&
+                        fI['mention'].errors['minlength']
+                      "
+                    >
+                      Mention must contain 6 characters.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        fI['mention'] &&
+                        fI['mention'].errors &&
+                        fI['mention'].errors['required']
+                      "
+                    >
+                      Mention is <strong>required</strong>.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Enter Competence</mat-label>
+                    <input
+                      matInput
+                      placeholder="Competence"
+                      type="text"
+                      required
+                      formControlName="competence"
+                      id="competence"
+                      [ngClass]="{
+                        'is-invalid':
+                          submittedIn &&
+                          fI['competence'] &&
+                          fI['competence'].errors
+                      }"
+                    />
+                    <mat-error
+                      *ngIf="
+                        fI['competence'] &&
+                        fI['competence'].errors &&
+                        fI['competence'].errors['minlength']
+                      "
+                    >
+                      Competence must contain 6 characters.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        fI['competence'] &&
+                        fI['competence'].errors &&
+                        fI['competence'].errors['required']
+                      "
+                    >
+                      Competence is <strong>required</strong>.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Enter Domain</mat-label>
+                    <input
+                      matInput
+                      placeholder="Domain"
+                      type="text"
+                      required
+                      formControlName="domain"
+                      id="domain"
+                      [ngClass]="{
+                        'is-invalid':
+                          submittedIn && fI['domain'] && fI['domain'].errors
+                      }"
+                    />
+                    <mat-error
+                      *ngIf="
+                        fI['domain'] &&
+                        fI['domain'].errors &&
+                        fI['domain'].errors['minlength']
+                      "
+                    >
+                      Domain must contain 6 characters.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        fI['domain'] &&
+                        fI['domain'].errors &&
+                        fI['domain'].errors['required']
+                      "
+                    >
+                      Domain is <strong>required</strong>.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Enter Comment</mat-label>
+                    <input
+                      matInput
+                      placeholder="Comment"
+                      type="text"
+                      required
+                      formControlName="comment"
+                      id="comment"
+                      [ngClass]="{
+                        'is-invalid':
+                          submittedIn && fI['comment'] && fI['comment'].errors
+                      }"
+                    />
+                    <mat-error
+                      *ngIf="
+                        fI['comment'] &&
+                        fI['comment'].errors &&
+                        fI['comment'].errors['minlength']
+                      "
+                    >
+                      Comment must contain 8 characters.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        fI['comment'] &&
+                        fI['comment'].errors &&
+                        fI['comment'].errors['required']
+                      "
+                    >
+                      Comment is <strong>required</strong>.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
                   <mat-form-field appearance="outline">
                     <input
                       matInput
@@ -350,17 +282,25 @@
                     </div>
                   </mat-form-field>
                 </div>
-
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <mat-form-field appearance="outline">
-                    <mat-label>Sessions</mat-label>
-                    <mat-select [formControl]="sessions" multiple>
-                      <mat-option
-                        *ngFor="let session of sessionList"
-                        [value]="session"
-                        >{{ session }}</mat-option
-                      >
-                    </mat-select>
+                    <input
+                      matInput
+                      type="file"
+                      class="file-input"
+                      (change)="onFileSelected($event)"
+                      #fileUpload
+                    />
+
+                    <div
+                      class="file-upload uploadFile"
+                      (click)="fileUpload.click()"
+                    >
+                      {{ fileName || "No CV uploaded yet." }}
+                      <button mat-mini-fab class="upload-btn">
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+                    </div>
                   </mat-form-field>
                 </div>
               </div>
@@ -370,7 +310,7 @@
                 type="submit"
                 class="btn btn-wico pull-right"
               >
-                Add User
+                Add Temoignage
               </button>
               <div class="clearfix"></div>
             </form>
@@ -380,7 +320,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-wicocolor">
-            <h4 class="card-title">Users List</h4>
+            <h4 class="card-title">Temoignages List</h4>
           </div>
           <div class="card-body">
             <div class="mat-elevation-z">
@@ -407,46 +347,6 @@
                   </td>
                 </ng-container>
 
-                <!-- address Column -->
-                <ng-container matColumnDef="address">
-                  <th mat-header-cell *matHeaderCellDef>Address</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.address }}
-                  </td>
-                </ng-container>
-
-                <!-- email Column -->
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef>Email</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.email }}
-                  </td>
-                </ng-container>
-
-                <!-- login Column -->
-                <ng-container matColumnDef="login">
-                  <th mat-header-cell *matHeaderCellDef>Login</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.login }}
-                  </td>
-                </ng-container>
-
-                <!-- cin Column -->
-                <ng-container matColumnDef="cin">
-                  <th mat-header-cell *matHeaderCellDef>Cin</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.cin }}
-                  </td>
-                </ng-container>
-
-                <!-- roles Column -->
-                <ng-container matColumnDef="roles">
-                  <th mat-header-cell *matHeaderCellDef>Roles</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.roles }}
-                  </td>
-                </ng-container>
-
                 <!-- source Column -->
                 <ng-container matColumnDef="source">
                   <th mat-header-cell *matHeaderCellDef>Source</th>
@@ -455,10 +355,49 @@
                   </td>
                 </ng-container>
 
+                <!-- mention Column -->
+                <ng-container matColumnDef="mention">
+                  <th mat-header-cell *matHeaderCellDef>Mention</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.mention }}
+                  </td>
+                </ng-container>
+
+                <!-- competence Column -->
+                <ng-container matColumnDef="competence">
+                  <th mat-header-cell *matHeaderCellDef>Competence</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.competence }}
+                  </td>
+                </ng-container>
+
+                <!-- domain Column -->
+                <ng-container matColumnDef="domain">
+                  <th mat-header-cell *matHeaderCellDef>Domain</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.domain }}
+                  </td>
+                </ng-container>
+
+                <!-- comment Column -->
+                <ng-container matColumnDef="comment">
+                  <th mat-header-cell *matHeaderCellDef>Comment</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.comment }}
+                  </td>
+                </ng-container>
+
+                <!-- cv Column -->
+                <ng-container matColumnDef="cv">
+                  <th mat-header-cell *matHeaderCellDef>Cv</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.cv }}
+                  </td>
+                </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr
                   mat-row
-                  (click)="openDialog(row)"
                   *matRowDef="let row; columns: displayedColumns"
                 ></tr>
               </table>

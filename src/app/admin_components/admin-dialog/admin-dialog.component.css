@@ -1,0 +1,59 @@
+.dialog-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-wrapper {
+  text-align: center;
+  position: relative;
+}
+
+.image-container {
+  margin-bottom: 20px;
+}
+
+.avatar-image {
+  width: 150px; /* Adjust size as needed */
+  height: 150px; /* Adjust size as needed */
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.data-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.data-column {
+  flex: 1;
+}
+
+.sub-data-item {
+  display: flex;
+  align-items: center;
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+.data-key {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.close-button {
+  position: relative;
+  top: 0;
+  right: 0;
+  background-color: #37517e;
+  color: white;
+}
