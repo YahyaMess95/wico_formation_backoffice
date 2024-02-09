@@ -1,0 +1,130 @@
+<h2 mat-dialog-title>
+  <span>Add Foramtion</span>
+  <button
+    mat-icon-button
+    mat-dialog-close
+    aria-label="Close"
+    class="close-button"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="formeformation" (ngSubmit)="Addforamtion($event)">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Nom</mat-label>
+          <input
+            matInput
+            placeholder="Nom"
+            type="text"
+            required
+            formControlName="nom"
+            id="nom"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['nom'] && fI['nom'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['nom'] && fI['nom'].errors && fI['nom'].errors['minlength']
+            "
+          >
+            Nom must contain 3 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['nom'] && fI['nom'].errors && fI['nom'].errors['required']
+            "
+          >
+            Nom is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Description</mat-label>
+          <input
+            matInput
+            placeholder="Description"
+            type="text"
+            required
+            formControlName="description"
+            id="description"
+            [ngClass]="{
+              'is-invalid':
+                submittedIn && fI['description'] && fI['description'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['description'] &&
+              fI['description'].errors &&
+              fI['description'].errors['minlength']
+            "
+          >
+            Description must contain 8 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['description'] &&
+              fI['description'].errors &&
+              fI['description'].errors['required']
+            "
+          >
+            Description is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Tags</mat-label>
+          <input
+            matInput
+            placeholder="Tags"
+            type="text"
+            required
+            formControlName="tags"
+            id="tags"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['tags'] && fI['tags'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['tags'] && fI['tags'].errors && fI['tags'].errors['minlength']
+            "
+          >
+            Tags must contain 1 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['tags'] && fI['tags'].errors && fI['tags'].errors['required']
+            "
+          >
+            Tags is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Contenu</mat-label>
+          <mat-select [formControl]="contenus" multiple>
+            <mat-option *ngFor="let contenu of contenuList" [value]="contenu">{{
+              contenu
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button mat-raised-button type="submit" class="btn btn-wico pull-right">
+      Add Formation
+    </button>
+    <div class="clearfix"></div>
+  </form>
+</mat-dialog-content>

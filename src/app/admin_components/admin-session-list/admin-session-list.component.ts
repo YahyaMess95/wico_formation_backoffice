@@ -1,56 +1,24 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  Validators,
-} from "@angular/forms";
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
+
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { AdminSessionDialogComponent } from "../poppup/admin-session-dialog/admin-session-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: "admin-session-list",
   templateUrl: "./admin-session-list.component.html",
   styleUrls: ["./admin-session-list.component.css"],
 })
-export class AdminSessionListComponent implements AfterViewInit, OnInit {
-  submittedIn = false;
-  constructor(private formBuilder: NonNullableFormBuilder) {}
-  ngOnInit(): void {
-    this.formesession = this.formBuilder.group({
-      nom: ["", [Validators.required, Validators.minLength(3)]],
-      datedeb: ["", [Validators.required]],
-      organisation: ["", [Validators.required, Validators.minLength(3)]],
-      maxnb: ["", [Validators.required, Validators.minLength(1)]],
-    });
+export class AdminSessionListComponent implements AfterViewInit {
+  constructor(public dialog: MatDialog) {}
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
   }
 
-  formesession: FormGroup = new FormGroup({
-    nom: new FormControl(""),
-    datedeb: new FormControl(""),
-    organisation: new FormControl(""),
-    maxnb: new FormControl(""),
-  });
-  public Addsession(e: Event) {
-    this.submittedIn = true;
-
-    if (this.formesession.invalid) {
-      return;
-    }
-    e.preventDefault();
-    console.log(this.formesession.value);
-    this.formesession.reset();
-  }
-  get fI(): { [key: string]: AbstractControl } {
-    return this.formesession.controls;
-  }
   displayedColumns: string[] = [
     "position",
     "nom",
@@ -66,48 +34,13 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  fileName = "";
+  openDialogAddSession() {
+    const dialogRef = this.dialog.open(AdminSessionDialogComponent);
 
-  onFileSelected(event) {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      this.fileName = file.name;
-
-      const formData = new FormData();
-
-      formData.append("thumbnail", file);
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
-
-  Types: Type[] = [
-    { value: "remotely", viewValue: "Remotely" },
-    { value: "locally", viewValue: "Locally" },
-  ];
-
-  formations = new FormControl("");
-  formationList: string[] = [
-    "formation 1",
-    "formation 2",
-    "formation 3",
-    "formation 4",
-    "formation 5",
-    "formation 6",
-  ];
-  seances = new FormControl("");
-  seancenList: string[] = [
-    "seance 1",
-    "seance 2",
-    "seance 3",
-    "seance 4",
-    "seance 5",
-    "seance 6",
-  ];
-}
-
-interface Type {
-  value: string;
-  viewValue: string;
 }
 
 export interface PeriodicElement {

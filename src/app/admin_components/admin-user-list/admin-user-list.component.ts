@@ -16,57 +16,30 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { AdminUserListDialogComponent } from "../poppup/admin-user-list-dialog/admin-user-list-dialog.component";
 
 @Component({
   selector: "admin-user-list",
   templateUrl: "./admin-user-list.component.html",
   styleUrls: ["./admin-user-list.component.css"],
 })
-export class AdminUserListComponent implements AfterViewInit, OnInit {
-  submittedIn = false;
-  constructor(
-    private formBuilder: NonNullableFormBuilder,
-    public dialog: MatDialog
-  ) {}
-  ngOnInit(): void {
-    this.formeusers = this.formBuilder.group({
-      name: ["", [Validators.required, Validators.minLength(3)]],
-      prenom: ["", [Validators.required, Validators.minLength(3)]],
-      address: ["", [Validators.required, Validators.minLength(6)]],
-      email: ["", [Validators.required, Validators.email]],
-      login: ["", [Validators.required, Validators.minLength(6)]],
-      password: ["", [Validators.required, Validators.minLength(6)]],
-      cin: ["", [Validators.required, Validators.minLength(8)]],
-      roles: ["", [Validators.required, Validators.minLength(3)]],
-      source: ["", [Validators.required, Validators.minLength(6)]],
+export class AdminUserListComponent implements AfterViewInit {
+  constructor(public dialog: MatDialog) {}
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+
+  openDialogAddUser() {
+    const dialogRef = this.dialog.open(AdminUserListDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
     });
   }
 
-  formeusers: FormGroup = new FormGroup({
-    name: new FormControl(""),
-    prenom: new FormControl(""),
-    address: new FormControl(""),
-    email: new FormControl(""),
-    login: new FormControl(""),
-    password: new FormControl(""),
-    cin: new FormControl(""),
-    roles: new FormControl(""),
-    source: new FormControl(""),
-  });
-
-  public Adduser(e: Event) {
-    this.submittedIn = true;
-
-    if (this.formeusers.invalid) {
-      return;
-    }
-    e.preventDefault();
-    console.log(this.formeusers.value);
-    this.formeusers.reset();
-  }
-  get fI(): { [key: string]: AbstractControl } {
-    return this.formeusers.controls;
-  }
   displayedColumns: string[] = [
     "position",
     "name",
@@ -83,30 +56,6 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
-  fileName = "";
-
-  onFileSelected(event) {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      this.fileName = file.name;
-
-      const formData = new FormData();
-
-      formData.append("thumbnail", file);
-    }
-  }
-
-  sessions = new FormControl("");
-  sessionList: string[] = [
-    "Session 1",
-    "Session 2",
-    "Session 3",
-    "Session 4",
-    "Session 5",
-    "Session 6",
-  ];
 
   openDialog(data: any): void {
     const dialogRef = this.dialog.open(AdminDialogComponent, {

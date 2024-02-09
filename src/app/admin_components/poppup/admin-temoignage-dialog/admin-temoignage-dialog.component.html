@@ -1,0 +1,295 @@
+<h2 mat-dialog-title>
+  <span>Add Temoignage</span>
+  <button
+    mat-icon-button
+    mat-dialog-close
+    aria-label="Close"
+    class="close-button"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="formetemoignages" (ngSubmit)="Addtemoignage($event)">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Name</mat-label>
+          <input
+            matInput
+            placeholder="Name"
+            required
+            formControlName="name"
+            id="name"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['name'] && fI['name'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
+            "
+          >
+            Name must contain 3 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['name'] && fI['name'].errors && fI['name'].errors['required']
+            "
+          >
+            Name is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Prenom</mat-label>
+          <input
+            matInput
+            placeholder="Prenom"
+            required
+            formControlName="prenom"
+            id="prenom"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['prenom'] && fI['prenom'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['prenom'] &&
+              fI['prenom'].errors &&
+              fI['prenom'].errors['minlength']
+            "
+          >
+            Prenom must contain 3 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['prenom'] &&
+              fI['prenom'].errors &&
+              fI['prenom'].errors['required']
+            "
+          >
+            Prenom is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Source</mat-label>
+          <input
+            matInput
+            placeholder="Source"
+            type="text"
+            required
+            formControlName="source"
+            id="source"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['source'] && fI['source'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['source'] &&
+              fI['source'].errors &&
+              fI['source'].errors['minlength']
+            "
+          >
+            Source must contain 6 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['source'] &&
+              fI['source'].errors &&
+              fI['source'].errors['required']
+            "
+          >
+            Source is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Mention</mat-label>
+          <input
+            matInput
+            placeholder="Mention"
+            type="text"
+            required
+            formControlName="mention"
+            id="mention"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['mention'] && fI['mention'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['mention'] &&
+              fI['mention'].errors &&
+              fI['mention'].errors['minlength']
+            "
+          >
+            Mention must contain 6 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['mention'] &&
+              fI['mention'].errors &&
+              fI['mention'].errors['required']
+            "
+          >
+            Mention is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Competence</mat-label>
+          <input
+            matInput
+            placeholder="Competence"
+            type="text"
+            required
+            formControlName="competence"
+            id="competence"
+            [ngClass]="{
+              'is-invalid':
+                submittedIn && fI['competence'] && fI['competence'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['competence'] &&
+              fI['competence'].errors &&
+              fI['competence'].errors['minlength']
+            "
+          >
+            Competence must contain 6 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['competence'] &&
+              fI['competence'].errors &&
+              fI['competence'].errors['required']
+            "
+          >
+            Competence is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Domain</mat-label>
+          <input
+            matInput
+            placeholder="Domain"
+            type="text"
+            required
+            formControlName="domain"
+            id="domain"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['domain'] && fI['domain'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['domain'] &&
+              fI['domain'].errors &&
+              fI['domain'].errors['minlength']
+            "
+          >
+            Domain must contain 6 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['domain'] &&
+              fI['domain'].errors &&
+              fI['domain'].errors['required']
+            "
+          >
+            Domain is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Comment</mat-label>
+          <input
+            matInput
+            placeholder="Comment"
+            type="text"
+            required
+            formControlName="comment"
+            id="comment"
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['comment'] && fI['comment'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['comment'] &&
+              fI['comment'].errors &&
+              fI['comment'].errors['minlength']
+            "
+          >
+            Comment must contain 8 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['comment'] &&
+              fI['comment'].errors &&
+              fI['comment'].errors['required']
+            "
+          >
+            Comment is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            type="file"
+            class="file-input"
+            (change)="onFileSelected($event)"
+            #fileUpload
+          />
+
+          <div class="file-upload uploadFile" (click)="fileUpload.click()">
+            {{ fileName || "No Image uploaded yet." }}
+            <button mat-mini-fab class="upload-btn">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+          </div>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            type="file"
+            class="file-input"
+            (change)="onFileSelected($event)"
+            #fileUpload
+          />
+
+          <div class="file-upload uploadFile" (click)="fileUpload.click()">
+            {{ fileName || "No CV uploaded yet." }}
+            <button mat-mini-fab class="upload-btn">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+          </div>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button mat-raised-button type="submit" class="btn btn-wico pull-right">
+      Add Temoignage
+    </button>
+    <div class="clearfix"></div>
+  </form>
+</mat-dialog-content>

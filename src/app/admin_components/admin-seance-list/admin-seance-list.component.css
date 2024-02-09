@@ -1,0 +1,17 @@
+::ng-deep
+  .custom-form-field.mat-form-field-appearance-outline
+  .mat-form-field-outline-start {
+  background-color: white;
+}
+
+::ng-deep
+  .custom-form-field.mat-form-field-appearance-outline
+  .mat-form-field-outline-end {
+  background-color: white;
+}
+
+::ng-deep
+  .custom-form-field.mat-form-field-appearance-outline
+  input.mat-input-element {
+  color: black;
+}

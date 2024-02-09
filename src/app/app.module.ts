@@ -6,6 +6,7 @@ import { RouterModule } from "@angular/router";
 import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from "./app.component";
 import { LayoutsModule } from "./layouts/layouts.module";
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { LayoutsModule } from "./layouts/layouts.module";
     AppRoutingModule,
     LayoutsModule,
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoaderComponent],
   providers: [],
   bootstrap: [AppComponent],
 })

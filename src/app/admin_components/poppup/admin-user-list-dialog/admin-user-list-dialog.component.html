@@ -1,0 +1,340 @@
+<h2 mat-dialog-title>
+  <span>Add User</span>
+  <button
+    mat-icon-button
+    mat-dialog-close
+    aria-label="Close"
+    class="close-button"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="formeusers" (ngSubmit)="Adduser($event)">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Name</mat-label>
+          <input
+            matInput
+            placeholder="Name"
+            formControlName="name"
+            id="name"
+            required
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['name'] && fI['name'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
+            "
+          >
+            Name must contain at least 6 characters
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['name'] && fI['name'].errors && fI['name'].errors['required']
+            "
+          >
+            Name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Prenom</mat-label>
+          <input
+            matInput
+            placeholder="Prenom"
+            formControlName="prenom"
+            id="prenom"
+            required
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['prenom'] && fI['prenom'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['prenom'] &&
+              fI['prenom'].errors &&
+              fI['prenom'].errors['minlength']
+            "
+          >
+            Prenom must contain at least 6 characters
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['prenom'] &&
+              fI['prenom'].errors &&
+              fI['prenom'].errors['required']
+            "
+          >
+            Prenom is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Address</mat-label>
+          <input
+            matInput
+            placeholder="Address"
+            type="text"
+            formControlName="address"
+            id="address"
+            required
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['address'] && fI['address'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['address'] &&
+              fI['address'].errors &&
+              fI['address'].errors['minlength']
+            "
+          >
+            Address must contain at least 6 characters
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['address'] &&
+              fI['address'].errors &&
+              fI['address'].errors['required']
+            "
+          >
+            Address is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter email</mat-label>
+          <input
+            matInput
+            placeholder="pat@example.com"
+            type="email"
+            formControlName="email"
+            id="email"
+            required
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['email'] && fI['email'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['email'] && fI['email'].errors && fI['email'].errors['email']
+            "
+          >
+            The email address is invalid.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['email'] &&
+              fI['email'].errors &&
+              fI['email'].errors['required']
+            "
+          >
+            Email address is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter login</mat-label>
+          <input
+            matInput
+            placeholder="pat@example.com"
+            type="login"
+            formControlName="login"
+            id="login"
+            required
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['login'] && fI['login'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['login'] &&
+              fI['login'].errors &&
+              fI['login'].errors['minlength']
+            "
+          >
+            login must contain at least 6 characters
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['login'] &&
+              fI['login'].errors &&
+              fI['login'].errors['required']
+            "
+          >
+            login is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Password</mat-label>
+          <input
+            matInput
+            placeholder="Password"
+            type="password"
+            formControlName="password"
+            id="password"
+            required
+            [ngClass]="{
+              'is-invalid':
+                submittedIn && fI['password'] && fI['password'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['password'] &&
+              fI['password'].errors &&
+              fI['password'].errors['minlength']
+            "
+          >
+            Password must contain at least 6 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['password'] &&
+              fI['password'].errors &&
+              fI['password'].errors['required']
+            "
+          >
+            Password is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Cin</mat-label>
+          <input
+            matInput
+            placeholder="Cin"
+            type="number"
+            formControlName="cin"
+            id="cin"
+            required
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['cin'] && fI['cin'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['cin'] && fI['cin'].errors && fI['cin'].errors['minlength']
+            "
+          >
+            Cin must contain 8 number.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['cin'] && fI['cin'].errors && fI['cin'].errors['required']
+            "
+          >
+            Cin is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Source</mat-label>
+          <input
+            matInput
+            placeholder="Source"
+            type="text"
+            formControlName="source"
+            id="source"
+            required
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['source'] && fI['source'].errors
+            }"
+          />
+          <mat-error
+            *ngIf="
+              fI['source'] &&
+              fI['source'].errors &&
+              fI['source'].errors['minlength']
+            "
+          >
+            Source must contain 6 characters.
+          </mat-error>
+          <mat-error
+            *ngIf="
+              fI['source'] &&
+              fI['source'].errors &&
+              fI['source'].errors['required']
+            "
+          >
+            Source is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Roles</mat-label>
+          <mat-select [formControl]="roles" required>
+            <mat-option *ngFor="let role of roleList" [value]="role">{{
+              role
+            }}</mat-option>
+          </mat-select>
+
+          <mat-error
+            *ngIf="
+              fI['roles'] &&
+              fI['roles'].errors &&
+              fI['roles'].errors['required']
+            "
+          >
+            role is <strong>required</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            type="file"
+            class="file-input"
+            (change)="onFileSelected($event)"
+            #fileUpload
+          />
+
+          <div class="file-upload uploadFile" (click)="fileUpload.click()">
+            {{ fileName || "No Image uploaded yet." }}
+            <button mat-mini-fab class="upload-btn">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+          </div>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline">
+          <mat-label>Sessions</mat-label>
+          <mat-select [formControl]="sessions" multiple>
+            <mat-option *ngFor="let session of sessionList" [value]="session">{{
+              session
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button mat-raised-button type="submit" class="btn btn-wico pull-right">
+      Add User
+    </button>
+    <div class="clearfix"></div>
+  </form>
+</mat-dialog-content>

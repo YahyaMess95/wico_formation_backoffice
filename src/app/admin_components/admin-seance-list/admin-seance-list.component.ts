@@ -1,52 +1,23 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import {
-  NonNullableFormBuilder,
-  Validators,
-  FormGroup,
-  FormControl,
-  AbstractControl,
-} from "@angular/forms";
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { AdminSeanceDialogComponent } from "../poppup/admin-seance-dialog/admin-seance-dialog.component";
 
 @Component({
   selector: "admin-seance-list",
   templateUrl: "./admin-seance-list.component.html",
   styleUrls: ["./admin-seance-list.component.css"],
 })
-export class AdminSeanceListComponent implements AfterViewInit, OnInit {
-  submittedIn = false;
-  constructor(private formBuilder: NonNullableFormBuilder) {}
-  ngOnInit(): void {
-    this.formeseance = this.formBuilder.group({
-      nom: ["", [Validators.required, Validators.minLength(3)]],
-      lieu: ["", [Validators.required, Validators.minLength(3)]],
-      link: ["", [Validators.required]],
-      date: ["", [Validators.required]],
-      comment: ["", [Validators.required, Validators.minLength(6)]],
-    });
+export class AdminSeanceListComponent implements AfterViewInit {
+  constructor(public dialog: MatDialog) {}
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
   }
 
-  formeseance: FormGroup = new FormGroup({
-    nom: new FormControl(""),
-    lieu: new FormControl(""),
-    link: new FormControl(""),
-    date: new FormControl(""),
-    comment: new FormControl(""),
-  });
-  public Addseance(e: Event) {
-    this.submittedIn = true;
-
-    if (this.formeseance.invalid) {
-      return;
-    }
-    e.preventDefault();
-    console.log(this.formeseance.value);
-    this.formeseance.reset();
-  }
-  get fI(): { [key: string]: AbstractControl } {
-    return this.formeseance.controls;
-  }
   displayedColumns: string[] = [
     "position",
     "nom",
@@ -61,11 +32,14 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-}
 
-interface comment {
-  value: string;
-  viewValue: string;
+  openDialogAddSeance() {
+    const dialogRef = this.dialog.open(AdminSeanceDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }
 
 export interface PeriodicElement {

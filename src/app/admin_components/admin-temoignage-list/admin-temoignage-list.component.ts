@@ -1,55 +1,29 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  Validators,
-} from "@angular/forms";
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { AdminTemoignageDialogComponent } from "../poppup/admin-temoignage-dialog/admin-temoignage-dialog.component";
 
 @Component({
   selector: "admin-temoignage-list",
   templateUrl: "./admin-temoignage-list.component.html",
   styleUrls: ["./admin-temoignage-list.component.css"],
 })
-export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
-  submittedIn = false;
-  constructor(private formBuilder: NonNullableFormBuilder) {}
-  ngOnInit(): void {
-    this.formetemoignages = this.formBuilder.group({
-      name: ["", [Validators.required, Validators.minLength(3)]],
-      prenom: ["", [Validators.required, Validators.minLength(3)]],
-      source: ["", [Validators.required, Validators.minLength(6)]],
-      mention: ["", [Validators.required, Validators.minLength(6)]],
-      competence: ["", [Validators.required, Validators.minLength(6)]],
-      domain: ["", [Validators.required, Validators.minLength(6)]],
-      comment: ["", [Validators.required, Validators.minLength(8)]],
+export class AdminTemoignageListComponent implements AfterViewInit {
+  constructor(public dialog: MatDialog) {}
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+
+  openDialogAddTemoignage() {
+    const dialogRef = this.dialog.open(AdminTemoignageDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
     });
-  }
-
-  formetemoignages: FormGroup = new FormGroup({
-    name: new FormControl(""),
-    prenom: new FormControl(""),
-    source: new FormControl(""),
-    mention: new FormControl(""),
-    competence: new FormControl(""),
-    domain: new FormControl(""),
-    comment: new FormControl(""),
-  });
-  public Addtemoignage(e: Event) {
-    this.submittedIn = true;
-
-    if (this.formetemoignages.invalid) {
-      return;
-    }
-    e.preventDefault();
-    console.log(this.formetemoignages.value);
-    this.formetemoignages.reset();
-  }
-  get fI(): { [key: string]: AbstractControl } {
-    return this.formetemoignages.controls;
   }
   displayedColumns: string[] = [
     "position",
@@ -66,20 +40,6 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  fileName = "";
-
-  onFileSelected(event) {
-    const file: File = event.target.files[0];
-
-    if (file) {
-      this.fileName = file.name;
-
-      const formData = new FormData();
-
-      formData.append("thumbnail", file);
-    }
   }
 }
 

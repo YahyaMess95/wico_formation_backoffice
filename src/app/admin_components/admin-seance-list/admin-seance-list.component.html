@@ -2,197 +2,34 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
-          <div class="card-header card-header-wicocolor">
-            <h4 class="card-title">Add Seance</h4>
-          </div>
-          <div class="card-body">
-            <form [formGroup]="formeseance" (ngSubmit)="Addseance($event)">
-              <div class="row">
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Nom</mat-label>
-                    <input
-                      matInput
-                      placeholder="Nom"
-                      type="text"
-                      required
-                      formControlName="nom"
-                      id="nom"
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['nom'] && fI['nom'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['nom'] &&
-                        fI['nom'].errors &&
-                        fI['nom'].errors['minlength']
-                      "
-                    >
-                      Nom number must contain 3 characters.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['nom'] &&
-                        fI['nom'].errors &&
-                        fI['nom'].errors['required']
-                      "
-                    >
-                      Nom number is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Lieu</mat-label>
-                    <input
-                      matInput
-                      placeholder="Lieu"
-                      type="text"
-                      required
-                      formControlName="lieu"
-                      id="lieu"
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['lieu'] && fI['lieu'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['lieu'] &&
-                        fI['lieu'].errors &&
-                        fI['lieu'].errors['minlength']
-                      "
-                    >
-                      Lieu must contain 3 characters.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['lieu'] &&
-                        fI['lieu'].errors &&
-                        fI['lieu'].errors['required']
-                      "
-                    >
-                      Lieu is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Link</mat-label>
-                    <input
-                      matInput
-                      placeholder="Link"
-                      type="text"
-                      required
-                      formControlName="link"
-                      id="link"
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['link'] && fI['link'].errors
-                      }"
-                    />
-
-                    <mat-error
-                      *ngIf="
-                        fI['link'] &&
-                        fI['link'].errors &&
-                        fI['link'].errors['required']
-                      "
-                    >
-                      Link is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Choose a Date</mat-label>
-                    <input
-                      matInput
-                      [matDatepicker]="picker"
-                      required
-                      formControlName="date"
-                      id="date"
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['date'] && fI['date'].errors
-                      }"
-                    />
-
-                    <mat-error
-                      *ngIf="
-                        fI['date'] &&
-                        fI['date'].errors &&
-                        fI['date'].errors['required']
-                      "
-                    >
-                      Date is <strong>required</strong>.
-                    </mat-error>
-                    <mat-datepicker-toggle
-                      matSuffix
-                      [for]="picker"
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-hint>MM/DD/YYYY</mat-hint>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Comment</mat-label>
-                    <input
-                      matInput
-                      placeholder="Comment"
-                      type="text"
-                      required
-                      formControlName="comment"
-                      id="comment"
-                      [ngClass]="{
-                        'is-invalid':
-                          submittedIn && fI['comment'] && fI['comment'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['comment'] &&
-                        fI['comment'].errors &&
-                        fI['comment'].errors['minlength']
-                      "
-                    >
-                      Comment must contain 6 characters.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['comment'] &&
-                        fI['comment'].errors &&
-                        fI['comment'].errors['required']
-                      "
-                    >
-                      Comment is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <button
-                mat-raised-button
-                type="submit"
-                class="btn btn-wico pull-right"
-              >
-                Add Seance
-              </button>
-              <div class="clearfix"></div>
-            </form>
-          </div>
-        </div>
+        <button
+          mat-raised-button
+          (click)="openDialogAddSeance()"
+          class="btn btn-wico pull-right"
+        >
+          Add Seance
+        </button>
       </div>
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-wicocolor">
-            <h4 class="card-title">Seances List</h4>
+          <div
+            class="card-header card-header-wicocolor"
+            style="display: flex; align-items: center"
+          >
+            <h4 class="card-title" style="flex: 1">Seance List</h4>
+
+            <mat-form-field
+              class="custom-form-field col-md-3"
+              style="flex: 1"
+              appearance="outline"
+            >
+              <input
+                type="search"
+                matInput
+                (keyup)="applyFilter($event.target.value)"
+                placeholder="Search"
+              />
+            </mat-form-field>
           </div>
           <div class="card-body">
             <div class="mat-elevation-z">

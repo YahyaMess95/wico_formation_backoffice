@@ -8,42 +8,15 @@ import {
 } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { AdminFormationDialogComponent } from "../poppup/admin-formation-dialog/admin-formation-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: "admin-formation-list",
   templateUrl: "./admin-formation-list.component.html",
   styleUrls: ["./admin-formation-list.component.css"],
 })
-export class AdminFormationListComponent implements AfterViewInit, OnInit {
-  submittedIn = false;
-  constructor(private formBuilder: NonNullableFormBuilder) {}
-  ngOnInit(): void {
-    this.formeformation = this.formBuilder.group({
-      nom: ["", [Validators.required, Validators.minLength(3)]],
-      description: ["", [Validators.required, Validators.minLength(8)]],
-      tags: ["", [Validators.required, Validators.minLength(1)]],
-    });
-  }
-
-  formeformation: FormGroup = new FormGroup({
-    nom: new FormControl(""),
-    description: new FormControl(""),
-    tags: new FormControl(""),
-  });
-  public Addforamtion(e: Event) {
-    this.submittedIn = true;
-
-    if (this.formeformation.invalid) {
-      return;
-    }
-    e.preventDefault();
-    console.log(this.formeformation.value);
-    this.formeformation.reset();
-  }
-  get fI(): { [key: string]: AbstractControl } {
-    return this.formeformation.controls;
-  }
-
+export class AdminFormationListComponent implements AfterViewInit {
   displayedColumns: string[] = ["position", "nom", "description", "tags"];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
@@ -52,15 +25,19 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  contenus = new FormControl("");
-  contenuList: string[] = [
-    "contenu 1",
-    "contenu 2",
-    "contenu 3",
-    "contenu 4",
-    "contenu 5",
-    "contenu 6",
-  ];
+  constructor(public dialog: MatDialog) {}
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+  openDialogAddFormation() {
+    const dialogRef = this.dialog.open(AdminFormationDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }
 
 interface comment {
