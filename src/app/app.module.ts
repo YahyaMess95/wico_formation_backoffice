@@ -6,7 +6,7 @@ import { RouterModule } from "@angular/router";
 import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from "./app.component";
 import { LayoutsModule } from "./layouts/layouts.module";
-import { LoaderComponent } from './loader/loader.component';
+import { LoaderComponent } from "./loader/loader.component";
 
 @NgModule({
   imports: [

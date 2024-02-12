@@ -21,6 +21,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { TableListComponent } from "app/table-list/table-list.component";
 import { ComponentsModule } from "app/components/components.module";
+import { MatIconModule } from "@angular/material/icon";
+import { LoginpageComponent } from "app/loginpage/loginpage.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { ComponentsModule } from "app/components/components.module";
     UpgradeComponent,
     TableListComponent,
     UserProfileComponent,
+    LoginpageComponent,
   ],
   exports: [
     AdminComponent,
@@ -44,6 +47,7 @@ import { ComponentsModule } from "app/components/components.module";
     UpgradeComponent,
     TableListComponent,
     UserProfileComponent,
+    LoginpageComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +64,7 @@ import { ComponentsModule } from "app/components/components.module";
     MatSelectModule,
     MatTooltipModule,
     MatToolbarModule,
+    MatIconModule,
   ],
 })
 export class LayoutsModule {}

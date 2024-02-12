@@ -4,12 +4,17 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
 import { AdminComponent } from "./layouts/admin/admin.component";
 import { UserComponent } from "./layouts/user/user.component";
+import { LoginpageComponent } from "./loginpage/loginpage.component";
 
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "admin",
+    redirectTo: "login",
     pathMatch: "full",
+  },
+  {
+    path: "login",
+    component: LoginpageComponent,
   },
   {
     path: "admin",
