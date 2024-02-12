@@ -638,7 +638,7 @@
   .nav-item .nav-link.active,
   .nav-item .nav-link:hover,
   .nav-item .nav-link:focus {
-    background-color: $wico-color !important;
+    background-color: inherit !important;
     box-shadow: none !important;
   }
 
