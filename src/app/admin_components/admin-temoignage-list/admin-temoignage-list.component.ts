@@ -10,12 +10,15 @@ import { AdminTemoignageDialogComponent } from "../poppup/admin-temoignage-dialo
   styleUrls: ["./admin-temoignage-list.component.css"],
 })
 export class AdminTemoignageListComponent implements AfterViewInit {
+  value: string = "";
   constructor(public dialog: MatDialog) {}
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+  applyFilter() {
+    this.dataSource.filter = this.value.trim().toLowerCase();
+  }
+  clear() {
+    this.value = "";
+    this.applyFilter();
   }
 
   openDialogAddTemoignage() {
@@ -35,6 +38,7 @@ export class AdminTemoignageListComponent implements AfterViewInit {
     "domain",
     "comment",
     "cv",
+    "action",
   ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;

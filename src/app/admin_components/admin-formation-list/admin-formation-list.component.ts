@@ -17,7 +17,14 @@ import { MatDialog } from "@angular/material/dialog";
   styleUrls: ["./admin-formation-list.component.css"],
 })
 export class AdminFormationListComponent implements AfterViewInit {
-  displayedColumns: string[] = ["position", "nom", "description", "tags"];
+  value: string = "";
+  displayedColumns: string[] = [
+    "position",
+    "nom",
+    "description",
+    "tags",
+    "action",
+  ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -26,11 +33,15 @@ export class AdminFormationListComponent implements AfterViewInit {
   }
 
   constructor(public dialog: MatDialog) {}
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+
+  applyFilter() {
+    this.dataSource.filter = this.value.trim().toLowerCase();
   }
+  clear() {
+    this.value = "";
+    this.applyFilter();
+  }
+
   openDialogAddFormation() {
     const dialogRef = this.dialog.open(AdminFormationDialogComponent);
 

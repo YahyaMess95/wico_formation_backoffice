@@ -23,6 +23,7 @@ import { TableListComponent } from "app/table-list/table-list.component";
 import { ComponentsModule } from "app/components/components.module";
 import { MatIconModule } from "@angular/material/icon";
 import { LoginpageComponent } from "app/loginpage/loginpage.component";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { LoginpageComponent } from "app/loginpage/loginpage.component";
     MatTooltipModule,
     MatToolbarModule,
     MatIconModule,
+    MatCheckboxModule,
   ],
 })
 export class LayoutsModule {}

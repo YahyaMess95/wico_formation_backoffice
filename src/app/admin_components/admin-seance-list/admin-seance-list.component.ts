@@ -10,12 +10,15 @@ import { AdminSeanceDialogComponent } from "../poppup/admin-seance-dialog/admin-
   styleUrls: ["./admin-seance-list.component.css"],
 })
 export class AdminSeanceListComponent implements AfterViewInit {
+  value: string = "";
   constructor(public dialog: MatDialog) {}
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+  applyFilter() {
+    this.dataSource.filter = this.value.trim().toLowerCase();
+  }
+  clear() {
+    this.value = "";
+    this.applyFilter();
   }
 
   displayedColumns: string[] = [
@@ -25,6 +28,7 @@ export class AdminSeanceListComponent implements AfterViewInit {
     "link",
     "date",
     "comment",
+    "action",
   ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 

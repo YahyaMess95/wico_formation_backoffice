@@ -11,12 +11,15 @@ import { MatDialog } from "@angular/material/dialog";
   styleUrls: ["./admin-session-list.component.css"],
 })
 export class AdminSessionListComponent implements AfterViewInit {
+  value: string = "";
   constructor(public dialog: MatDialog) {}
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+  applyFilter() {
+    this.dataSource.filter = this.value.trim().toLowerCase();
+  }
+  clear() {
+    this.value = "";
+    this.applyFilter();
   }
 
   displayedColumns: string[] = [
@@ -26,6 +29,7 @@ export class AdminSessionListComponent implements AfterViewInit {
     "organisation",
     "maxbumbr",
     "type",
+    "action",
   ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 

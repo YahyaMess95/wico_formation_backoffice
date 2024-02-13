@@ -24,14 +24,16 @@ import { AdminUserListDialogComponent } from "../poppup/admin-user-list-dialog/a
   styleUrls: ["./admin-user-list.component.css"],
 })
 export class AdminUserListComponent implements AfterViewInit {
+  value: string = "";
   constructor(public dialog: MatDialog) {}
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+  applyFilter() {
+    this.dataSource.filter = this.value.trim().toLowerCase();
   }
-
+  clear() {
+    this.value = "";
+    this.applyFilter();
+  }
   openDialogAddUser() {
     const dialogRef = this.dialog.open(AdminUserListDialogComponent);
 
@@ -50,6 +52,7 @@ export class AdminUserListComponent implements AfterViewInit {
     "cin",
     "roles",
     "source",
+    "action",
   ];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;

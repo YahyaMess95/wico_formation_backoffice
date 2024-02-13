@@ -6,13 +6,20 @@
         <div class="container">
           <div class="row">
             <div class="col-md-9 col-lg-8 mx-auto">
-              <h3 class="login-heading mb-4">Welcome back!</h3>
+              <div class="logo-container">
+                <img
+                  src="../../assets/img/logo.png"
+                  class="logo"
+                  alt="W Logo"
+                />
+              </div>
+              <h3 class="login-heading">Welcome back!</h3>
 
               <!-- Sign In Form -->
               <form [formGroup]="registerForm" (ngSubmit)="login($event)">
                 <div class="form-floating mb-3">
                   <mat-form-field appearance="outline">
-                    <mat-label>Enter email</mat-label>
+                    <mat-label>Enter Email</mat-label>
                     <input
                       matInput
                       placeholder="pat@example.com"
