@@ -16,12 +16,6 @@ export const Admin_ROUTES: RouteInfo[] = [
   },
 
   {
-    path: "/admin/profile",
-    title: "Profile",
-    icon: "person",
-    class: "",
-  },
-  {
     path: "/admin/user-list",
     title: "Users List",
     icon: "people",

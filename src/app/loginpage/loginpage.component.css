@@ -8,6 +8,10 @@
   background-position: center;
 }
 
+.bg {
+  background-color: white;
+}
+
 .login-heading {
   font-weight: 300;
 }
@@ -18,12 +22,10 @@
   padding: 0.75rem 1rem;
 }
 .logo {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 20px; /* Adjust border-radius for a smoother look */
   object-fit: contain; /* Maintain aspect ratio */
-
-  background-color: #37517e; /* Set background color to #37517e */
 }
 
 .login-heading {
@@ -31,14 +33,12 @@
   color: black; /* Set text color to black */
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center; /* Center text horizontally */
   padding: 20px;
   margin-top: 20px; /* Add margin to separate from the logo */
   border-radius: 10px;
-  background-color: #f0f0f0; /* Set background color to a lighter shade */
 }
 
 .logo-container {
