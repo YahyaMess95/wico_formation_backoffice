@@ -23,8 +23,8 @@
 }
 
 .avatar-image {
-  width: 150px; /* Adjust size as needed */
-  height: 150px; /* Adjust size as needed */
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
   border-radius: 50%;
   object-fit: cover;
 }
@@ -50,10 +50,27 @@
   margin-right: 5px;
 }
 
-.close-button {
+.action-button {
   position: relative;
-  top: 0;
-  right: 0;
+
   background-color: #37517e;
   color: white;
+}
+
+.column-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.column-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.column-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }

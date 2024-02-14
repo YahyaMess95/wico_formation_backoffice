@@ -4,6 +4,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdminSessionDialogComponent } from "../poppup/admin-session-dialog/admin-session-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 
 @Component({
   selector: "admin-session-list",
@@ -43,6 +44,16 @@ export class AdminSessionListComponent implements AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openDialog(data: any): void {
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: data,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("The dialog was closed");
     });
   }
 }
