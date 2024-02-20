@@ -6,37 +6,66 @@ import {
   AbstractControl,
 } from "@angular/forms";
 import { Router } from "@angular/router";
+import { NotifService } from "app/Services/notif.service";
+import { AdminService } from "app/Services/admin.service";
 
 @Component({
-  selector: "loginpage",
+  selector: "app-loginpage",
   templateUrl: "./loginpage.component.html",
   styleUrls: ["./loginpage.component.css"],
 })
 export class LoginpageComponent implements OnInit {
-  registerForm: any = FormGroup;
+  loginForm!: FormGroup;
+
   submitted = false;
   fileName = "";
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      // email: ["", [Validators.required, Validators.email]],
+      name: ["", [Validators.required, Validators.minLength(3)]],
+      password: ["", [Validators.required, Validators.minLength(6)]],
+    });
+  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private notifService: NotifService,
+    private adminService: AdminService
+  ) {}
 
-  public login(e: Event) {
+  login() {
     this.submitted = true;
-
-    if (this.registerForm.invalid) {
+    if (this.loginForm.invalid) {
       return;
     }
-    e.preventDefault();
-    console.log(this.registerForm.value);
-    this.registerForm.reset();
-    this.router.navigate(["/admin"]);
+
+    const { name, password } = this.loginForm.value;
+
+    this.adminService.login(name, password).subscribe(
+      (response) => {
+        console.log("Login successful", response);
+        this.loginForm.reset();
+        this.router.navigate(["/admin"]);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "Login successful",
+          "wico"
+        );
+      },
+      (error) => {
+        console.error("Login failed", error);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
+      }
+    );
   }
 
   get fI(): { [key: string]: AbstractControl } {
-    return this.registerForm.controls;
-  }
-  ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(6)]],
-    });
+    return this.loginForm.controls;
   }
 }

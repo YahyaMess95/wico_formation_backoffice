@@ -1,11 +1,13 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, Inject, OnInit, Output } from "@angular/core";
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  NonNullableFormBuilder,
   Validators,
 } from "@angular/forms";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { AdminService } from "app/Services/admin.service";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-user-list-dialog",
@@ -13,61 +15,144 @@ import {
   styleUrls: ["./admin-user-list-dialog.component.css"],
 })
 export class AdminUserListDialogComponent implements OnInit {
+  @Output() userAdded: EventEmitter<void> = new EventEmitter<void>();
   submittedIn = false;
-  fileName = "";
+  fileName = this.data?.photo || "No Image uploaded yet.";
 
-  constructor(private formBuilder: NonNullableFormBuilder) {}
+  constructor(
+    private notifService: NotifService,
+    private adminService: AdminService,
+    private dialogRef: MatDialogRef<AdminUserListDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit(): void {
-    this.formeusers = this.formBuilder.group({
-      name: ["", [Validators.required, Validators.minLength(3)]],
-      prenom: ["", [Validators.required, Validators.minLength(3)]],
-      address: ["", [Validators.required, Validators.minLength(6)]],
-      email: ["", [Validators.required, Validators.email]],
-      login: ["", [Validators.required, Validators.minLength(6)]],
-      password: ["", [Validators.required, Validators.minLength(6)]],
-      cin: ["", [Validators.required, Validators.minLength(8)]],
-      roles: ["", [Validators.required]],
-      source: ["", [Validators.required, Validators.minLength(6)]],
+    this.initializeForm();
+  }
+
+  formeusers: FormGroup;
+
+  initializeForm(): void {
+    this.formeusers = new FormGroup({
+      name: new FormControl(this.data?.name || "", [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      prename: new FormControl(this.data?.prename || "", [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      addresse: new FormControl(this.data?.addresse || "", [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      email: new FormControl(this.data?.email || "", [
+        Validators.required,
+        Validators.email,
+      ]),
+      login: new FormControl(this.data?.login || "", [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      password: new FormControl(this.data?.password || "", [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      cin: new FormControl(this.data?.cin || "", [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      roles: new FormControl(this.data?.roles || "", [Validators.required]),
+      source: new FormControl(this.data?.source || "", [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      sessions: new FormControl(this.data?.sessions || []),
+      photo: new FormControl(this.fileName, [Validators.required]),
     });
   }
 
-  formeusers: FormGroup = new FormGroup({
-    name: new FormControl(""),
-    prenom: new FormControl(""),
-    address: new FormControl(""),
-    email: new FormControl(""),
-    login: new FormControl(""),
-    password: new FormControl(""),
-    cin: new FormControl(""),
-    roles: new FormControl(""),
-    source: new FormControl(""),
-  });
-
-  public Adduser(e: Event) {
+  public saveOrUpdateUser(): void {
     this.submittedIn = true;
 
     if (this.formeusers.invalid) {
+      console.log("error ", this.formeusers.value);
       return;
     }
-    e.preventDefault();
-    console.log(this.formeusers.value);
-    this.formeusers.reset();
+
+    const userDetails = this.formeusers.value;
+
+    if (this.data) {
+      this.updateUser(this.data._id, userDetails);
+    } else {
+      this.addUser(userDetails);
+    }
+  }
+
+  addUser(userDetails): void {
+    this.adminService.addUser(userDetails).subscribe(
+      (response) => {
+        console.log("User added successful", response);
+        this.formeusers.reset();
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "User added successful",
+          "wico"
+        );
+        this.dialogRef.close();
+        this.userAdded.emit();
+      },
+      (error) => {
+        console.error("User addition failed", error);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
+      }
+    );
+  }
+
+  updateUser(_id, userDetails): void {
+    this.adminService.updateUser(_id, userDetails).subscribe(
+      (response) => {
+        console.log("User updated successfully", response);
+        this.formeusers.reset();
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "User updated successfully",
+          "wico"
+        );
+        this.dialogRef.close();
+        this.userAdded.emit();
+      },
+      (error) => {
+        console.error("User update failed", error);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
+      }
+    );
   }
 
   get fI(): { [key: string]: AbstractControl } {
     return this.formeusers.controls;
   }
 
-  onFileSelected(event) {
+  onFileSelected(event): void {
     const file: File = event.target.files[0];
 
     if (file) {
       this.fileName = file.name;
 
-      const formData = new FormData();
-
-      formData.append("thumbnail", file);
+      // const formData = new FormData();
+      // formData.append("thumbnail", file);
     }
   }
 

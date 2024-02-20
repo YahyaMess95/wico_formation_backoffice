@@ -25,11 +25,11 @@ import { AdminTemoignageListComponent } from "../../admin_components/admin-temoi
 import { AdminDialogComponent } from "../../admin_components/admin-dialog/admin-dialog.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatCardModule } from "@angular/material/card";
-import { AdminUserListDialogComponent } from '../../admin_components/poppup/admin-user-list-dialog/admin-user-list-dialog.component';
-import { AdminSessionDialogComponent } from '../../admin_components/poppup/admin-session-dialog/admin-session-dialog.component';
-import { AdminSeanceDialogComponent } from '../../admin_components/poppup/admin-seance-dialog/admin-seance-dialog.component';
-import { AdminFormationDialogComponent } from '../../admin_components/poppup/admin-formation-dialog/admin-formation-dialog.component';
-import { AdminTemoignageDialogComponent } from '../../admin_components/poppup/admin-temoignage-dialog/admin-temoignage-dialog.component';
+import { AdminUserListDialogComponent } from "../../admin_components/poppup/admin-user-list-dialog/admin-user-list-dialog.component";
+import { AdminSessionDialogComponent } from "../../admin_components/poppup/admin-session-dialog/admin-session-dialog.component";
+import { AdminSeanceDialogComponent } from "../../admin_components/poppup/admin-seance-dialog/admin-seance-dialog.component";
+import { AdminFormationDialogComponent } from "../../admin_components/poppup/admin-formation-dialog/admin-formation-dialog.component";
+import { AdminTemoignageDialogComponent } from "../../admin_components/poppup/admin-temoignage-dialog/admin-temoignage-dialog.component";
 
 @NgModule({
   declarations: [

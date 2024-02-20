@@ -5,7 +5,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AdminComponent } from "./layouts/admin/admin.component";
 import { UserComponent } from "./layouts/user/user.component";
 import { LoginpageComponent } from "./loginpage/loginpage.component";
-
+import { AuthGuardService } from "./Services/auth-guard.service";
 const routes: Routes = [
   {
     path: "",
@@ -22,6 +22,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import("./layouts/layouts.module").then((m) => m.LayoutsModule),
       },
@@ -33,6 +34,7 @@ const routes: Routes = [
     children: [
       {
         path: "",
+        canActivate: [AuthGuardService],
         loadChildren: () =>
           import("./layouts/layouts.module").then((m) => m.LayoutsModule),
       },

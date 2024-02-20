@@ -24,6 +24,11 @@ import { ComponentsModule } from "app/components/components.module";
 import { MatIconModule } from "@angular/material/icon";
 import { LoginpageComponent } from "app/loginpage/loginpage.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { NotifService } from "app/Services/notif.service";
+import { AdminService } from "app/Services/admin.service";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthInterceptorService } from "app/Services/auth-interceptor.service";
+import { AuthService } from "app/Services/auth.service";
 
 @NgModule({
   declarations: [
@@ -67,6 +72,16 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     MatToolbarModule,
     MatIconModule,
     MatCheckboxModule,
+  ],
+  providers: [
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+    NotifService,
+    AdminService,
   ],
 })
 export class LayoutsModule {}

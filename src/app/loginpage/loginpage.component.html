@@ -16,8 +16,43 @@
               <h3 class="login-heading">Welcome back!</h3>
 
               <!-- Sign In Form -->
-              <form [formGroup]="registerForm" (ngSubmit)="login($event)">
+              <form [formGroup]="loginForm" (ngSubmit)="login()">
                 <div class="form-floating mb-3">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Enter Username</mat-label>
+                    <input
+                      matInput
+                      placeholder="Username"
+                      type="text"
+                      formControlName="name"
+                      id="name"
+                      required
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && fI['name'] && fI['name'].errors
+                      }"
+                    />
+                    <mat-error
+                      *ngIf="
+                        fI['name'] &&
+                        fI['name'].errors &&
+                        fI['name'].errors['minlength']
+                      "
+                    >
+                      Password must contain at least 3 characters.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        fI['name'] &&
+                        fI['name'].errors &&
+                        fI['name'].errors['required']
+                      "
+                    >
+                      Email address is <strong>required</strong>.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- <div class="form-floating mb-3">
                   <mat-form-field appearance="outline">
                     <mat-label>Enter Email</mat-label>
                     <input
@@ -51,7 +86,7 @@
                       Email address is <strong>required</strong>.
                     </mat-error>
                   </mat-form-field>
-                </div>
+                </div> -->
                 <div class="form-floating mb-3">
                   <mat-form-field appearance="outline">
                     <mat-label>Enter Password</mat-label>
