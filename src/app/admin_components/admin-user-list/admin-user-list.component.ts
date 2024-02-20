@@ -3,9 +3,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 import { AdminUserListDialogComponent } from "../poppup/admin-user-list-dialog/admin-user-list-dialog.component";
 import { AdminService } from "app/Services/admin.service";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-user-list",
@@ -14,7 +14,11 @@ import { AdminService } from "app/Services/admin.service";
 })
 export class AdminUserListComponent implements AfterViewInit, OnInit {
   value: string = "";
-  constructor(public dialog: MatDialog, private adminService: AdminService) {}
+  constructor(
+    public dialog: MatDialog,
+    private adminService: AdminService,
+    private notifService: NotifService
+  ) {}
 
   applyFilter() {
     this.dataSource.filter = this.value.trim().toLowerCase();
@@ -90,11 +94,21 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
       () => {
         this.getAllUsers();
         console.log("User removed successfully");
-        // Optionally, perform any additional actions after successful removal
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "User deleted successful",
+          "success"
+        );
       },
       (error) => {
         console.error("Error removing user:", error);
-        // Handle error appropriately
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
       }
     );
   }

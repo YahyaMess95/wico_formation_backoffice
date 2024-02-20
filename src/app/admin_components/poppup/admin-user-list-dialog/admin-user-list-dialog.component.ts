@@ -98,7 +98,7 @@ export class AdminUserListDialogComponent implements OnInit {
           "top",
           "center",
           "User added successful",
-          "wico"
+          "success"
         );
         this.dialogRef.close();
         this.userAdded.emit();
@@ -124,7 +124,7 @@ export class AdminUserListDialogComponent implements OnInit {
           "top",
           "center",
           "User updated successfully",
-          "wico"
+          "success"
         );
         this.dialogRef.close();
         this.userAdded.emit();

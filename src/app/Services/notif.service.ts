@@ -9,7 +9,7 @@ export class NotifService {
     // const type = ["", "info", "success", "warning", "danger", "wico"];
     const iconMap: { [key: string]: string } = {
       danger: "error",
-      wico: "done",
+      success: "done",
     };
     const icon = iconMap[type] || "";
 

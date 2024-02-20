@@ -4,3 +4,11 @@
   margin-top: -20px; /* Adjust as needed */
   margin-right: -20px; /* Adjust as needed */
 }
+
+.mat-form-field-custom {
+  padding-bottom: 1em;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-custom {
+  margin: 0.5em 0;
+}

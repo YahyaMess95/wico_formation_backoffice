@@ -50,7 +50,7 @@ export class LoginpageComponent implements OnInit {
           "top",
           "center",
           "Login successful",
-          "wico"
+          "success"
         );
       },
       (error) => {
