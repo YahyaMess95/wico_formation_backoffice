@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span>Add Seance</span>
+  <span> {{ data ? "Modify Seance" : "Add Seance" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -10,35 +10,35 @@
   </button>
 </h2>
 <mat-dialog-content class="mat-typography">
-  <form [formGroup]="formeseance" (ngSubmit)="Addseance($event)">
+  <form [formGroup]="formeseance" (ngSubmit)="saveOrUpdateSession()">
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Nom</mat-label>
+          <mat-label>Enter Name</mat-label>
           <input
             matInput
-            placeholder="Nom"
+            placeholder="Name"
             type="text"
             required
-            formControlName="nom"
-            id="nom"
+            formControlName="name"
+            id="name"
             [ngClass]="{
-              'is-invalid': submittedIn && fI['nom'] && fI['nom'].errors
+              'is-invalid': submittedIn && fI['name'] && fI['name'].errors
             }"
           />
           <mat-error
             *ngIf="
-              fI['nom'] && fI['nom'].errors && fI['nom'].errors['minlength']
+              fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Nom number must contain 3 characters.
+            Name must contain 3 characters.
           </mat-error>
           <mat-error
             *ngIf="
-              fI['nom'] && fI['nom'].errors && fI['nom'].errors['required']
+              fI['name'] && fI['name'].errors && fI['name'].errors['required']
             "
           >
-            Nom number is <strong>required</strong>.
+            Name is <strong>required</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -130,7 +130,7 @@
       <div class="col-md-4">
         <mat-form-field appearance="outline">
           <mat-label>Enter Comment</mat-label>
-          <input
+          <textarea
             matInput
             placeholder="Comment"
             type="text"
@@ -140,7 +140,8 @@
             [ngClass]="{
               'is-invalid': submittedIn && fI['comment'] && fI['comment'].errors
             }"
-          />
+          >
+          </textarea>
           <mat-error
             *ngIf="
               fI['comment'] &&
@@ -164,7 +165,7 @@
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      Add Seance
+      {{ data ? "Modify Seance" : "Add Seance" }}
     </button>
     <div class="clearfix"></div>
   </form>

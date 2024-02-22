@@ -1,20 +1,27 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
-
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdminSessionDialogComponent } from "../poppup/admin-session-dialog/admin-session-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
-import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { SessionService } from "app/Services/session.service";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-session-list",
   templateUrl: "./admin-session-list.component.html",
   styleUrls: ["./admin-session-list.component.css"],
 })
-export class AdminSessionListComponent implements AfterViewInit {
+export class AdminSessionListComponent implements AfterViewInit, OnInit {
   value: string = "";
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private sessionService: SessionService,
+    private notifService: NotifService
+  ) {}
 
+  ngOnInit() {
+    this.getAllSessions();
+  }
   applyFilter() {
     this.dataSource.filter = this.value.trim().toLowerCase();
   }
@@ -25,14 +32,15 @@ export class AdminSessionListComponent implements AfterViewInit {
 
   displayedColumns: string[] = [
     "position",
-    "nom",
+    "name",
     "datedeb",
     "organisation",
-    "maxbumbr",
+    "maxNbr",
     "type",
+    "createdAt",
     "action",
   ];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PeriodicElement>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
@@ -42,190 +50,72 @@ export class AdminSessionListComponent implements AfterViewInit {
   openDialogAddSession() {
     const dialogRef = this.dialog.open(AdminSessionDialogComponent);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.componentInstance.sessionAdded.subscribe(() => {
+      this.getAllSessions();
     });
   }
 
   openDialog(data: any): void {
-    const dialogRef = this.dialog.open(AdminDialogComponent, {
+    const dialogRef = this.dialog.open(AdminSessionDialogComponent, {
       data: data,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed");
+    dialogRef.componentInstance.sessionAdded.subscribe(() => {
+      this.getAllSessions();
     });
+  }
+
+  getAllSessions() {
+    this.sessionService.getAllSessions().subscribe(
+      (response) => {
+        console.log(response.session);
+        const sessions: PeriodicElement[] = response.session.map(
+          (session: any, index: number) => ({
+            ...session,
+            position: index + 1, // Incremental numbering
+            createdAt: new Date(session.createdAt).toLocaleDateString(), // Format date
+          })
+        );
+
+        this.dataSource.data = sessions;
+      },
+      (error) => {
+        console.error("Error fetching sessions:", error);
+      }
+    );
+  }
+
+  removeSession(sessionId: string) {
+    this.sessionService.removeSession(sessionId).subscribe(
+      () => {
+        this.getAllSessions();
+        console.log("Session removed successfully");
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "Session deleted successful",
+          "success"
+        );
+      },
+      (error) => {
+        console.error("Error removing session:", error);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
+      }
+    );
   }
 }
 
 export interface PeriodicElement {
-  nom: string;
+  name: string;
   position: number;
   datedeb: string;
   organisation: string;
-  maxbumbr: number;
+  maxNbr: number;
   type: string;
+  createdAt: string;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    nom: "Hydrogen",
-    datedeb: "16/05/2024",
-    organisation: "H",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 2,
-    nom: "Helium",
-    datedeb: "16/05/2024",
-    organisation: "He",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 3,
-    nom: "Lithium",
-    datedeb: "16/05/2024",
-    organisation: "Li",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 4,
-    nom: "Beryllium",
-    datedeb: "16/05/2024",
-    organisation: "Be",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 5,
-    nom: "Boron",
-    datedeb: "16/05/2024",
-    organisation: "B",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 6,
-    nom: "Carbon",
-    datedeb: "16/05/2024",
-    organisation: "C",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 7,
-    nom: "Nitrogen",
-    datedeb: "16/05/2024",
-    organisation: "N",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 8,
-    nom: "Oxygen",
-    datedeb: "16/05/2024",
-    organisation: "O",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 9,
-    nom: "Fluorine",
-    datedeb: "16/05/2024",
-    organisation: "F",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 10,
-    nom: "Neon",
-    datedeb: "16/05/2024",
-    organisation: "Ne",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 11,
-    nom: "Sodium",
-    datedeb: "16/05/2024",
-    organisation: "Na",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 12,
-    nom: "Magnesium",
-    datedeb: "16/05/2024",
-    organisation: "Mg",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 13,
-    nom: "Aluminum",
-    datedeb: "16/05/2024",
-    organisation: "Al",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 14,
-    nom: "Silicon",
-    datedeb: "16/05/2024",
-    organisation: "Si",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 15,
-    nom: "Phosphorus",
-    datedeb: "16/05/2024",
-    organisation: "P",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 16,
-    nom: "Sulfur",
-    datedeb: "16/05/2024",
-    organisation: "S",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 17,
-    nom: "Chlorine",
-    datedeb: "16/05/2024",
-    organisation: "Cl",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 18,
-    nom: "Argon",
-    datedeb: "16/05/2024",
-    organisation: "Ar",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 19,
-    nom: "Potassium",
-    datedeb: "16/05/2024",
-    organisation: "K",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-  {
-    position: 20,
-    nom: "Calcium",
-    datedeb: "16/05/2024",
-    organisation: "Ca",
-    maxbumbr: 5,
-    type: "remotly",
-  },
-];

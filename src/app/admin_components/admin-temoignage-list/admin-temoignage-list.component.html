@@ -81,18 +81,18 @@
                 </ng-container>
 
                 <!-- competence Column -->
-                <ng-container matColumnDef="competence">
+                <ng-container matColumnDef="competences">
                   <th mat-header-cell *matHeaderCellDef>Competence</th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.competence }}
+                    {{ element.competences }}
                   </td>
                 </ng-container>
 
                 <!-- domain Column -->
-                <ng-container matColumnDef="domain">
+                <ng-container matColumnDef="domaine">
                   <th mat-header-cell *matHeaderCellDef>Domain</th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.domain }}
+                    {{ element.domaine }}
                   </td>
                 </ng-container>
 
@@ -112,6 +112,14 @@
                   </td>
                 </ng-container>
 
+                <!-- source Column -->
+                <ng-container matColumnDef="createdAt">
+                  <th mat-header-cell *matHeaderCellDef>createdAt</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.createdAt }}
+                  </td>
+                </ng-container>
+
                 <!-- action Column -->
                 <ng-container matColumnDef="action">
                   <th mat-header-cell *matHeaderCellDef>Action</th>
@@ -128,6 +136,7 @@
                       mat-raised-button
                       type="button"
                       class="btn btn-danger btn-link btn-sm btn-just-icon"
+                      (click)="removeTemoignage(element._id)"
                     >
                       <i class="material-icons">close</i>
                     </button>

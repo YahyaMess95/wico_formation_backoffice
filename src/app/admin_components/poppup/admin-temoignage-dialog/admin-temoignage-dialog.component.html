@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span>Add Temoignage</span>
+  <span>{{ data ? "Modify Temoignage" : "Add Temoignage" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -10,7 +10,7 @@
   </button>
 </h2>
 <mat-dialog-content class="mat-typography">
-  <form [formGroup]="formetemoignages" (ngSubmit)="Addtemoignage($event)">
+  <form [formGroup]="formetemoignages" (ngSubmit)="saveOrUpdateTemoignage()">
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
@@ -152,27 +152,27 @@
             placeholder="Competence"
             type="text"
             required
-            formControlName="competence"
-            id="competence"
+            formControlName="competences"
+            id="competences"
             [ngClass]="{
               'is-invalid':
-                submittedIn && fI['competence'] && fI['competence'].errors
+                submittedIn && fI['competences'] && fI['competences'].errors
             }"
           />
           <mat-error
             *ngIf="
-              fI['competence'] &&
-              fI['competence'].errors &&
-              fI['competence'].errors['minlength']
+              fI['competences'] &&
+              fI['competences'].errors &&
+              fI['competences'].errors['minlength']
             "
           >
             Competence must contain 6 characters.
           </mat-error>
           <mat-error
             *ngIf="
-              fI['competence'] &&
-              fI['competence'].errors &&
-              fI['competence'].errors['required']
+              fI['competences'] &&
+              fI['competences'].errors &&
+              fI['competences'].errors['required']
             "
           >
             Competence is <strong>required</strong>.
@@ -187,26 +187,26 @@
             placeholder="Domain"
             type="text"
             required
-            formControlName="domain"
-            id="domain"
+            formControlName="domaine"
+            id="domaine"
             [ngClass]="{
-              'is-invalid': submittedIn && fI['domain'] && fI['domain'].errors
+              'is-invalid': submittedIn && fI['domaine'] && fI['domaine'].errors
             }"
           />
           <mat-error
             *ngIf="
-              fI['domain'] &&
-              fI['domain'].errors &&
-              fI['domain'].errors['minlength']
+              fI['domaine'] &&
+              fI['domaine'].errors &&
+              fI['domaine'].errors['minlength']
             "
           >
             Domain must contain 6 characters.
           </mat-error>
           <mat-error
             *ngIf="
-              fI['domain'] &&
-              fI['domain'].errors &&
-              fI['domain'].errors['required']
+              fI['domaine'] &&
+              fI['domaine'].errors &&
+              fI['domaine'].errors['required']
             "
           >
             Domain is <strong>required</strong>.
@@ -218,7 +218,7 @@
       <div class="col-md-4">
         <mat-form-field appearance="outline">
           <mat-label>Enter Comment</mat-label>
-          <input
+          <textarea
             matInput
             placeholder="Comment"
             type="text"
@@ -228,7 +228,8 @@
             [ngClass]="{
               'is-invalid': submittedIn && fI['comment'] && fI['comment'].errors
             }"
-          />
+          >
+          </textarea>
           <mat-error
             *ngIf="
               fI['comment'] &&
@@ -236,7 +237,7 @@
               fI['comment'].errors['minlength']
             "
           >
-            Comment must contain 8 characters.
+            Comment must contain 6 characters.
           </mat-error>
           <mat-error
             *ngIf="
@@ -255,16 +256,30 @@
             matInput
             type="file"
             class="file-input"
-            (change)="onFileSelected($event)"
+            formControlName="image"
+            id="image"
+            (change)="onImageSelected($event)"
             #fileUpload
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['image'] && fI['image'].errors
+            }"
           />
 
           <div class="file-upload uploadFile" (click)="fileUpload.click()">
-            {{ fileName || "No Image uploaded yet." }}
-            <button mat-mini-fab class="upload-btn">
+            {{ formetemoignages.get("image").value }}
+            <button mat-mini-fab type="button" class="upload-btn">
               <mat-icon>attach_file</mat-icon>
             </button>
           </div>
+          <mat-error
+            *ngIf="
+              fI['image'] &&
+              fI['image'].errors &&
+              fI['image'].errors['required']
+            "
+          >
+            Image is <strong>required</strong>.
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
@@ -273,22 +288,32 @@
             matInput
             type="file"
             class="file-input"
-            (change)="onFileSelected($event)"
-            #fileUpload
+            formControlName="cv"
+            id="cv"
+            (change)="onCVSelected($event)"
+            #filecvUpload
+            [ngClass]="{
+              'is-invalid': submittedIn && fI['cv'] && fI['cv'].errors
+            }"
           />
 
-          <div class="file-upload uploadFile" (click)="fileUpload.click()">
-            {{ fileName || "No CV uploaded yet." }}
-            <button mat-mini-fab class="upload-btn">
+          <div class="file-upload uploadFile" (click)="filecvUpload.click()">
+            {{ formetemoignages.get("cv").value }}
+            <button mat-mini-fab type="button" class="upload-btn">
               <mat-icon>attach_file</mat-icon>
             </button>
           </div>
+          <mat-error
+            *ngIf="fI['cv'] && fI['cv'].errors && fI['cv'].errors['required']"
+          >
+            CV is <strong>required</strong>.
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      Add Temoignage
+      {{ data ? "Modify Temoignage" : "Add Temoignage" }}
     </button>
     <div class="clearfix"></div>
   </form>

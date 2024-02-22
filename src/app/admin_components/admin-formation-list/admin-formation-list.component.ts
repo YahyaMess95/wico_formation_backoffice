@@ -11,30 +11,39 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AdminFormationDialogComponent } from "../poppup/admin-formation-dialog/admin-formation-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { FormationService } from "app/Services/formation.service";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-formation-list",
   templateUrl: "./admin-formation-list.component.html",
   styleUrls: ["./admin-formation-list.component.css"],
 })
-export class AdminFormationListComponent implements AfterViewInit {
+export class AdminFormationListComponent implements AfterViewInit, OnInit {
   value: string = "";
+
   displayedColumns: string[] = [
     "position",
-    "nom",
+    "name",
     "description",
     "tags",
     "action",
   ];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PeriodicElement>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(public dialog: MatDialog) {}
-
+  constructor(
+    public dialog: MatDialog,
+    private formationService: FormationService,
+    private notifService: NotifService
+  ) {}
+  ngOnInit() {
+    this.getAllFormations();
+  }
   applyFilter() {
     this.dataSource.filter = this.value.trim().toLowerCase();
   }
@@ -46,152 +55,68 @@ export class AdminFormationListComponent implements AfterViewInit {
   openDialogAddFormation() {
     const dialogRef = this.dialog.open(AdminFormationDialogComponent);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.componentInstance.formationAdded.subscribe(() => {
+      this.getAllFormations();
     });
   }
   openDialog(data: any): void {
-    const dialogRef = this.dialog.open(AdminDialogComponent, {
+    const dialogRef = this.dialog.open(AdminFormationDialogComponent, {
       data: data,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed");
+    dialogRef.componentInstance.formationAdded.subscribe(() => {
+      this.getAllFormations();
     });
+  }
+
+  getAllFormations() {
+    this.formationService.getAllFormations().subscribe(
+      (response) => {
+        console.log(response.formation);
+        const formations: PeriodicElement[] = response.formation.map(
+          (formation: any, index: number) => ({
+            ...formation,
+            position: index + 1, // Incremental numbering
+            createdAt: new Date(formation.createdAt).toLocaleDateString(), // Format date
+          })
+        );
+
+        this.dataSource.data = formations;
+      },
+      (error) => {
+        console.error("Error fetching formations:", error);
+      }
+    );
+  }
+
+  removeFormation(sessionId: string) {
+    this.formationService.removeFormation(sessionId).subscribe(
+      () => {
+        this.getAllFormations();
+        console.log("Formation removed successfully");
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "Formation deleted successful",
+          "success"
+        );
+      },
+      (error) => {
+        console.error("Error removing session:", error);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
+      }
+    );
   }
 }
 
-interface comment {
-  value: string;
-  viewValue: string;
-}
-
 export interface PeriodicElement {
-  nom: string;
+  name: string;
   position: number;
   description: string;
   tags: string;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    nom: "Hydrogen",
-    tags: "meet.com",
-    description: "H",
-  },
-  {
-    position: 2,
-    nom: "Helium",
-    tags: "meet.com",
-    description: "He",
-  },
-  {
-    position: 3,
-    nom: "Lithium",
-    tags: "meet.com",
-    description: "Li",
-  },
-  {
-    position: 4,
-    nom: "Beryllium",
-    tags: "meet.com",
-    description: "Be",
-  },
-  {
-    position: 5,
-    nom: "Boron",
-    tags: "meet.com",
-    description: "B",
-  },
-  {
-    position: 6,
-    nom: "Carbon",
-    tags: "meet.com",
-    description: "C",
-  },
-  {
-    position: 7,
-    nom: "Nitrogen",
-    tags: "meet.com",
-    description: "N",
-  },
-  {
-    position: 8,
-    nom: "Oxygen",
-    tags: "meet.com",
-    description: "O",
-  },
-  {
-    position: 9,
-    nom: "Fluorine",
-    tags: "meet.com",
-    description: "F",
-  },
-  {
-    position: 10,
-    nom: "Neon",
-    tags: "meet.com",
-    description: "Ne",
-  },
-  {
-    position: 11,
-    nom: "Sodium",
-    tags: "meet.com",
-    description: "Na",
-  },
-  {
-    position: 12,
-    nom: "Magnesium",
-    tags: "meet.com",
-    description: "Mg",
-  },
-  {
-    position: 13,
-    nom: "Aluminum",
-    tags: "meet.com",
-    description: "Al",
-  },
-  {
-    position: 14,
-    nom: "Silicon",
-    tags: "meet.com",
-    description: "Si",
-  },
-  {
-    position: 15,
-    nom: "Phosphorus",
-    tags: "meet.com",
-    description: "P",
-  },
-  {
-    position: 16,
-    nom: "Sulfur",
-    tags: "meet.com",
-    description: "S",
-  },
-  {
-    position: 17,
-    nom: "Chlorine",
-    tags: "meet.com",
-    description: "Cl",
-  },
-  {
-    position: 18,
-    nom: "Argon",
-    tags: "meet.com",
-    description: "Ar",
-  },
-  {
-    position: 19,
-    nom: "Potassium",
-    tags: "meet.com",
-    description: "K",
-  },
-  {
-    position: 20,
-    nom: "Calcium",
-    tags: "meet.com",
-    description: "Ca",
-  },
-];

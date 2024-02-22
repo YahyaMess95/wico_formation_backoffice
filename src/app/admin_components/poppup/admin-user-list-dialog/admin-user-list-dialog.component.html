@@ -310,7 +310,7 @@
           />
 
           <div class="file-upload uploadFile" (click)="fileUpload.click()">
-            {{ fileName }}
+            {{ formeusers.get("photo").value || "No Image uploaded yet." }}
             <button mat-mini-fab type="button" class="upload-btn">
               <mat-icon>attach_file</mat-icon>
             </button>

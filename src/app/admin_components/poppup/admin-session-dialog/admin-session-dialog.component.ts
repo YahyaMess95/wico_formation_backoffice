@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, Inject, OnInit, Output } from "@angular/core";
 import {
   NonNullableFormBuilder,
   Validators,
@@ -6,6 +6,9 @@ import {
   FormControl,
   AbstractControl,
 } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { NotifService } from "app/Services/notif.service";
+import { SessionService } from "app/Services/session.service";
 
 @Component({
   selector: "admin-session-dialog",
@@ -13,39 +16,122 @@ import {
   styleUrls: ["./admin-session-dialog.component.css"],
 })
 export class AdminSessionDialogComponent implements OnInit {
+  @Output() sessionAdded: EventEmitter<void> = new EventEmitter<void>();
+
   submittedIn = false;
-  constructor(private formBuilder: NonNullableFormBuilder) {}
+  fileName = this.data?.photo || "No Image uploaded yet.";
+
+  constructor(
+    private notifService: NotifService,
+    private sessionService: SessionService,
+    private dialogRef: MatDialogRef<AdminSessionDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+
   ngOnInit(): void {
-    this.formesession = this.formBuilder.group({
-      nom: ["", [Validators.required, Validators.minLength(3)]],
-      datedeb: ["", [Validators.required]],
-      types: ["", [Validators.required]],
-      organisation: ["", [Validators.required, Validators.minLength(3)]],
-      maxnb: ["", [Validators.required, Validators.minLength(1)]],
+    this.initializeForm();
+  }
+
+  formesession: FormGroup;
+
+  initializeForm(): void {
+    this.formesession = new FormGroup({
+      name: new FormControl(this.data?.name || "", [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      datedeb: new FormControl(this.data?.datedeb || "", [Validators.required]),
+      type: new FormControl(this.data?.type || "", [Validators.required]),
+      organisation: new FormControl(this.data?.organisation || "", [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      maxNbr: new FormControl(this.data?.maxNbr || "", [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      image: new FormControl(this.fileName, [Validators.required]),
     });
   }
 
-  formesession: FormGroup = new FormGroup({
-    nom: new FormControl(""),
-    datedeb: new FormControl(""),
-    organisation: new FormControl(""),
-    maxnb: new FormControl(""),
-    types: new FormControl(""),
-  });
-  public Addsession(e: Event) {
+  public saveOrUpdateSession(): void {
     this.submittedIn = true;
 
     if (this.formesession.invalid) {
+      console.log("error ", this.formesession.value);
+      this.notifService.showNotificationerror(
+        "top",
+        "center",
+        "Formulair invalid",
+        "danger"
+      );
       return;
     }
-    e.preventDefault();
-    console.log(this.formesession.value);
-    this.formesession.reset();
+
+    const sessionDetails = this.formesession.value;
+
+    if (this.data) {
+      this.updateSession(this.data._id, sessionDetails);
+    } else {
+      this.addSession(sessionDetails);
+    }
   }
+
+  addSession(sessionDetails): void {
+    this.sessionService.addSession(sessionDetails).subscribe(
+      (response) => {
+        console.log("Session added successful", response);
+        this.formesession.reset();
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "Session added successful",
+          "success"
+        );
+        this.dialogRef.close();
+        this.sessionAdded.emit();
+      },
+      (error) => {
+        console.error("Session addition failed", error);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
+      }
+    );
+  }
+
+  updateSession(_id, sessionDetails): void {
+    this.sessionService.updateSession(_id, sessionDetails).subscribe(
+      (response) => {
+        console.log("Session updated successfully", response);
+        this.formesession.reset();
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          "Session updated successfully",
+          "success"
+        );
+        this.dialogRef.close();
+        this.sessionAdded.emit();
+      },
+      (error) => {
+        console.error("Session update failed", error);
+        this.notifService.showNotificationerror(
+          "top",
+          "center",
+          error,
+          "danger"
+        );
+      }
+    );
+  }
+
   get fI(): { [key: string]: AbstractControl } {
     return this.formesession.controls;
   }
-  fileName = "";
 
   onFileSelected(event) {
     const file: File = event.target.files[0];
@@ -53,13 +139,12 @@ export class AdminSessionDialogComponent implements OnInit {
     if (file) {
       this.fileName = file.name;
 
-      const formData = new FormData();
-
-      formData.append("thumbnail", file);
+      // const formData = new FormData();
+      // formData.append("thumbnail", file);
     }
   }
 
-  types = new FormControl("");
+  type = new FormControl("");
   typeList: string[] = ["Remotely", "Locally"];
 
   formations = new FormControl("");
@@ -80,9 +165,4 @@ export class AdminSessionDialogComponent implements OnInit {
     "seance 5",
     "seance 6",
   ];
-}
-
-interface Type {
-  value: string;
-  viewValue: string;
 }

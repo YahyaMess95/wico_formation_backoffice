@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span>Add Foramtion</span>
+  <span>{{ data ? "Modify Formation" : "Add Formation" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -10,35 +10,35 @@
   </button>
 </h2>
 <mat-dialog-content class="mat-typography">
-  <form [formGroup]="formeformation" (ngSubmit)="Addforamtion($event)">
+  <form [formGroup]="formeformation" (ngSubmit)="saveOrUpdateFormation()">
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Nom</mat-label>
+          <mat-label>Enter Name</mat-label>
           <input
             matInput
-            placeholder="Nom"
+            placeholder="Name"
             type="text"
             required
-            formControlName="nom"
-            id="nom"
+            formControlName="name"
+            id="name"
             [ngClass]="{
-              'is-invalid': submittedIn && fI['nom'] && fI['nom'].errors
+              'is-invalid': submittedIn && fI['name'] && fI['name'].errors
             }"
           />
           <mat-error
             *ngIf="
-              fI['nom'] && fI['nom'].errors && fI['nom'].errors['minlength']
+              fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Nom must contain 3 characters.
+            Name must contain 3 characters.
           </mat-error>
           <mat-error
             *ngIf="
-              fI['nom'] && fI['nom'].errors && fI['nom'].errors['required']
+              fI['name'] && fI['name'].errors && fI['name'].errors['required']
             "
           >
-            Nom is <strong>required</strong>.
+            Name is <strong>required</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -113,7 +113,7 @@
       <div class="col-md-4">
         <mat-form-field appearance="outline">
           <mat-label>Contenu</mat-label>
-          <mat-select [formControl]="contenus" multiple>
+          <mat-select formControlName="contenus" multiple>
             <mat-option *ngFor="let contenu of contenuList" [value]="contenu">{{
               contenu
             }}</mat-option>
@@ -123,7 +123,7 @@
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      Add Formation
+      {{ data ? "Modify Formation" : "Add Formation" }}
     </button>
     <div class="clearfix"></div>
   </form>

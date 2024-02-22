@@ -6,8 +6,9 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { AdminService } from "app/Services/admin.service";
+
 import { NotifService } from "app/Services/notif.service";
+import { UserService } from "app/Services/user.service";
 
 @Component({
   selector: "admin-user-list-dialog",
@@ -17,11 +18,10 @@ import { NotifService } from "app/Services/notif.service";
 export class AdminUserListDialogComponent implements OnInit {
   @Output() userAdded: EventEmitter<void> = new EventEmitter<void>();
   submittedIn = false;
-  fileName = this.data?.photo || "No Image uploaded yet.";
 
   constructor(
     private notifService: NotifService,
-    private adminService: AdminService,
+    private userService: UserService,
     private dialogRef: MatDialogRef<AdminUserListDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
@@ -68,7 +68,7 @@ export class AdminUserListDialogComponent implements OnInit {
         Validators.minLength(6),
       ]),
       sessions: new FormControl(this.data?.sessions || []),
-      photo: new FormControl(this.fileName, [Validators.required]),
+      photo: new FormControl(this.data?.photo || "", [Validators.required]),
     });
   }
 
@@ -77,6 +77,12 @@ export class AdminUserListDialogComponent implements OnInit {
 
     if (this.formeusers.invalid) {
       console.log("error ", this.formeusers.value);
+      this.notifService.showNotificationerror(
+        "top",
+        "center",
+        "Formulair invalid",
+        "danger"
+      );
       return;
     }
 
@@ -90,7 +96,7 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   addUser(userDetails): void {
-    this.adminService.addUser(userDetails).subscribe(
+    this.userService.addUser(userDetails).subscribe(
       (response) => {
         console.log("User added successful", response);
         this.formeusers.reset();
@@ -116,7 +122,7 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   updateUser(_id, userDetails): void {
-    this.adminService.updateUser(_id, userDetails).subscribe(
+    this.userService.updateUser(_id, userDetails).subscribe(
       (response) => {
         console.log("User updated successfully", response);
         this.formeusers.reset();
@@ -147,12 +153,13 @@ export class AdminUserListDialogComponent implements OnInit {
 
   onFileSelected(event): void {
     const file: File = event.target.files[0];
-
     if (file) {
-      this.fileName = file.name;
+      this.formeusers.patchValue({
+        photo: file.name,
+      });
 
-      // const formData = new FormData();
-      // formData.append("thumbnail", file);
+      const formData = new FormData();
+      formData.append("photo", file);
     }
   }
 
