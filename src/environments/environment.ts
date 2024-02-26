@@ -1,4 +1,4 @@
-const url = "http://backend-wico-formation.onrender.com";
+const url = "https://backend-wico-formation.onrender.com";
 export const environment = {
   production: false,
   loginUrl: url + "/admin/login",
