@@ -1,7 +1,7 @@
 const url = "https://backend-wico-formation.onrender.com";
 export const environment = {
   production: false,
-  loginUrl: url + "/admin/login",
+  loginUrl: url + "/public/login",
   // user url
   addUserUrl: url + "/user/create",
   allUsersUrl: url + "/user/getAll",
