@@ -5,6 +5,7 @@ import { AdminSessionDialogComponent } from "../poppup/admin-session-dialog/admi
 import { MatDialog } from "@angular/material/dialog";
 import { SessionService } from "app/Services/session.service";
 import { NotifService } from "app/Services/notif.service";
+import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 
 @Component({
   selector: "admin-session-list",
@@ -62,6 +63,13 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     dialogRef.componentInstance.sessionAdded.subscribe(() => {
       this.getAllSessions();
     });
+  }
+
+  openDetails(element: any) {
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: element,
+    });
+    console.log("Details for:", element);
   }
 
   getAllSessions() {

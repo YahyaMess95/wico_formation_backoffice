@@ -98,7 +98,7 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
       "top",
       "center",
       "Are you sure you want to remove this User ?",
-      "wico"
+      "confirm"
     );
     if (confirmed) {
       this.adminService.removeUser(userId).subscribe(

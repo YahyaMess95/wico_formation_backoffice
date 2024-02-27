@@ -93,17 +93,18 @@ export class AdminTemoignageDialogComponent implements OnInit {
   }
 
   addTemoignage(userDetails): void {
+    this.dialogRef.close();
     this.temoignageService.addTemoignage(userDetails).subscribe(
       (response) => {
-        console.log("Temoignage added successful", response);
+        console.log("Temoignage added successfully", response);
         this.formetemoignages.reset();
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Temoignage added successful",
+          "Temoignage added successfully",
           "success"
         );
-        this.dialogRef.close();
+
         this.temoignageAdded.emit();
       },
       (error) => {
@@ -119,6 +120,7 @@ export class AdminTemoignageDialogComponent implements OnInit {
   }
 
   updateTemoignage(_id, userDetails): void {
+    this.dialogRef.close();
     this.temoignageService.updateTemoignage(_id, userDetails).subscribe(
       (response) => {
         console.log("Temoignage updated successfully", response);
@@ -129,7 +131,6 @@ export class AdminTemoignageDialogComponent implements OnInit {
           "Temoignage updated successfully",
           "success"
         );
-        this.dialogRef.close();
         this.temoignageAdded.emit();
       },
       (error) => {

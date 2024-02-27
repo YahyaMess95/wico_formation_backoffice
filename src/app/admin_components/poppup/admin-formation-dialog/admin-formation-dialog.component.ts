@@ -85,6 +85,7 @@ export class AdminFormationDialogComponent implements OnInit {
   }
 
   addFormation(sessionDetails): void {
+    this.dialogRef.close();
     this.formationService.addFormation(sessionDetails).subscribe(
       (response) => {
         console.log("Formation added successful", response);
@@ -95,7 +96,6 @@ export class AdminFormationDialogComponent implements OnInit {
           "Formation added successful",
           "success"
         );
-        this.dialogRef.close();
         this.formationAdded.emit();
       },
       (error) => {
@@ -111,6 +111,7 @@ export class AdminFormationDialogComponent implements OnInit {
   }
 
   updateFormation(_id, sessionDetails): void {
+    this.dialogRef.close();
     this.formationService.updateFormation(_id, sessionDetails).subscribe(
       (response) => {
         console.log("Formation updated successfully", response);
@@ -121,7 +122,6 @@ export class AdminFormationDialogComponent implements OnInit {
           "Formation updated successfully",
           "success"
         );
-        this.dialogRef.close();
         this.formationAdded.emit();
       },
       (error) => {

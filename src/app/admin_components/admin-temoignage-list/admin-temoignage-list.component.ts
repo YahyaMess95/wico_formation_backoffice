@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AdminTemoignageDialogComponent } from "../poppup/admin-temoignage-dialog/admin-temoignage-dialog.component";
 import { TemoignageService } from "app/Services/temoignage.service";
 import { NotifService } from "app/Services/notif.service";
+import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 
 @Component({
   selector: "admin-temoignage-list",
@@ -59,6 +60,13 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
     dialogRef.componentInstance.temoignageAdded.subscribe(() => {
       this.getAllTemoignages();
     });
+  }
+
+  openDetails(element: any) {
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: element,
+    });
+    console.log("Details for:", element);
   }
 
   ngOnInit() {

@@ -1,28 +1,22 @@
 <div fxLayout="column" fxLayoutAlign="center center" class="dialog-content">
   <div mat-dialog-content class="content-wrapper">
-    <!-- <div class="image-container">
-      <img
-        class="avatar-image"
-        src="./assets/img/faces/marc.jpg"
-        alt="Avatar"
-      />
-    </div> -->
     <div class="data-container" [ngClass]="columnClass">
-      <ng-container *ngFor="let key of objectKeys(data)">
-        <div class="data-item">
-          <p>
-            <strong>{{ key }}:</strong> {{ data[key] }}
-          </p>
-        </div>
-      </ng-container>
+      <ol class="custom-list" *ngFor="let key of objectKeys(data)">
+        <li
+          class="custom-list-item"
+          *ngIf="data[key] !== null && data[key] !== undefined"
+        >
+          <div class="list-item-content">
+            <span class="list-key">{{ key }}:</span>
+            <span class="list-value">{{ data[key] }}</span>
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
   <mat-dialog-actions>
     <button mat-button class="action-button" (click)="closeDialog()">
       Close
-    </button>
-    <button mat-button class="action-button" (click)="confirmDialog()">
-      Confirm
     </button>
   </mat-dialog-actions>
 </div>

@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AdminSeanceDialogComponent } from "../poppup/admin-seance-dialog/admin-seance-dialog.component";
 import { SeanceService } from "app/Services/seance.service";
 import { NotifService } from "app/Services/notif.service";
+import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 
 @Component({
   selector: "admin-seance-list",
@@ -56,6 +57,13 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
     dialogRef.componentInstance.seanceAdded.subscribe(() => {
       this.getAllSeances();
     });
+  }
+
+  openDetails(element: any) {
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: element,
+    });
+    console.log("Details for:", element);
   }
 
   getAllSeances() {

@@ -83,6 +83,7 @@ export class AdminSeanceDialogComponent implements OnInit {
   }
 
   addSeance(sessionDetails): void {
+    this.dialogRef.close();
     this.seanceService.addSeance(sessionDetails).subscribe(
       (response) => {
         console.log("Session added successful", response);
@@ -93,7 +94,6 @@ export class AdminSeanceDialogComponent implements OnInit {
           "Session added successful",
           "success"
         );
-        this.dialogRef.close();
         this.seanceAdded.emit();
       },
       (error) => {
@@ -109,6 +109,7 @@ export class AdminSeanceDialogComponent implements OnInit {
   }
 
   updateSeance(_id, sessionDetails): void {
+    this.dialogRef.close();
     this.seanceService.updateSeance(_id, sessionDetails).subscribe(
       (response) => {
         console.log("Session updated successfully", response);
@@ -119,7 +120,6 @@ export class AdminSeanceDialogComponent implements OnInit {
           "Session updated successfully",
           "success"
         );
-        this.dialogRef.close();
         this.seanceAdded.emit();
       },
       (error) => {

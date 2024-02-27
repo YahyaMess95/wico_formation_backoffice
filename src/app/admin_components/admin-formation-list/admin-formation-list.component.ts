@@ -5,6 +5,7 @@ import { AdminFormationDialogComponent } from "../poppup/admin-formation-dialog/
 import { MatDialog } from "@angular/material/dialog";
 import { FormationService } from "app/Services/formation.service";
 import { NotifService } from "app/Services/notif.service";
+import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 
 @Component({
   selector: "admin-formation-list",
@@ -54,6 +55,13 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
     dialogRef.componentInstance.formationAdded.subscribe(() => {
       this.getAllFormations();
     });
+  }
+
+  openDetails(element: any) {
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: element,
+    });
+    console.log("Details for:", element);
   }
 
   getAllFormations() {
