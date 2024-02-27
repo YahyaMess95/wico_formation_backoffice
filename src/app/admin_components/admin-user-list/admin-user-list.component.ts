@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AdminUserListDialogComponent } from "../poppup/admin-user-list-dialog/admin-user-list-dialog.component";
 import { AdminService } from "app/Services/admin.service";
 import { NotifService } from "app/Services/notif.service";
+import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 
 @Component({
   selector: "admin-user-list",
@@ -14,6 +15,7 @@ import { NotifService } from "app/Services/notif.service";
 })
 export class AdminUserListComponent implements AfterViewInit, OnInit {
   value: string = "";
+  isLoading: boolean = true;
   constructor(
     public dialog: MatDialog,
     private adminService: AdminService,
@@ -37,15 +39,10 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
   }
 
   displayedColumns: string[] = [
-    "position",
     "name",
     "prenom",
-    "address",
     "email",
-    "login",
-    "cin",
     "roles",
-    "source",
     "createdAt",
     "action",
   ];
@@ -70,18 +67,25 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     });
   }
 
+  openDetails(element: any) {
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: element,
+    });
+    console.log("Details for:", element);
+  }
+
   getAllUsers() {
     this.adminService.getAllUsers().subscribe(
       (response) => {
         const users: PeriodicElement[] = response.user.map(
           (user: any, index: number) => ({
             ...user,
-            position: index + 1, // Incremental numbering
             createdAt: new Date(user.createdAt).toLocaleDateString(), // Format date
           })
         );
 
         this.dataSource.data = users;
+        this.isLoading = false;
       },
       (error) => {
         console.error("Error fetching users:", error);
@@ -89,40 +93,43 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     );
   }
 
-  removeUser(userId: string) {
-    this.adminService.removeUser(userId).subscribe(
-      () => {
-        this.getAllUsers();
-        console.log("User removed successfully");
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          "User deleted successful",
-          "success"
-        );
-      },
-      (error) => {
-        console.error("Error removing user:", error);
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          error,
-          "danger"
-        );
-      }
+  async removeUser(userId: string) {
+    const confirmed = await this.notifService.showNotificationconfirmation(
+      "top",
+      "center",
+      "Are you sure you want to remove this User ?",
+      "wico"
     );
+    if (confirmed) {
+      this.adminService.removeUser(userId).subscribe(
+        () => {
+          this.getAllUsers();
+          console.log("User removed successfully");
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            "User deleted successful",
+            "success"
+          );
+        },
+        (error) => {
+          console.error("Error removing user:", error);
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            error,
+            "danger"
+          );
+        }
+      );
+    }
   }
 }
 
 export interface PeriodicElement {
   name: string;
-  position: number;
   prename: string;
-  addresse: string;
   email: string;
-  login: string;
-  cin: string;
   roles: string;
-  source: string;
   createdAt: string;
 }

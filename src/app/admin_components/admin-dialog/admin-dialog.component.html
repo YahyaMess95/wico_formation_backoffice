@@ -1,21 +1,18 @@
 <div fxLayout="column" fxLayoutAlign="center center" class="dialog-content">
   <div mat-dialog-content class="content-wrapper">
-    <div class="image-container">
+    <!-- <div class="image-container">
       <img
         class="avatar-image"
         src="./assets/img/faces/marc.jpg"
         alt="Avatar"
       />
-    </div>
+    </div> -->
     <div class="data-container" [ngClass]="columnClass">
       <ng-container *ngFor="let key of objectKeys(data)">
         <div class="data-item">
-          <div class="sub-data-item">
-            <mat-form-field appearance="outline">
-              <mat-label>{{ key }}</mat-label>
-              <input matInput [value]="data[key]" />
-            </mat-form-field>
-          </div>
+          <p>
+            <strong>{{ key }}:</strong> {{ data[key] }}
+          </p>
         </div>
       </ng-container>
     </div>

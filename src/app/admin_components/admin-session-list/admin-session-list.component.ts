@@ -13,6 +13,7 @@ import { NotifService } from "app/Services/notif.service";
 })
 export class AdminSessionListComponent implements AfterViewInit, OnInit {
   value: string = "";
+  isLoading: boolean = true;
   constructor(
     public dialog: MatDialog,
     private sessionService: SessionService,
@@ -31,10 +32,8 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
   }
 
   displayedColumns: string[] = [
-    "position",
     "name",
     "datedeb",
-    "organisation",
     "maxNbr",
     "type",
     "createdAt",
@@ -72,12 +71,12 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
         const sessions: PeriodicElement[] = response.session.map(
           (session: any, index: number) => ({
             ...session,
-            position: index + 1, // Incremental numbering
             createdAt: new Date(session.createdAt).toLocaleDateString(), // Format date
           })
         );
 
         this.dataSource.data = sessions;
+        this.isLoading = false;
       },
       (error) => {
         console.error("Error fetching sessions:", error);
@@ -85,35 +84,41 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     );
   }
 
-  removeSession(sessionId: string) {
-    this.sessionService.removeSession(sessionId).subscribe(
-      () => {
-        this.getAllSessions();
-        console.log("Session removed successfully");
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          "Session deleted successful",
-          "success"
-        );
-      },
-      (error) => {
-        console.error("Error removing session:", error);
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          error,
-          "danger"
-        );
-      }
+  async removeSession(sessionId: string) {
+    const confirmed = await this.notifService.showNotificationconfirmation(
+      "top",
+      "center",
+      "Are you sure you want to remove this Session ?",
+      "wico"
     );
+    if (confirmed) {
+      this.sessionService.removeSession(sessionId).subscribe(
+        () => {
+          this.getAllSessions();
+          console.log("Session removed successfully");
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            "Session deleted successful",
+            "success"
+          );
+        },
+        (error) => {
+          console.error("Error removing session:", error);
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            error,
+            "danger"
+          );
+        }
+      );
+    }
   }
 }
 
 export interface PeriodicElement {
   name: string;
-  position: number;
-  datedeb: string;
   organisation: string;
   maxNbr: number;
   type: string;

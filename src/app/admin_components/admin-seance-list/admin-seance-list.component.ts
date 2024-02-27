@@ -13,6 +13,7 @@ import { NotifService } from "app/Services/notif.service";
 })
 export class AdminSeanceListComponent implements AfterViewInit, OnInit {
   value: string = "";
+  isLoading: boolean = true;
   constructor(
     public dialog: MatDialog,
     private seanceService: SeanceService,
@@ -31,15 +32,7 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
     this.applyFilter();
   }
 
-  displayedColumns: string[] = [
-    "position",
-    "name",
-    "lieu",
-    "link",
-    "date",
-    "comment",
-    "action",
-  ];
+  displayedColumns: string[] = ["name", "lieu", "link", "date", "action"];
 
   dataSource = new MatTableDataSource<PeriodicElement>([]);
 
@@ -72,12 +65,12 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
         const seances: PeriodicElement[] = response.seance.map(
           (seance: any, index: number) => ({
             ...seance,
-            position: index + 1, // Incremental numbering
             createdAt: new Date(seance.createdAt).toLocaleDateString(), // Format date
           })
         );
 
         this.dataSource.data = seances;
+        this.isLoading = false;
       },
       (error) => {
         console.error("Error fetching seances:", error);
@@ -85,37 +78,43 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
     );
   }
 
-  removeSeance(sessionId: string) {
-    this.seanceService.removeSeance(sessionId).subscribe(
-      () => {
-        this.getAllSeances();
-        console.log("Seance removed successfully");
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          "Seance deleted successful",
-          "success"
-        );
-      },
-      (error) => {
-        console.error("Error removing session:", error);
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          error,
-          "danger"
-        );
-      }
+  async removeSeance(sessionId: string) {
+    const confirmed = await this.notifService.showNotificationconfirmation(
+      "top",
+      "center",
+      "Are you sure you want to remove this Seance ?",
+      "wico"
     );
+    if (confirmed) {
+      this.seanceService.removeSeance(sessionId).subscribe(
+        () => {
+          this.getAllSeances();
+          console.log("Seance removed successfully");
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            "Seance deleted successful",
+            "success"
+          );
+        },
+        (error) => {
+          console.error("Error removing session:", error);
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            error,
+            "danger"
+          );
+        }
+      );
+    }
   }
 }
 
 export interface PeriodicElement {
   name: string;
-  position: number;
   lieu: string;
   link: string;
   date: string;
-  comment: string;
   createdAt: string;
 }

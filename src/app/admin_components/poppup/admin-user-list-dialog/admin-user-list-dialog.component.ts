@@ -30,6 +30,17 @@ export class AdminUserListDialogComponent implements OnInit {
     this.initializeForm();
   }
 
+  onFileSelected(event): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.formeusers.patchValue({
+        photo: file.name,
+      });
+
+      const formData = new FormData();
+      formData.append("photo", file);
+    }
+  }
   formeusers: FormGroup;
 
   initializeForm(): void {
@@ -61,6 +72,7 @@ export class AdminUserListDialogComponent implements OnInit {
       cin: new FormControl(this.data?.cin || "", [
         Validators.required,
         Validators.minLength(8),
+        this.onlyNumbers,
       ]),
       roles: new FormControl(this.data?.roles || "", [Validators.required]),
       source: new FormControl(this.data?.source || "", [
@@ -96,6 +108,7 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   addUser(userDetails): void {
+    this.dialogRef.close();
     this.userService.addUser(userDetails).subscribe(
       (response) => {
         console.log("User added successful", response);
@@ -106,7 +119,6 @@ export class AdminUserListDialogComponent implements OnInit {
           "User added successful",
           "success"
         );
-        this.dialogRef.close();
         this.userAdded.emit();
       },
       (error) => {
@@ -122,6 +134,7 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   updateUser(_id, userDetails): void {
+    this.dialogRef.close();
     this.userService.updateUser(_id, userDetails).subscribe(
       (response) => {
         console.log("User updated successfully", response);
@@ -132,7 +145,7 @@ export class AdminUserListDialogComponent implements OnInit {
           "User updated successfully",
           "success"
         );
-        this.dialogRef.close();
+
         this.userAdded.emit();
       },
       (error) => {
@@ -151,15 +164,12 @@ export class AdminUserListDialogComponent implements OnInit {
     return this.formeusers.controls;
   }
 
-  onFileSelected(event): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.formeusers.patchValue({
-        photo: file.name,
-      });
-
-      const formData = new FormData();
-      formData.append("photo", file);
+  onlyNumbers(control) {
+    const numericValue = parseFloat(control.value);
+    if (!isNaN(numericValue)) {
+      return null;
+    } else {
+      return { onlyNumbers: true };
     }
   }
 
@@ -173,5 +183,5 @@ export class AdminUserListDialogComponent implements OnInit {
     "Session 6",
   ];
   roles = new FormControl("");
-  roleList: string[] = ["User", "Formateur"];
+  roleList: string[] = ["User", "Trainer", "Student"];
 }

@@ -3,7 +3,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdminTemoignageDialogComponent } from "../poppup/admin-temoignage-dialog/admin-temoignage-dialog.component";
-import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 import { TemoignageService } from "app/Services/temoignage.service";
 import { NotifService } from "app/Services/notif.service";
 
@@ -14,6 +13,7 @@ import { NotifService } from "app/Services/notif.service";
 })
 export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
   value: string = "";
+  isLoading: boolean = true;
   constructor(
     public dialog: MatDialog,
     private temoignageService: TemoignageService,
@@ -36,14 +36,12 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
     });
   }
   displayedColumns: string[] = [
-    "position",
     "name",
     "prenom",
     "source",
     "mention",
     "competences",
     "domaine",
-    "comment",
     "cv",
     "action",
   ];
@@ -73,12 +71,12 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
         const temoignages: PeriodicElement[] = response.temoignage.map(
           (temoignage: any, index: number) => ({
             ...temoignage,
-            position: index + 1, // Incremental numbering
             createdAt: new Date(temoignage.createdAt).toLocaleDateString(), // Format date
           })
         );
 
         this.dataSource.data = temoignages;
+        this.isLoading = false;
       },
       (error) => {
         console.error("Error fetching temoignages:", error);
@@ -86,39 +84,45 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
     );
   }
 
-  removeTemoignage(temoignageId: string) {
-    this.temoignageService.removeTemoignage(temoignageId).subscribe(
-      () => {
-        this.getAllTemoignages();
-        console.log("User removed successfully");
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          "User deleted successful",
-          "success"
-        );
-      },
-      (error) => {
-        console.error("Error removing temoignage:", error);
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          error,
-          "danger"
-        );
-      }
+  async removeTemoignage(temoignageId: string) {
+    const confirmed = await this.notifService.showNotificationconfirmation(
+      "top",
+      "center",
+      "Are you sure you want to remove this User ?",
+      "wico"
     );
+    if (confirmed) {
+      this.temoignageService.removeTemoignage(temoignageId).subscribe(
+        () => {
+          this.getAllTemoignages();
+          console.log("User removed successfully");
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            "User deleted successful",
+            "success"
+          );
+        },
+        (error) => {
+          console.error("Error removing temoignage:", error);
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            error,
+            "danger"
+          );
+        }
+      );
+    }
   }
 }
 
 export interface PeriodicElement {
   name: string;
-  position: number;
   prenom: string;
   source: string;
   mention: string;
   competence: string;
   domain: string;
-  comment: string;
   cv: string;
 }

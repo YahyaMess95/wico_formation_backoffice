@@ -9,6 +9,7 @@ import { MatTableDataSource } from "@angular/material/table";
   styleUrls: ["./admin-contenu-list.component.css"],
 })
 export class AdminContenuListComponent implements AfterViewInit {
+  isLoading: boolean = true;
   constructor() {}
 
   displayedColumns: string[] = ["position", "nom", "description", "tags"];

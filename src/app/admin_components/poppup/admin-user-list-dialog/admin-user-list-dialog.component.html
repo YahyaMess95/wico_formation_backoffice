@@ -30,7 +30,7 @@
               fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Name must contain at least 6 characters
+            Name must contain at least <strong>6 characters</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -61,7 +61,7 @@
               fI['prename'].errors['minlength']
             "
           >
-            Prenom must contain at least 6 characters
+            Prenom must contain at least <strong>6 characters</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -96,7 +96,7 @@
               fI['addresse'].errors['minlength']
             "
           >
-            Address must contain at least 6 characters
+            Address must contain at least <strong>6 characters</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -130,7 +130,7 @@
               fI['email'] && fI['email'].errors && fI['email'].errors['email']
             "
           >
-            The email address is invalid.
+            The email address is <strong>invalid</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -164,7 +164,7 @@
               fI['login'].errors['minlength']
             "
           >
-            login must contain at least 6 characters
+            login must contain at least <strong>6 characters</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -199,7 +199,7 @@
               fI['password'].errors['minlength']
             "
           >
-            Password must contain at least 6 characters.
+            Password must contain at least <strong>6 characters</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -220,20 +220,29 @@
           <input
             matInput
             placeholder="Cin"
-            type="number"
+            type="text"
             formControlName="cin"
             id="cin"
-            required
             [ngClass]="{
               'is-invalid': submittedIn && fI['cin'] && fI['cin'].errors
             }"
           />
           <mat-error
             *ngIf="
+              fI['cin'] &&
+              fI['cin'].value &&
+              fI['cin'].errors &&
+              fI['cin'].errors['onlyNumbers']
+            "
+          >
+            Cin must contain only <strong>numbers</strong>.
+          </mat-error>
+          <mat-error
+            *ngIf="
               fI['cin'] && fI['cin'].errors && fI['cin'].errors['minlength']
             "
           >
-            Cin must contain 8 number.
+            Cin must contain <strong>8 number</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -266,7 +275,7 @@
               fI['source'].errors['minlength']
             "
           >
-            Source must contain 6 characters.
+            Source must contain <strong>6 characters</strong>.
           </mat-error>
           <mat-error
             *ngIf="

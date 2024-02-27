@@ -24,7 +24,13 @@ export class AdminDialogComponent implements OnInit {
   }
 
   objectKeys(obj: any): string[] {
-    return Object.keys(obj);
+    return Object.keys(obj).filter(
+      (key) =>
+        key !== "_id" &&
+        key !== "__v" &&
+        key !== "tokens" &&
+        key !== "updatedAt"
+    );
   }
 
   isObject(val: any): boolean {

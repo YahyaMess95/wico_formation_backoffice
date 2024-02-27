@@ -41,15 +41,7 @@
           </div>
           <div class="card-body">
             <div class="mat-elevation-z">
-              <table mat-table [dataSource]="dataSource">
-                <!-- Position Column -->
-                <ng-container matColumnDef="position">
-                  <th mat-header-cell *matHeaderCellDef>No.</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.position }}
-                  </td>
-                </ng-container>
-
+              <table mat-table *ngIf="!isLoading" [dataSource]="dataSource">
                 <!-- name Column -->
                 <ng-container matColumnDef="name">
                   <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -96,19 +88,11 @@
                   </td>
                 </ng-container>
 
-                <!-- comment Column -->
-                <ng-container matColumnDef="comment">
-                  <th mat-header-cell *matHeaderCellDef>Comment</th>
-                  <td mat-cell *matCellDef="let element">
-                    {{ element.comment }}
-                  </td>
-                </ng-container>
-
                 <!-- cv Column -->
                 <ng-container matColumnDef="cv">
                   <th mat-header-cell *matHeaderCellDef>Cv</th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.cv }}
+                    <a href=" {{ element.cv }}">CV Link</a>
                   </td>
                 </ng-container>
 
@@ -149,6 +133,11 @@
                   *matRowDef="let row; columns: displayedColumns"
                 ></tr>
               </table>
+
+              <div class="spinner-container" *ngIf="isLoading">
+                <!-- Add your spinner or loading animation here -->
+                <div class="spinner"></div>
+              </div>
 
               <mat-paginator
                 [pageSizeOptions]="[5, 10, 20]"

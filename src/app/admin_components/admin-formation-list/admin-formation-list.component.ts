@@ -1,16 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  Validators,
-} from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdminFormationDialogComponent } from "../poppup/admin-formation-dialog/admin-formation-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
-import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 import { FormationService } from "app/Services/formation.service";
 import { NotifService } from "app/Services/notif.service";
 
@@ -21,14 +13,9 @@ import { NotifService } from "app/Services/notif.service";
 })
 export class AdminFormationListComponent implements AfterViewInit, OnInit {
   value: string = "";
+  isLoading: boolean = true;
 
-  displayedColumns: string[] = [
-    "position",
-    "name",
-    "description",
-    "tags",
-    "action",
-  ];
+  displayedColumns: string[] = ["name", "description", "tags", "action"];
   dataSource = new MatTableDataSource<PeriodicElement>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -76,12 +63,12 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
         const formations: PeriodicElement[] = response.formation.map(
           (formation: any, index: number) => ({
             ...formation,
-            position: index + 1, // Incremental numbering
             createdAt: new Date(formation.createdAt).toLocaleDateString(), // Format date
           })
         );
 
         this.dataSource.data = formations;
+        this.isLoading = false;
       },
       (error) => {
         console.error("Error fetching formations:", error);
@@ -89,34 +76,41 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
     );
   }
 
-  removeFormation(sessionId: string) {
-    this.formationService.removeFormation(sessionId).subscribe(
-      () => {
-        this.getAllFormations();
-        console.log("Formation removed successfully");
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          "Formation deleted successful",
-          "success"
-        );
-      },
-      (error) => {
-        console.error("Error removing session:", error);
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          error,
-          "danger"
-        );
-      }
+  async removeFormation(sessionId: string) {
+    const confirmed = await this.notifService.showNotificationconfirmation(
+      "top",
+      "center",
+      "Are you sure you want to remove this Formation ?",
+      "wico"
     );
+    if (confirmed) {
+      this.formationService.removeFormation(sessionId).subscribe(
+        () => {
+          this.getAllFormations();
+          console.log("Formation removed successfully");
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            "Formation deleted successful",
+            "success"
+          );
+        },
+        (error) => {
+          console.error("Error removing session:", error);
+          this.notifService.showNotificationerror(
+            "top",
+            "center",
+            error,
+            "danger"
+          );
+        }
+      );
+    }
   }
 }
 
 export interface PeriodicElement {
   name: string;
-  position: number;
   description: string;
   tags: string;
 }
