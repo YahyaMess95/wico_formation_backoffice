@@ -4,8 +4,8 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AdminSessionDialogComponent } from "../poppup/admin-session-dialog/admin-session-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { SessionService } from "app/Services/session.service";
-import { NotifService } from "app/Services/notif.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-session-list",
@@ -97,7 +97,7 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
       "top",
       "center",
       "Are you sure you want to remove this Session ?",
-      "wico"
+      "confirm"
     );
     if (confirmed) {
       this.sessionService.removeSession(sessionId).subscribe(

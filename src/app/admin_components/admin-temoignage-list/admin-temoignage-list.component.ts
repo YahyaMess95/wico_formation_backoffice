@@ -4,8 +4,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdminTemoignageDialogComponent } from "../poppup/admin-temoignage-dialog/admin-temoignage-dialog.component";
 import { TemoignageService } from "app/Services/temoignage.service";
-import { NotifService } from "app/Services/notif.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-temoignage-list",
@@ -97,7 +97,7 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
       "top",
       "center",
       "Are you sure you want to remove this User ?",
-      "wico"
+      "confirm"
     );
     if (confirmed) {
       this.temoignageService.removeTemoignage(temoignageId).subscribe(

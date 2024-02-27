@@ -4,8 +4,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AdminSeanceDialogComponent } from "../poppup/admin-seance-dialog/admin-seance-dialog.component";
 import { SeanceService } from "app/Services/seance.service";
-import { NotifService } from "app/Services/notif.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-seance-list",
@@ -91,7 +91,7 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
       "top",
       "center",
       "Are you sure you want to remove this Seance ?",
-      "wico"
+      "confirm"
     );
     if (confirmed) {
       this.seanceService.removeSeance(sessionId).subscribe(

@@ -125,11 +125,11 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     }
   }
 }
-
 export interface PeriodicElement {
   name: string;
-  prename: string;
+  prenom: string;
   email: string;
   roles: string;
   createdAt: string;
+  action: string;
 }

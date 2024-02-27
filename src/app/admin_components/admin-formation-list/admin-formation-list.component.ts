@@ -4,8 +4,8 @@ import { MatTableDataSource } from "@angular/material/table";
 import { AdminFormationDialogComponent } from "../poppup/admin-formation-dialog/admin-formation-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { FormationService } from "app/Services/formation.service";
-import { NotifService } from "app/Services/notif.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { NotifService } from "app/Services/notif.service";
 
 @Component({
   selector: "admin-formation-list",
@@ -89,7 +89,7 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
       "top",
       "center",
       "Are you sure you want to remove this Formation ?",
-      "wico"
+      "confirm"
     );
     if (confirmed) {
       this.formationService.removeFormation(sessionId).subscribe(

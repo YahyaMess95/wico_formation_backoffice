@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { AdminService } from "./admin.service";
 declare var $: any;
+
 @Injectable({
   providedIn: "root",
 })
@@ -8,7 +8,6 @@ export class NotifService {
   constructor() {}
 
   public showNotificationerror(from, align, error, type) {
-    // const type = ["", "info", "success", "warning", "danger", "wico"];
     const iconMap: { [key: string]: string } = {
       danger: "error",
       success: "done",
@@ -22,7 +21,7 @@ export class NotifService {
       },
       {
         type: type,
-        timer: 1000,
+        timer: 200,
         placement: {
           from: from,
           align: align,
