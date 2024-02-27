@@ -6,6 +6,7 @@ import {
   PathLocationStrategy,
 } from "@angular/common";
 import { Router } from "@angular/router";
+import { AdminService } from "app/Services/admin.service";
 
 @Component({
   selector: "app-navbar",
@@ -22,7 +23,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     location: Location,
     private element: ElementRef,
-    private router: Router
+    private router: Router,
+    private adminService: AdminService
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -41,7 +43,9 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
-
+  logout() {
+    this.adminService.logout();
+  }
   sidebarOpen() {
     const toggleButton = this.toggleButton;
     const body = document.getElementsByTagName("body")[0];

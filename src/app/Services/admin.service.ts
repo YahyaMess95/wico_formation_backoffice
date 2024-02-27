@@ -28,6 +28,10 @@ export class AdminService {
     );
   }
 
+  logout() {
+    this.authService.logout();
+  }
+
   getAllUsers() {
     this.authGuard.canActivate();
     return this.http.get<any>(environment.allUsersUrl).pipe(

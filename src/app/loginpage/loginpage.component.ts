@@ -46,12 +46,6 @@ export class LoginpageComponent implements OnInit {
         console.log("Login successful", response);
         this.loginForm.reset();
         this.router.navigate(["/admin"]);
-        this.notifService.showNotificationerror(
-          "top",
-          "center",
-          "Login successful",
-          "success"
-        );
       },
       (error) => {
         console.error("Login failed", error);
