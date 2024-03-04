@@ -16,7 +16,11 @@
               <h3 class="login-heading">Welcome back!</h3>
 
               <!-- Sign In Form -->
-              <form [formGroup]="loginForm" (ngSubmit)="login()">
+              <form
+                [formGroup]="loginForm"
+                *ngIf="isLoading"
+                (ngSubmit)="login()"
+              >
                 <div class="form-floating mb-3">
                   <mat-form-field appearance="outline">
                     <mat-label>Enter Username</mat-label>
@@ -52,41 +56,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <!-- <div class="form-floating mb-3">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Enter Email</mat-label>
-                    <input
-                      matInput
-                      placeholder="pat@example.com"
-                      type="email"
-                      formControlName="email"
-                      id="email"
-                      required
-                      [ngClass]="{
-                        'is-invalid':
-                          submitted && fI['email'] && fI['email'].errors
-                      }"
-                    />
-                    <mat-error
-                      *ngIf="
-                        fI['email'] &&
-                        fI['email'].errors &&
-                        fI['email'].errors['email']
-                      "
-                    >
-                      The email address is invalid.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        fI['email'] &&
-                        fI['email'].errors &&
-                        fI['email'].errors['required']
-                      "
-                    >
-                      Email address is <strong>required</strong>.
-                    </mat-error>
-                  </mat-form-field>
-                </div> -->
+
                 <div class="form-floating mb-3">
                   <mat-form-field appearance="outline">
                     <mat-label>Enter Password</mat-label>
@@ -151,6 +121,11 @@
                   </div>
                 </div>
               </form>
+
+              <div class="spinner-container" *ngIf="!isLoading">
+                <!-- Add your spinner or loading animation here -->
+                <div class="spinner"></div>
+              </div>
             </div>
           </div>
         </div>

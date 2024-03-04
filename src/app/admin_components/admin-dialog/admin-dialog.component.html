@@ -1,14 +1,28 @@
 <div fxLayout="column" fxLayoutAlign="center center" class="dialog-content">
-  <div mat-dialog-content class="content-wrapper">
+  <div mat-dialog-content class="content-wrapper static-size-dialog">
+    <div class="circular-image-container" *ngIf="photoData">
+      <img [src]="photoData" alt="Photo" class="circular-image" />
+    </div>
     <div class="data-container" [ngClass]="columnClass">
-      <ol class="custom-list" *ngFor="let key of objectKeys(data)">
-        <li
-          class="custom-list-item"
-          *ngIf="data[key] !== null && data[key] !== undefined"
-        >
+      <ol class="custom-list">
+        <li *ngFor="let key of objectKeys(data)" class="custom-list-item">
           <div class="list-item-content">
             <span class="list-key">{{ key }}:</span>
-            <span class="list-value">{{ data[key] }}</span>
+            <span class="list-value">
+              <ng-container *ngIf="key">
+                {{ data[key] }}
+              </ng-container>
+            </span>
+          </div>
+        </li>
+        <li class="custom-list-item" *ngIf="cv">
+          <div class="list-item-content">
+            <span class="list-key">CV:</span>
+            <span class="list-value">
+              <ng-container>
+                <a href="{{ cv }}">Link to CV</a>
+              </ng-container>
+            </span>
           </div>
         </li>
       </ol>

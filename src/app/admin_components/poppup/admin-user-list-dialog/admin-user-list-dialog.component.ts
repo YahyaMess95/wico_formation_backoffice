@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import {
   AbstractControl,
   FormControl,
@@ -7,6 +15,7 @@ import {
 } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { NotifService } from "app/Services/notif.service";
+import { SessionService } from "app/Services/session.service";
 import { UserService } from "app/Services/user.service";
 
 @Component({
@@ -16,30 +25,30 @@ import { UserService } from "app/Services/user.service";
 })
 export class AdminUserListDialogComponent implements OnInit {
   @Output() userAdded: EventEmitter<void> = new EventEmitter<void>();
+  @ViewChild("fileUpload") fileUpload: ElementRef;
   submittedIn = false;
-
+  photoname;
+  sessions: any[] = [];
   constructor(
     private notifService: NotifService,
     private userService: UserService,
+    private sessionService: SessionService,
     private dialogRef: MatDialogRef<AdminUserListDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
     this.initializeForm();
+    console.log(this.sessions);
   }
-
   onFileSelected(event): void {
     const file: File = event.target.files[0];
-    if (file) {
-      this.formeusers.patchValue({
-        photo: file.name,
-      });
-
-      const formData = new FormData();
-      formData.append("photo", file);
-    }
+    this.photoname = file.name;
+    this.formeusers.patchValue({
+      photo: file ? file.name : null,
+    });
   }
+
   formeusers: FormGroup;
 
   initializeForm(): void {
@@ -78,13 +87,16 @@ export class AdminUserListDialogComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      sessions: new FormControl(this.data?.sessions || []),
-      photo: new FormControl(this.data?.photo || "", [Validators.required]),
+      sessions: new FormControl(this.loadSessions()),
+      photo: new FormControl([Validators.required]),
     });
   }
 
   public saveOrUpdateUser(): void {
     this.submittedIn = true;
+    console.log("value ", this.formeusers.value);
+    const userDetails = this.formeusers.value;
+    console.log(userDetails);
 
     if (this.formeusers.invalid) {
       console.log("error ", this.formeusers.value);
@@ -97,8 +109,6 @@ export class AdminUserListDialogComponent implements OnInit {
       return;
     }
 
-    const userDetails = this.formeusers.value;
-
     if (this.data) {
       this.updateUser(this.data._id, userDetails);
     } else {
@@ -107,8 +117,18 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   addUser(userDetails): void {
+    const photo = this.fileUpload.nativeElement.files[0];
+    const formData = new FormData();
+    console.log(userDetails);
+    Object.keys(userDetails).forEach((key) => {
+      formData.append(key, userDetails[key]);
+    });
+
+    formData.append("file", photo);
     this.dialogRef.close();
-    this.userService.addUser(userDetails).subscribe(
+    console.log(formData);
+
+    this.userService.addUser(formData).subscribe(
       (response) => {
         console.log("User added successful", response);
         this.formeusers.reset();
@@ -133,8 +153,18 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   updateUser(_id, userDetails): void {
+    const photo = this.fileUpload.nativeElement.files[0];
+    const formData = new FormData();
+
+    Object.keys(userDetails).forEach((key) => {
+      formData.append(key, userDetails[key]);
+    });
+
+    formData.append("file", photo);
+
     this.dialogRef.close();
-    this.userService.updateUser(_id, userDetails).subscribe(
+
+    this.userService.updateUser(_id, formData).subscribe(
       (response) => {
         console.log("User updated successfully", response);
         this.formeusers.reset();
@@ -171,16 +201,52 @@ export class AdminUserListDialogComponent implements OnInit {
       return { onlyNumbers: true };
     }
   }
+  selectedSessionIds: string[] = [];
 
-  sessions = new FormControl("");
-  sessionList: string[] = [
-    "Session 1",
-    "Session 2",
-    "Session 3",
-    "Session 4",
-    "Session 5",
-    "Session 6",
-  ];
+  loadSessions(): void {
+    console.log(this.data?.sessions);
+
+    if (this.data && this.data.sessions) {
+      this.sessionService.getAllSessions().subscribe(
+        (response) => {
+          const sessionsFromBackend = response.session;
+          // Check if sessions is defined and is an array
+          if (Array.isArray(sessionsFromBackend)) {
+            // Extract session names
+            this.sessions = sessionsFromBackend.map((session) => ({
+              id: session._id,
+              name: session.name,
+            }));
+            // Select sessions based on this.data.sessionsif
+
+            this.selectedSessionIds = this.data.sessions;
+          } else {
+            console.error("Sessions is not an array:", sessionsFromBackend);
+            // Handle the error or set a default value for sessionList
+          }
+        },
+        (error) => {
+          console.error("Error fetching sessions:", error);
+        }
+      );
+    } else {
+      this.sessionService.getAllSessions().subscribe(
+        (response) => {
+          const sessionsFromBackend = response.session;
+          // Extract session names
+          this.sessions = sessionsFromBackend.map((session) => ({
+            id: session._id,
+            name: session.name,
+            checked: false, // Assuming sessions from the database are initially unchecked
+          }));
+        },
+        (error) => {
+          console.error("Error fetching sessions:", error);
+        }
+      );
+    }
+  }
+
   roles = new FormControl("");
   roleList: string[] = ["User", "Trainer", "Student"];
 }

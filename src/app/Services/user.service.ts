@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import { tap, catchError, throwError } from "rxjs";
+import { tap, catchError, throwError, Observable } from "rxjs";
 import { AuthGuardService } from "./auth-guard.service";
 import { AuthService } from "./auth.service";
 
@@ -49,10 +49,23 @@ export class UserService {
     );
   }
 
-  updateUser(userId: string, userData: any) {
+  updateUser(userId: string, userDetails: FormData) {
     this.authGuard.canActivate();
+    // check
+    const fileKeys = [];
+
+    // If there are files, display their names
+    if (fileKeys.length > 0) {
+      console.log("Files attached:");
+      fileKeys.forEach(({ key, value }) => {
+        console.log(value.name);
+      });
+    } else {
+      console.log("No files attached.");
+    }
+
     return this.http
-      .patch(environment.updateUserUrl + `/${userId}`, userData)
+      .patch(environment.updateUserUrl + `/${userId}`, userDetails)
       .pipe(
         catchError((error: any) => {
           return this.handleError(error);
@@ -60,8 +73,9 @@ export class UserService {
       );
   }
 
-  addUser(userDetails: any) {
+  addUser(userDetails: FormData) {
     this.authGuard.canActivate();
+
     return this.http.post<any>(environment.addUserUrl, userDetails).pipe(
       catchError((error: any) => {
         if (error.status === 401) {

@@ -7,6 +7,8 @@ import { AdminUserListDialogComponent } from "../poppup/admin-user-list-dialog/a
 import { AdminService } from "app/Services/admin.service";
 import { NotifService } from "app/Services/notif.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { PhotoService } from "app/Services/photo.service";
 
 @Component({
   selector: "admin-user-list",
@@ -16,10 +18,13 @@ import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 export class AdminUserListComponent implements AfterViewInit, OnInit {
   value: string = "";
   isLoading: boolean = true;
+  photoData: any;
   constructor(
     public dialog: MatDialog,
     private adminService: AdminService,
-    private notifService: NotifService
+    private notifService: NotifService,
+    private sanitizer: DomSanitizer,
+    private photoService: PhotoService
   ) {}
 
   applyFilter() {
@@ -53,6 +58,11 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.getAllUsers();
   }
+  applyCustomStyles: boolean = true;
+
+  toggleCustomStyles() {
+    this.applyCustomStyles = !this.applyCustomStyles;
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -77,15 +87,25 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
   getAllUsers() {
     this.adminService.getAllUsers().subscribe(
       (response) => {
-        const users: PeriodicElement[] = response.user.map(
-          (user: any, index: number) => ({
-            ...user,
-            createdAt: new Date(user.createdAt).toLocaleDateString(), // Format date
-          })
+        const userPromises: Promise<any>[] = response.user.map(
+          async (user: any) => {
+            try {
+              const photoData = await this.fetchPhoto(user.photo);
+              const imageUrl = this.getImageUrl(photoData);
+              user.photo = imageUrl;
+              user.createdAt = new Date(user.createdAt).toLocaleDateString();
+              return user;
+            } catch (error) {
+              console.error("Error fetching photo:", error);
+              return user; // Return the user object even if there's an error
+            }
+          }
         );
 
-        this.dataSource.data = users;
-        this.isLoading = false;
+        Promise.all(userPromises).then((updatedUsers) => {
+          this.dataSource.data = updatedUsers;
+          this.isLoading = false;
+        });
       },
       (error) => {
         console.error("Error fetching users:", error);
@@ -93,6 +113,32 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     );
   }
 
+  fetchPhoto(photoName: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.photoService.getPhoto(photoName).subscribe(
+        (data) => {
+          resolve(data); // Resolve the promise with the fetched photo data
+        },
+        (error) => {
+          reject(error); // Reject the promise if there's an error
+        }
+      );
+    });
+  }
+  getImageUrl(photoData: any): SafeUrl {
+    // console.log("Received photoData:", photoData);
+
+    if (photoData instanceof Blob) {
+      // If photoData is already a Blob object, proceed with creating the URL
+      const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
+        window.URL.createObjectURL(photoData)
+      );
+      return imageUrl;
+    } else {
+      console.error("Invalid photoData format:", photoData);
+      return "";
+    }
+  }
   async removeUser(userId: string) {
     const confirmed = await this.notifService.showNotificationconfirmation(
       "top",

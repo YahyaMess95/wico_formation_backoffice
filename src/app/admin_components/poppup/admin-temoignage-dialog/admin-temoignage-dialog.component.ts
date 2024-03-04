@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import {
   Validators,
   FormGroup,
@@ -16,7 +24,11 @@ import { TemoignageService } from "app/Services/temoignage.service";
 })
 export class AdminTemoignageDialogComponent implements OnInit {
   @Output() temoignageAdded: EventEmitter<void> = new EventEmitter<void>();
+  @ViewChild("fileUpload") fileUpload: ElementRef;
+  @ViewChild("filecvUpload") filecvUpload: ElementRef;
   submittedIn = false;
+  photo;
+  cv;
   constructor(
     private notifService: NotifService,
     private temoignageService: TemoignageService,
@@ -60,12 +72,8 @@ export class AdminTemoignageDialogComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      image: new FormControl(this.data?.image || "No Image uploaded yet.", [
-        Validators.required,
-      ]),
-      cv: new FormControl(this.data?.cv || "No CV uploaded yet.", [
-        Validators.required,
-      ]),
+      photo: new FormControl([Validators.required]),
+      cv: new FormControl(this.data?.cv || "", [Validators.required]),
     });
   }
 
@@ -83,18 +91,28 @@ export class AdminTemoignageDialogComponent implements OnInit {
       return;
     }
 
-    const userDetails = this.formetemoignages.value;
-
     if (this.data) {
-      this.updateTemoignage(this.data._id, userDetails);
+      this.updateTemoignage(this.data._id);
     } else {
-      this.addTemoignage(userDetails);
+      this.addTemoignage();
     }
   }
 
-  addTemoignage(userDetails): void {
+  addTemoignage(): void {
+    const userDetails = this.formetemoignages.value;
+    const photo = this.fileUpload.nativeElement.files[0];
+    const cv = this.filecvUpload.nativeElement.files[0];
+    const formData = new FormData();
+    Object.keys(userDetails).forEach((key) => {
+      formData.append(key, userDetails[key]);
+    });
+
+    formData.append("file", photo);
+    // formData.append("file", cv);
+    console.log("User Details:", photo);
+
     this.dialogRef.close();
-    this.temoignageService.addTemoignage(userDetails).subscribe(
+    this.temoignageService.addTemoignage(formData).subscribe(
       (response) => {
         console.log("Temoignage added successfully", response);
         this.formetemoignages.reset();
@@ -119,9 +137,22 @@ export class AdminTemoignageDialogComponent implements OnInit {
     );
   }
 
-  updateTemoignage(_id, userDetails): void {
+  updateTemoignage(_id): void {
+    const userDetails = this.formetemoignages.value;
+    const photo = this.fileUpload.nativeElement.files[0];
+    const cv = this.filecvUpload.nativeElement.files[0];
+
+    const formData = new FormData();
+
+    Object.keys(userDetails).forEach((key) => {
+      formData.append(key, userDetails[key]);
+    });
+
+    formData.append("file", photo);
+    console.log("User Details:", photo);
+    console.log("User formData:", formData);
     this.dialogRef.close();
-    this.temoignageService.updateTemoignage(_id, userDetails).subscribe(
+    this.temoignageService.updateTemoignage(_id, formData).subscribe(
       (response) => {
         console.log("Temoignage updated successfully", response);
         this.formetemoignages.reset();
@@ -152,24 +183,20 @@ export class AdminTemoignageDialogComponent implements OnInit {
   onImageSelected(event): void {
     const file: File = event.target.files[0];
     if (file) {
+      this.photo = file.name;
       this.formetemoignages.patchValue({
-        image: file.name,
+        photo: file.name,
       });
-
-      const formData = new FormData();
-      formData.append("photo", file);
     }
   }
 
   onCVSelected(event): void {
     const file: File = event.target.files[0];
     if (file) {
+      this.cv = file.name;
       this.formetemoignages.patchValue({
         cv: file.name,
       });
-
-      const formData = new FormData();
-      formData.append("cv", file);
     }
   }
 }

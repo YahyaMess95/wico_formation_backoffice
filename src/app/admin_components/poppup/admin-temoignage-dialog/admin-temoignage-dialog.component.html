@@ -256,26 +256,26 @@
             matInput
             type="file"
             class="file-input"
-            formControlName="image"
-            id="image"
+            id="photo"
             (change)="onImageSelected($event)"
             #fileUpload
             [ngClass]="{
-              'is-invalid': submittedIn && fI['image'] && fI['image'].errors
+              'is-invalid': submittedIn && fI['photo'] && fI['photo'].errors
             }"
+            accept="image/*"
           />
 
           <div class="file-upload uploadFile" (click)="fileUpload.click()">
-            {{ formetemoignages.get("image").value }}
+            {{ photo }}
             <button mat-mini-fab type="button" class="upload-btn">
               <mat-icon>attach_file</mat-icon>
             </button>
           </div>
           <mat-error
             *ngIf="
-              fI['image'] &&
-              fI['image'].errors &&
-              fI['image'].errors['required']
+              fI['photo'] &&
+              fI['photo'].errors &&
+              fI['photo'].errors['required']
             "
           >
             Image is <strong>required</strong>.
@@ -288,17 +288,17 @@
             matInput
             type="file"
             class="file-input"
-            formControlName="cv"
             id="cv"
             (change)="onCVSelected($event)"
             #filecvUpload
             [ngClass]="{
               'is-invalid': submittedIn && fI['cv'] && fI['cv'].errors
             }"
+            accept="file/*"
           />
 
           <div class="file-upload uploadFile" (click)="filecvUpload.click()">
-            {{ formetemoignages.get("cv").value }}
+            {{ cv }}
             <button mat-mini-fab type="button" class="upload-btn">
               <mat-icon>attach_file</mat-icon>
             </button>

@@ -1,5 +1,6 @@
 import { Component, HostListener, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+
 @Component({
   selector: "admin-dialog",
   templateUrl: "./admin-dialog.component.html",
@@ -7,11 +8,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 })
 export class AdminDialogComponent implements OnInit {
   dialogTitle: string;
+  photoData: any;
+  cv: any;
   constructor(
     public dialogRef: MatDialogRef<AdminDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.dialogTitle = data.dialogTitle;
+    this.dialogTitle = data?.dialogTitle;
+    this.photoData = this.data?.photo;
+    this.cv = this.data?.cv;
     this.updateColumns();
   }
 
@@ -29,14 +34,17 @@ export class AdminDialogComponent implements OnInit {
         key !== "_id" &&
         key !== "__v" &&
         key !== "tokens" &&
-        key !== "updatedAt"
+        key !== "updatedAt" &&
+        key !== "sessions" &&
+        key !== "photo" &&
+        key !== "cv"
     );
   }
 
   isObject(val: any): boolean {
     return val instanceof Object;
   }
-  ngOnInit(): void {}
+
   columnClass: string = "column-3"; // Default to 3 columns
   @HostListener("window:resize", ["$event"])
   onResize(event: any) {
@@ -53,4 +61,7 @@ export class AdminDialogComponent implements OnInit {
       this.columnClass = "column-3";
     }
   }
+  // Assuming you receive photo data from the service
+
+  ngOnInit(): void {}
 }

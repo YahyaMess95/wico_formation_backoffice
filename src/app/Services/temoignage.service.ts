@@ -38,7 +38,7 @@ export class TemoignageService {
       );
   }
 
-  updateTemoignage(temoignageId: string, temoignageData: any) {
+  updateTemoignage(temoignageId: string, temoignageData: FormData) {
     this.authGuard.canActivate();
     return this.http
       .patch(
@@ -52,7 +52,7 @@ export class TemoignageService {
       );
   }
 
-  addTemoignage(temoignageDetails: any) {
+  addTemoignage(temoignageDetails: FormData) {
     this.authGuard.canActivate();
     return this.http
       .post<any>(environment.addTemoignageUrl, temoignageDetails)

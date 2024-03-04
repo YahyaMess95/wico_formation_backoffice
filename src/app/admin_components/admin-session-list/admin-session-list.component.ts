@@ -6,6 +6,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { SessionService } from "app/Services/session.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 import { NotifService } from "app/Services/notif.service";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { PhotoService } from "app/Services/photo.service";
 
 @Component({
   selector: "admin-session-list",
@@ -18,7 +20,9 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
   constructor(
     public dialog: MatDialog,
     private sessionService: SessionService,
-    private notifService: NotifService
+    private notifService: NotifService,
+    private sanitizer: DomSanitizer,
+    private photoService: PhotoService
   ) {}
 
   ngOnInit() {
@@ -76,20 +80,59 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     this.sessionService.getAllSessions().subscribe(
       (response) => {
         console.log(response.session);
-        const sessions: PeriodicElement[] = response.session.map(
-          (session: any, index: number) => ({
-            ...session,
-            createdAt: new Date(session.createdAt).toLocaleDateString(), // Format date
-          })
+        const userPromises: Promise<any>[] = response.session.map(
+          async (session: any) => {
+            try {
+              const photoData = await this.fetchPhoto(session.photo);
+              const imageUrl = this.getImageUrl(photoData);
+              session.photo = imageUrl;
+              session.createdAt = new Date(
+                session.createdAt
+              ).toLocaleDateString();
+              return session;
+            } catch (error) {
+              console.error("Error fetching photo:", error);
+              return session; // Return the session object even if there's an error
+            }
+          }
         );
 
-        this.dataSource.data = sessions;
-        this.isLoading = false;
+        Promise.all(userPromises).then((updatedSessions) => {
+          this.dataSource.data = updatedSessions;
+          this.isLoading = false;
+        });
       },
       (error) => {
         console.error("Error fetching sessions:", error);
       }
     );
+  }
+
+  fetchPhoto(photoName: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.photoService.getPhoto(photoName).subscribe(
+        (data) => {
+          resolve(data); // Resolve the promise with the fetched photo data
+        },
+        (error) => {
+          reject(error); // Reject the promise if there's an error
+        }
+      );
+    });
+  }
+  getImageUrl(photoData: any): SafeUrl {
+    // console.log("Received photoData:", photoData);
+
+    if (photoData instanceof Blob) {
+      // If photoData is already a Blob object, proceed with creating the URL
+      const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
+        window.URL.createObjectURL(photoData)
+      );
+      return imageUrl;
+    } else {
+      console.error("Invalid photoData format:", photoData);
+      return "";
+    }
   }
 
   async removeSession(sessionId: string) {

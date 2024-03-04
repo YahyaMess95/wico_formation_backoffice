@@ -6,6 +6,8 @@ import { AdminTemoignageDialogComponent } from "../poppup/admin-temoignage-dialo
 import { TemoignageService } from "app/Services/temoignage.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 import { NotifService } from "app/Services/notif.service";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { PhotoService } from "app/Services/photo.service";
 
 @Component({
   selector: "admin-temoignage-list",
@@ -18,7 +20,9 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
   constructor(
     public dialog: MatDialog,
     private temoignageService: TemoignageService,
-    private notifService: NotifService
+    private notifService: NotifService,
+    private sanitizer: DomSanitizer,
+    private photoService: PhotoService
   ) {}
 
   applyFilter() {
@@ -76,20 +80,59 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
   getAllTemoignages() {
     this.temoignageService.getAllTemoignages().subscribe(
       (response) => {
-        const temoignages: PeriodicElement[] = response.temoignage.map(
-          (temoignage: any, index: number) => ({
-            ...temoignage,
-            createdAt: new Date(temoignage.createdAt).toLocaleDateString(), // Format date
-          })
+        const temoignagePromises: Promise<any>[] = response.temoignage.map(
+          async (temoignage: any) => {
+            try {
+              const photoData = await this.fetchPhoto(temoignage.photo);
+              const imageUrl = this.getImageUrl(photoData);
+              temoignage.photo = imageUrl;
+              temoignage.createdAt = new Date(
+                temoignage.createdAt
+              ).toLocaleDateString();
+              return temoignage;
+            } catch (error) {
+              console.error("Error fetching photo:", error);
+              return temoignage; // Return the temoignage object even if there's an error
+            }
+          }
         );
 
-        this.dataSource.data = temoignages;
-        this.isLoading = false;
+        Promise.all(temoignagePromises).then((updatedtemoignages) => {
+          this.dataSource.data = updatedtemoignages;
+          this.isLoading = false;
+        });
       },
       (error) => {
         console.error("Error fetching temoignages:", error);
       }
     );
+  }
+
+  fetchPhoto(photoName: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.photoService.getPhoto(photoName).subscribe(
+        (data) => {
+          resolve(data); // Resolve the promise with the fetched photo data
+        },
+        (error) => {
+          reject(error); // Reject the promise if there's an error
+        }
+      );
+    });
+  }
+  getImageUrl(photoData: any): SafeUrl {
+    // console.log("Received photoData:", photoData);
+
+    if (photoData instanceof Blob) {
+      // If photoData is already a Blob object, proceed with creating the URL
+      const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
+        window.URL.createObjectURL(photoData)
+      );
+      return imageUrl;
+    } else {
+      console.error("Invalid photoData format:", photoData);
+      return "";
+    }
   }
 
   async removeTemoignage(temoignageId: string) {

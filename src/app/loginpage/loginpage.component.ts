@@ -16,12 +16,11 @@ import { AdminService } from "app/Services/admin.service";
 })
 export class LoginpageComponent implements OnInit {
   loginForm!: FormGroup;
-
+  isLoading: boolean = true;
   submitted = false;
   fileName = "";
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      // email: ["", [Validators.required, Validators.email]],
       name: ["", [Validators.required, Validators.minLength(3)]],
       password: ["", [Validators.required, Validators.minLength(6)]],
     });
@@ -40,7 +39,7 @@ export class LoginpageComponent implements OnInit {
     }
 
     const { name, password } = this.loginForm.value;
-
+    this.isLoading = false;
     this.adminService.login(name, password).subscribe(
       (response) => {
         console.log("Login successful", response);
