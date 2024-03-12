@@ -1,8 +1,8 @@
 .static-size-dialog {
   width: 80vw;
   /* Set the width to 80% of the viewport width */
-  height: 80vw;
-  /* Set the height to match 80% of the viewport width */
+  height: auto;
+  /* Let the height adjust according to content */
   max-height: 600px;
   /* Set your desired maximum height */
   max-width: 600px;
@@ -16,9 +16,55 @@
   .static-size-dialog {
     width: 90vw;
     /* Set the width to 90% of the viewport width for small screens */
-    height: 90vw;
-    /* Set the height to match 90% of the viewport width */
+    height: auto;
+    /* Let the height adjust according to content */
   }
+}
+
+
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.image {
+  max-width: 100px;
+  /* Adjust width as needed */
+  max-height: 100px;
+  /* Adjust height as needed */
+}
+
+.list-item-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* Align key and value in the same line */
+}
+
+.list-key {
+  font-weight: bold;
+  margin-right: 5px;
+  /* Add margin to separate key and value */
+}
+
+.list-value {
+  font-size: smaller;
+  /* Reduce the size of the text */
+}
+
+.action-button {
+  background-color: #37517e;
+  color: white;
 }
 
 .custom-list {
@@ -35,35 +81,4 @@ li {
   white-space: break-word;
   word-wrap: break-word;
   max-width: 40vw;
-}
-
-.list-item-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.list-key {
-  font-weight: bold;
-}
-
-.list-value {
-  margin-top: 5px;
-}
-
-.action-button {
-  background-color: #37517e;
-  color: white;
-}
-
-.circular-image-container {
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  border-radius: 50%;
-}
-
-.circular-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }

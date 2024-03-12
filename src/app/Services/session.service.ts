@@ -2,22 +2,17 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
 import { catchError, throwError } from "rxjs";
-import { AuthGuardService } from "./auth-guard.service";
 import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class SessionService {
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private authGuard: AuthGuardService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getAllSessions() {
-    this.authGuard.canActivate();
-    return this.http.get<any>(environment.allSessionsUrl).pipe(
+  getAllSessions(page: number, pageSize: number) {
+    const url = `${environment.allSessionsUrl}?page=${page}&pageSize=${pageSize}`;
+    return this.http.get<any>(url).pipe(
       catchError((error: any) => {
         if (error.status === 401) {
           this.authService.logout();
@@ -28,7 +23,6 @@ export class SessionService {
   }
 
   removeSession(sessionId: string) {
-    this.authGuard.canActivate();
     return this.http
       .delete(environment.deleteSessionUrl + `/${sessionId}`)
       .pipe(
@@ -39,7 +33,6 @@ export class SessionService {
   }
 
   updateSession(sessionId: string, sessionData: any) {
-    this.authGuard.canActivate();
     return this.http
       .patch(environment.updateSessionUrl + `/${sessionId}`, sessionData)
       .pipe(
@@ -50,7 +43,6 @@ export class SessionService {
   }
 
   addSession(sessionDetails: any) {
-    this.authGuard.canActivate();
     return this.http.post<any>(environment.addSessionUrl, sessionDetails).pipe(
       catchError((error: any) => {
         if (error.status === 401) {

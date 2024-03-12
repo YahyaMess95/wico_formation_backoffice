@@ -29,7 +29,6 @@ export class AuthInterceptorService implements HttpInterceptor {
         },
       });
     }
-    console.log(request);
 
     // Pass the cloned request to the next handler
     return next.handle(request);

@@ -1,9 +1,9 @@
 <div fxLayout="column" fxLayoutAlign="center center" class="dialog-content">
   <div mat-dialog-content class="content-wrapper static-size-dialog">
-    <div class="circular-image-container" *ngIf="photoData">
-      <img [src]="photoData" alt="Photo" class="circular-image" />
+    <div class="image-container" *ngIf="photoData">
+      <img [src]="photoData" alt="Photo" class="image" />
     </div>
-    <div class="data-container" [ngClass]="columnClass">
+    <div class="data-container">
       <ol class="custom-list">
         <li *ngFor="let key of objectKeys(data)" class="custom-list-item">
           <div class="list-item-content">
@@ -15,12 +15,12 @@
             </span>
           </div>
         </li>
-        <li class="custom-list-item" *ngIf="cv">
+        <li class="custom-list-item" *ngIf="Cv">
           <div class="list-item-content">
             <span class="list-key">CV:</span>
             <span class="list-value">
               <ng-container>
-                <a href="{{ cv }}">Link to CV</a>
+                <a href="{{ Cv }}">Link to CV</a>
               </ng-container>
             </span>
           </div>

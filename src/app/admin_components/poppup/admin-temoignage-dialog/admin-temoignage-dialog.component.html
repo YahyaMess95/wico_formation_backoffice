@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span>{{ data ? "Modify Temoignage" : "Add Temoignage" }}</span>
+  <span>{{ data ? "Modifier Témoignage" : "Ajouter Témoignage" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -14,10 +14,10 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Name</mat-label>
+          <mat-label>Entrez le nom</mat-label>
           <input
             matInput
-            placeholder="Name"
+            placeholder="Nom"
             required
             formControlName="name"
             id="name"
@@ -30,23 +30,23 @@
               fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Name must contain 3 characters.
+            Le nom doit contenir <strong>3 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['name'] && fI['name'].errors && fI['name'].errors['required']
             "
           >
-            Name is <strong>required</strong>.
+            Le nom est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Prenom</mat-label>
+          <mat-label>Entrez votre prénom</mat-label>
           <input
             matInput
-            placeholder="Prenom"
+            placeholder="Prénom"
             required
             formControlName="prenom"
             id="prenom"
@@ -61,7 +61,7 @@
               fI['prenom'].errors['minlength']
             "
           >
-            Prenom must contain 3 characters.
+            le prénom doit contenir <strong>3 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -70,13 +70,13 @@
               fI['prenom'].errors['required']
             "
           >
-            Prenom is <strong>required</strong>.
+            le prénom est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Source</mat-label>
+          <mat-label>Entrez la source</mat-label>
           <input
             matInput
             placeholder="Source"
@@ -95,7 +95,7 @@
               fI['source'].errors['minlength']
             "
           >
-            Source must contain 6 characters.
+            La source doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -104,7 +104,7 @@
               fI['source'].errors['required']
             "
           >
-            Source is <strong>required</strong>.
+            La source est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -112,7 +112,7 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Mention</mat-label>
+          <mat-label>Entrez la mention</mat-label>
           <input
             matInput
             placeholder="Mention"
@@ -131,7 +131,7 @@
               fI['mention'].errors['minlength']
             "
           >
-            Mention must contain 6 characters.
+            La mention doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -140,16 +140,16 @@
               fI['mention'].errors['required']
             "
           >
-            Mention is <strong>required</strong>.
+            La mention est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Competence</mat-label>
+          <mat-label>Entrez la compétence</mat-label>
           <input
             matInput
-            placeholder="Competence"
+            placeholder="Compétence"
             type="text"
             required
             formControlName="competences"
@@ -166,7 +166,7 @@
               fI['competences'].errors['minlength']
             "
           >
-            Competence must contain 6 characters.
+            La compétence doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -175,16 +175,16 @@
               fI['competences'].errors['required']
             "
           >
-            Competence is <strong>required</strong>.
+            La compétence est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Domain</mat-label>
+          <mat-label>Entrez le domaine</mat-label>
           <input
             matInput
-            placeholder="Domain"
+            placeholder="Domaine"
             type="text"
             required
             formControlName="domaine"
@@ -200,7 +200,7 @@
               fI['domaine'].errors['minlength']
             "
           >
-            Domain must contain 6 characters.
+            Le domaine doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -209,7 +209,7 @@
               fI['domaine'].errors['required']
             "
           >
-            Domain is <strong>required</strong>.
+            Le domaine est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -217,10 +217,10 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Comment</mat-label>
+          <mat-label>Entrez un commentaire</mat-label>
           <textarea
             matInput
-            placeholder="Comment"
+            placeholder="Commentaire"
             type="text"
             required
             formControlName="comment"
@@ -237,7 +237,7 @@
               fI['comment'].errors['minlength']
             "
           >
-            Comment must contain 6 characters.
+            Le commentaire doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -246,12 +246,13 @@
               fI['comment'].errors['required']
             "
           >
-            Comment is <strong>required</strong>.
+            Le commentaire est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="mat-form-field-custom">
+          <mat-label>Photo</mat-label>
           <input
             matInput
             type="file"
@@ -278,12 +279,13 @@
               fI['photo'].errors['required']
             "
           >
-            Image is <strong>required</strong>.
+            La photo est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="mat-form-field-custom">
+          <mat-label>File</mat-label>
           <input
             matInput
             type="file"
@@ -306,14 +308,14 @@
           <mat-error
             *ngIf="fI['cv'] && fI['cv'].errors && fI['cv'].errors['required']"
           >
-            CV is <strong>required</strong>.
+            Le CV est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      {{ data ? "Modify Temoignage" : "Add Temoignage" }}
+      {{ data ? "Modifier Témoignage" : "Ajouter Témoignage" }}
     </button>
     <div class="clearfix"></div>
   </form>

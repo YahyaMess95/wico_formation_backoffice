@@ -2,22 +2,17 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
 import { catchError, throwError } from "rxjs";
-import { AuthGuardService } from "./auth-guard.service";
 import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class SeanceService {
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private authGuard: AuthGuardService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getAllSeances() {
-    this.authGuard.canActivate();
-    return this.http.get<any>(environment.allSeancesUrl).pipe(
+  getAllSeances(page: number, pageSize: number) {
+    const url = `${environment.allSeancesUrl}?page=${page}&pageSize=${pageSize}`;
+    return this.http.get<any>(url).pipe(
       catchError((error: any) => {
         if (error.status === 401) {
           this.authService.logout();
@@ -28,7 +23,6 @@ export class SeanceService {
   }
 
   removeSeance(seanceId: string) {
-    this.authGuard.canActivate();
     return this.http.delete(environment.deleteSeanceUrl + `/${seanceId}`).pipe(
       catchError((error: any) => {
         return this.handleError(error);
@@ -37,7 +31,6 @@ export class SeanceService {
   }
 
   updateSeance(seanceId: string, seanceData: any) {
-    this.authGuard.canActivate();
     return this.http
       .patch(environment.updateSeanceUrl + `/${seanceId}`, seanceData)
       .pipe(
@@ -48,7 +41,6 @@ export class SeanceService {
   }
 
   addSeance(seanceDetails: any) {
-    this.authGuard.canActivate();
     return this.http.post<any>(environment.addSeanceUrl, seanceDetails).pipe(
       catchError((error: any) => {
         if (error.status === 401) {

@@ -2,22 +2,17 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
 import { catchError, throwError } from "rxjs";
-import { AuthGuardService } from "./auth-guard.service";
 import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class FormationService {
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private authGuard: AuthGuardService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getAllFormations() {
-    this.authGuard.canActivate();
-    return this.http.get<any>(environment.allFormationsUrl).pipe(
+  getAllFormations(page: number, pageSize: number) {
+    const url = `${environment.allFormationsUrl}?page=${page}&pageSize=${pageSize}`;
+    return this.http.get<any>(url).pipe(
       catchError((error: any) => {
         if (error.status === 401) {
           this.authService.logout();
@@ -28,7 +23,6 @@ export class FormationService {
   }
 
   removeFormation(formationId: string) {
-    this.authGuard.canActivate();
     return this.http
       .delete(environment.deleteFormationUrl + `/${formationId}`)
       .pipe(
@@ -39,7 +33,6 @@ export class FormationService {
   }
 
   updateFormation(formationId: string, formationData: any) {
-    this.authGuard.canActivate();
     return this.http
       .patch(environment.updateFormationUrl + `/${formationId}`, formationData)
       .pipe(
@@ -50,7 +43,6 @@ export class FormationService {
   }
 
   addFormation(formationDetails: any) {
-    this.authGuard.canActivate();
     return this.http
       .post<any>(environment.addFormationUrl, formationDetails)
       .pipe(

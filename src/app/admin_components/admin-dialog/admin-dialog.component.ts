@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
@@ -9,15 +9,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 export class AdminDialogComponent implements OnInit {
   dialogTitle: string;
   photoData: any;
-  cv: any;
+  Cv: any;
   constructor(
     public dialogRef: MatDialogRef<AdminDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.dialogTitle = data?.dialogTitle;
     this.photoData = this.data?.photo;
-    this.cv = this.data?.cv;
-    this.updateColumns();
+    this.Cv = this.data?.Cv;
   }
 
   closeDialog(): void {
@@ -37,31 +36,9 @@ export class AdminDialogComponent implements OnInit {
         key !== "updatedAt" &&
         key !== "sessions" &&
         key !== "photo" &&
-        key !== "cv"
+        key !== "Cv"
     );
   }
-
-  isObject(val: any): boolean {
-    return val instanceof Object;
-  }
-
-  columnClass: string = "column-3"; // Default to 3 columns
-  @HostListener("window:resize", ["$event"])
-  onResize(event: any) {
-    this.updateColumns();
-  }
-
-  updateColumns() {
-    const screenWidth = window.innerWidth;
-    if (screenWidth < 768) {
-      this.columnClass = "column-1";
-    } else if (screenWidth < 992) {
-      this.columnClass = "column-2";
-    } else {
-      this.columnClass = "column-3";
-    }
-  }
-  // Assuming you receive photo data from the service
 
   ngOnInit(): void {}
 }

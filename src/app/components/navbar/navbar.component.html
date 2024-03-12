@@ -62,9 +62,11 @@
             class="dropdown-menu dropdown-menu-right"
             aria-labelledby="menuProfile"
           >
-            <a class="dropdown-item" href="">Mike John</a>
+            <span class="dropdown-item disabled title">{{ username }}</span>
             <a class="dropdown-item" href="#/admin/profile">Profile</a>
-            <a class="dropdown-item" href="#" (click)="logout()">Sign out</a>
+            <a class="dropdown-item" href="#" (click)="logout()"
+              >Se Déconnecter</a
+            >
           </div>
         </li>
       </ul>

@@ -69,7 +69,7 @@ export class AdminFormationDialogComponent implements OnInit {
       this.notifService.showNotificationerror(
         "top",
         "center",
-        "Formulair invalid",
+        "Formulaire invalide",
         "danger"
       );
       return;
@@ -93,7 +93,7 @@ export class AdminFormationDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Formation added successful",
+          "Formation ajoutée réussie",
           "success"
         );
         this.formationAdded.emit();
@@ -119,7 +119,7 @@ export class AdminFormationDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Formation updated successfully",
+          "Formation mise à jour avec succès",
           "success"
         );
         this.formationAdded.emit();

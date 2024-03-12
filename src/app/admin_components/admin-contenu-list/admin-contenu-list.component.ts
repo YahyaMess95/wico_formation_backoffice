@@ -13,7 +13,7 @@ export class AdminContenuListComponent implements AfterViewInit {
   constructor() {}
 
   displayedColumns: string[] = ["position", "nom", "description", "tags"];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<TableColumn>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
@@ -36,14 +36,14 @@ interface comment {
   viewValue: string;
 }
 
-export interface PeriodicElement {
+export interface TableColumn {
   nom: string;
   position: number;
   description: string;
   tags: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
+const ELEMENT_DATA: TableColumn[] = [
   {
     position: 1,
     nom: "Hydrogen",

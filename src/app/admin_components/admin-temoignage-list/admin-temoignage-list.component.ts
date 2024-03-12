@@ -14,9 +14,17 @@ import { PhotoService } from "app/Services/photo.service";
   templateUrl: "./admin-temoignage-list.component.html",
   styleUrls: ["./admin-temoignage-list.component.css"],
 })
-export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
+export class AdminTemoignageListComponent implements AfterViewInit {
   value: string = "";
   isLoading: boolean = true;
+  pageSizeOptions: number[] = [5, 10, 20];
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalUsers: number = 0;
+
+  dataSource = new MatTableDataSource<TableColumn>([]);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(
     public dialog: MatDialog,
     private temoignageService: TemoignageService,
@@ -24,7 +32,20 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
     private sanitizer: DomSanitizer,
     private photoService: PhotoService
   ) {}
+  displayedColumns: string[] = [
+    "name",
+    "prenom",
+    "source",
+    "mention",
+    "competences",
+    "domaine",
+    "cv",
+    "action",
+  ];
 
+  ngAfterViewInit() {
+    this.getAllTemoignages();
+  }
   applyFilter() {
     this.dataSource.filter = this.value.trim().toLowerCase();
   }
@@ -37,23 +58,9 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
     const dialogRef = this.dialog.open(AdminTemoignageDialogComponent);
 
     dialogRef.componentInstance.temoignageAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllTemoignages();
     });
-  }
-  displayedColumns: string[] = [
-    "name",
-    "prenom",
-    "source",
-    "mention",
-    "competences",
-    "domaine",
-    "cv",
-    "action",
-  ];
-  dataSource = new MatTableDataSource<PeriodicElement>([]);
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   openDialog(data: any): void {
@@ -62,69 +69,93 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.componentInstance.temoignageAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllTemoignages();
     });
   }
 
   openDetails(element: any) {
-    const dialogRef = this.dialog.open(AdminDialogComponent, {
-      data: element,
+    const newKeys = [
+      "_id",
+      "Nom",
+      "Prénom",
+      "Source",
+      "Mention",
+      "Compétence",
+      "Domain",
+      "Commentaire",
+      "photo",
+      "Cv",
+      "Date de création",
+      "updatedAt",
+      "__v",
+    ];
+    const temoignagedetails = {};
+
+    Object.keys(element).forEach((key, index) => {
+      const newKey = newKeys[index] || key;
+      temoignagedetails[newKey] = element[key];
     });
-    console.log("Details for:", element);
+
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: temoignagedetails,
+    });
   }
 
-  ngOnInit() {
+  onPageChange(event: any) {
+    this.isLoading = true;
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
     this.getAllTemoignages();
   }
 
   getAllTemoignages() {
-    this.temoignageService.getAllTemoignages().subscribe(
-      (response) => {
-        const temoignagePromises: Promise<any>[] = response.temoignage.map(
-          async (temoignage: any) => {
-            try {
-              const photoData = await this.fetchPhoto(temoignage.photo);
-              const imageUrl = this.getImageUrl(photoData);
-              temoignage.photo = imageUrl;
-              temoignage.createdAt = new Date(
-                temoignage.createdAt
-              ).toLocaleDateString();
-              return temoignage;
-            } catch (error) {
-              console.error("Error fetching photo:", error);
-              return temoignage; // Return the temoignage object even if there's an error
-            }
-          }
-        );
+    this.temoignageService
+      .getAllTemoignages(this.currentPage, this.pageSize)
+      .subscribe(
+        (response) => {
+          const temoignagePromises: Promise<any>[] =
+            response.temoignage.results.map(async (temoignage: any) => {
+              try {
+                const photoData = await this.fetchPhoto(temoignage.photo);
+                const imageUrl = this.getImageUrl(photoData);
+                temoignage.photo = imageUrl;
+                temoignage.createdAt = new Date(
+                  temoignage.createdAt
+                ).toLocaleDateString();
+                return temoignage;
+              } catch (error) {
+                console.error("Error fetching photo:", error);
+                return temoignage; // Return the temoignage object even if there's an error
+              }
+            });
 
-        Promise.all(temoignagePromises).then((updatedtemoignages) => {
-          this.dataSource.data = updatedtemoignages;
-          this.isLoading = false;
-        });
-      },
-      (error) => {
-        console.error("Error fetching temoignages:", error);
-      }
-    );
+          Promise.all(temoignagePromises).then((updatedtemoignages) => {
+            this.dataSource.data = updatedtemoignages;
+            this.isLoading = false;
+          });
+          this.totalUsers = response.temoignage.totalCount;
+        },
+        (error) => {
+          console.error("Error fetching temoignages:", error);
+        }
+      );
   }
 
   fetchPhoto(photoName: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.photoService.getPhoto(photoName).subscribe(
         (data) => {
-          resolve(data); // Resolve the promise with the fetched photo data
+          resolve(data);
         },
         (error) => {
-          reject(error); // Reject the promise if there's an error
+          reject(error);
         }
       );
     });
   }
   getImageUrl(photoData: any): SafeUrl {
-    // console.log("Received photoData:", photoData);
-
     if (photoData instanceof Blob) {
-      // If photoData is already a Blob object, proceed with creating the URL
       const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
         window.URL.createObjectURL(photoData)
       );
@@ -139,10 +170,11 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
     const confirmed = await this.notifService.showNotificationconfirmation(
       "top",
       "center",
-      "Are you sure you want to remove this User ?",
+      "Etes-vous sûr de vouloir supprimer cet utilisateur ?",
       "confirm"
     );
     if (confirmed) {
+      this.isLoading = true;
       this.temoignageService.removeTemoignage(temoignageId).subscribe(
         () => {
           this.getAllTemoignages();
@@ -150,7 +182,7 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            "User deleted successful",
+            "Utilisateur supprimé avec succès",
             "success"
           );
         },
@@ -168,7 +200,7 @@ export class AdminTemoignageListComponent implements AfterViewInit, OnInit {
   }
 }
 
-export interface PeriodicElement {
+export interface TableColumn {
   name: string;
   prenom: string;
   source: string;

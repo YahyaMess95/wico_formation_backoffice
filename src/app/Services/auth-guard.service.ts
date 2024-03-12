@@ -1,19 +1,28 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+} from "@angular/router";
 import { AuthService } from "./auth.service";
 import { NotifService } from "./notif.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthGuardService implements CanActivate {
+export class AuthGuardService implements CanActivateChild {
   constructor(
     private authService: AuthService,
     private router: Router,
     private notifService: NotifService
   ) {}
 
-  canActivate(): boolean {
+  canActivateChild(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
     if (this.authService.isAuthenticated()) {
       return true;
     } else {
@@ -22,7 +31,7 @@ export class AuthGuardService implements CanActivate {
       this.notifService.showNotificationerror(
         "top",
         "center",
-        "Admin is not authenticated!",
+        "L'utilisateur n'est pas authentifié !",
         "danger"
       );
       return false;

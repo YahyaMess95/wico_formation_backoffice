@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span>{{ data ? "Modify Session" : "Add Session" }}</span>
+  <span>{{ data ? "Modifier la session" : "Ajouter une session" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -14,10 +14,10 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Name</mat-label>
+          <mat-label>Entrez le nom</mat-label>
           <input
             matInput
-            placeholder="Name"
+            placeholder="Nom"
             type="text"
             required
             formControlName="name"
@@ -31,20 +31,20 @@
               fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Name must contain 6 characters.
+            Le nom doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['name'] && fI['name'].errors && fI['name'].errors['required']
             "
           >
-            Name is <strong>required</strong>.
+            Le nom est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Choose a Date Debut</mat-label>
+          <mat-label>Choisissez une date de début</mat-label>
           <input
             matInput
             [matDatepicker]="picker"
@@ -60,7 +60,7 @@
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-hint>MM/JJ/AAAA</mat-hint>
 
           <mat-error
             *ngIf="
@@ -69,7 +69,7 @@
               fI['datedeb'].errors['required']
             "
           >
-            Date Debut is <strong>required</strong>.
+            La date de début est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -95,7 +95,7 @@
               fI['organisation'].errors['minlength']
             "
           >
-            Organisation must contain 6 characters.
+            L'organisation doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -104,7 +104,7 @@
               fI['organisation'].errors['required']
             "
           >
-            Organisation is <strong>required</strong>.
+            L'organisation est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -112,10 +112,10 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Maximum number</mat-label>
+          <mat-label>Entrez le nombre maximum</mat-label>
           <input
             matInput
-            placeholder="Maximum number"
+            placeholder="Nombre Maximum"
             type="number"
             required
             formControlName="maxNbr"
@@ -131,7 +131,7 @@
               fI['maxNbr'].errors['minlength']
             "
           >
-            Maximum number must contain 1 characters.
+            Le nombre maximum doit contenir <strong>1 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -140,30 +140,32 @@
               fI['maxNbr'].errors['required']
             "
           >
-            Maximum number is <strong>required</strong>.
+            Le nombre maximum est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Select Type</mat-label>
+          <mat-label>Sélectionner le type</mat-label>
           <mat-select formControlName="type" required>
             <mat-option *ngFor="let type of typeList" [value]="type">{{
               type
             }}</mat-option>
           </mat-select>
           <mat-error *ngIf="fI.types?.errors?.required"
-            >Type is required</mat-error
+            >Le type est <strong>obligatoire</strong>.</mat-error
           >
         </mat-form-field>
       </div>
       <div class="col-md-4">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="mat-form-field-custom">
+          <mat-label>Photo</mat-label>
           <input
             matInput
             type="file"
             class="file-input"
             (change)="onFileSelected($event)"
+            accept="image/*"
             #fileUpload
             [ngClass]="{
               'is-invalid': submittedIn && fI['photo'] && fI['photo'].errors
@@ -183,7 +185,7 @@
               fI['photo'].errors['required']
             "
           >
-            Image is <strong>required</strong>.
+            La photo est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -224,7 +226,7 @@
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      {{ data ? "Modify Session" : "Add Session" }}
+      {{ data ? "Modifier la session" : "Ajouter une session" }}
     </button>
     <div class="clearfix"></div>
   </form>

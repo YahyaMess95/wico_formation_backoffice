@@ -6,8 +6,9 @@ import {
   AbstractControl,
 } from "@angular/forms";
 import { Router } from "@angular/router";
+import { AuthService } from "app/Services/auth.service";
 import { NotifService } from "app/Services/notif.service";
-import { AdminService } from "app/Services/admin.service";
+import { UserService } from "app/Services/user.service";
 
 @Component({
   selector: "app-loginpage",
@@ -20,8 +21,11 @@ export class LoginpageComponent implements OnInit {
   submitted = false;
   fileName = "";
   ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(["/admin"]);
+    }
     this.loginForm = this.formBuilder.group({
-      name: ["", [Validators.required, Validators.minLength(3)]],
+      login: ["", [Validators.required, Validators.minLength(3)]],
       password: ["", [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -29,7 +33,7 @@ export class LoginpageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private notifService: NotifService,
-    private adminService: AdminService
+    private authService: AuthService
   ) {}
 
   login() {
@@ -38,15 +42,16 @@ export class LoginpageComponent implements OnInit {
       return;
     }
 
-    const { name, password } = this.loginForm.value;
+    const { login, password } = this.loginForm.value;
     this.isLoading = false;
-    this.adminService.login(name, password).subscribe(
+    this.authService.login(login, password).subscribe(
       (response) => {
-        console.log("Login successful", response);
+        console.log("Login successfully", response);
         this.loginForm.reset();
         this.router.navigate(["/admin"]);
       },
       (error) => {
+        this.isLoading = true;
         console.error("Login failed", error);
         this.notifService.showNotificationerror(
           "top",

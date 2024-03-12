@@ -15,10 +15,15 @@ import { PhotoService } from "app/Services/photo.service";
   templateUrl: "./admin-user-list.component.html",
   styleUrls: ["./admin-user-list.component.css"],
 })
-export class AdminUserListComponent implements AfterViewInit, OnInit {
+export class AdminUserListComponent implements AfterViewInit {
   value: string = "";
   isLoading: boolean = true;
   photoData: any;
+  pageSizeOptions: number[] = [5, 10, 20];
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalUsers: number = 0;
+
   constructor(
     public dialog: MatDialog,
     private adminService: AdminService,
@@ -39,6 +44,7 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     const dialogRef = this.dialog.open(AdminUserListDialogComponent);
 
     dialogRef.componentInstance.userAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllUsers();
     });
   }
@@ -52,12 +58,9 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     "action",
   ];
 
-  dataSource = new MatTableDataSource<PeriodicElement>([]);
+  dataSource = new MatTableDataSource<TableColumn>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngOnInit() {
-    this.getAllUsers();
-  }
   applyCustomStyles: boolean = true;
 
   toggleCustomStyles() {
@@ -65,7 +68,7 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.getAllUsers();
   }
 
   openDialog(data: any): void {
@@ -73,40 +76,82 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
       data: data,
     });
     dialogRef.componentInstance.userAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllUsers();
     });
   }
 
   openDetails(element: any) {
-    const dialogRef = this.dialog.open(AdminDialogComponent, {
-      data: element,
+    const newKeys = [
+      "_id",
+      "sessions",
+      "tokens",
+      "Nom",
+      "Prénom",
+      "Adresse",
+      "E-mail",
+      "Login",
+      "Mot de passe",
+      "Cin",
+      "Rôle",
+      "Source",
+      "photo",
+      "Date de création",
+      "updatedAt",
+      "__v",
+    ];
+    const userdetails = {};
+
+    Object.keys(element).forEach((key, index) => {
+      const newKey = newKeys[index] || key;
+      userdetails[newKey] = element[key];
     });
-    console.log("Details for:", element);
+
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: userdetails,
+    });
+    console.log("Details for:", userdetails);
   }
-
+  onPageChange(event: any) {
+    this.isLoading = true;
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getAllUsers();
+  }
   getAllUsers() {
-    this.adminService.getAllUsers().subscribe(
+    this.adminService.getAllUsers(this.currentPage, this.pageSize).subscribe(
       (response) => {
-        const userPromises: Promise<any>[] = response.user.map(
-          async (user: any) => {
-            try {
-              const photoData = await this.fetchPhoto(user.photo);
-              const imageUrl = this.getImageUrl(photoData);
-              user.photo = imageUrl;
-              user.createdAt = new Date(user.createdAt).toLocaleDateString();
-              return user;
-            } catch (error) {
-              console.error("Error fetching photo:", error);
-              return user; // Return the user object even if there's an error
-            }
-          }
-        );
+        if (
+          response &&
+          response.users.users &&
+          Array.isArray(response.users.users)
+        ) {
+          const userPromises: Promise<any>[] = response.users.users.map(
+            async (user: any) => {
+              try {
+                const photoData = await this.fetchPhoto(user.photo);
+                const imageUrl = this.getImageUrl(photoData);
+                user.photo = imageUrl;
+                user.createdAt = new Date(user.createdAt).toLocaleDateString();
 
-        Promise.all(userPromises).then((updatedUsers) => {
-          this.dataSource.data = updatedUsers;
-          this.isLoading = false;
-        });
+                return user;
+              } catch (error) {
+                console.error("Error fetching photo:", error);
+                return user;
+              }
+            }
+          );
+
+          Promise.all(userPromises).then((updatedUsers) => {
+            this.dataSource.data = updatedUsers;
+            this.isLoading = false;
+          });
+          this.totalUsers = response.users.totalCount;
+        } else {
+          console.error("Invalid response format:", response);
+        }
       },
+
       (error) => {
         console.error("Error fetching users:", error);
       }
@@ -117,19 +162,16 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     return new Promise((resolve, reject) => {
       this.photoService.getPhoto(photoName).subscribe(
         (data) => {
-          resolve(data); // Resolve the promise with the fetched photo data
+          resolve(data);
         },
         (error) => {
-          reject(error); // Reject the promise if there's an error
+          reject(error);
         }
       );
     });
   }
   getImageUrl(photoData: any): SafeUrl {
-    // console.log("Received photoData:", photoData);
-
     if (photoData instanceof Blob) {
-      // If photoData is already a Blob object, proceed with creating the URL
       const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
         window.URL.createObjectURL(photoData)
       );
@@ -143,10 +185,11 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     const confirmed = await this.notifService.showNotificationconfirmation(
       "top",
       "center",
-      "Are you sure you want to remove this User ?",
+      "Etes-vous sûr de vouloir supprimer cet utilisateur ?",
       "confirm"
     );
     if (confirmed) {
+      this.isLoading = true;
       this.adminService.removeUser(userId).subscribe(
         () => {
           this.getAllUsers();
@@ -154,7 +197,7 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            "User deleted successful",
+            "Utilisateur supprimé avec succès",
             "success"
           );
         },
@@ -171,7 +214,7 @@ export class AdminUserListComponent implements AfterViewInit, OnInit {
     }
   }
 }
-export interface PeriodicElement {
+export interface TableColumn {
   name: string;
   prenom: string;
   email: string;

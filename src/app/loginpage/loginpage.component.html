@@ -13,7 +13,7 @@
                   alt="W Logo"
                 />
               </div>
-              <h3 class="login-heading">Welcome back!</h3>
+              <h3 class="login-heading">Bienvenue !</h3>
 
               <!-- Sign In Form -->
               <form
@@ -23,46 +23,47 @@
               >
                 <div class="form-floating mb-3">
                   <mat-form-field appearance="outline">
-                    <mat-label>Enter Username</mat-label>
+                    <mat-label>Saisissez votre nom d'utilisateur</mat-label>
                     <input
                       matInput
-                      placeholder="Username"
+                      placeholder="Nom d'utilisateur"
                       type="text"
-                      formControlName="name"
-                      id="name"
+                      formControlName="login"
+                      id="login"
                       required
                       [ngClass]="{
                         'is-invalid':
-                          submitted && fI['name'] && fI['name'].errors
+                          submitted && fI['login'] && fI['login'].errors
                       }"
                     />
                     <mat-error
                       *ngIf="
-                        fI['name'] &&
-                        fI['name'].errors &&
-                        fI['name'].errors['minlength']
+                        fI['login'] &&
+                        fI['login'].errors &&
+                        fI['login'].errors['minlength']
                       "
                     >
-                      Password must contain at least 3 characters.
+                      Le nom d'utilisateur doit contenir au moins
+                      <strong>3 caractères</strong>.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        fI['name'] &&
-                        fI['name'].errors &&
-                        fI['name'].errors['required']
+                        fI['login'] &&
+                        fI['login'].errors &&
+                        fI['login'].errors['required']
                       "
                     >
-                      Email address is <strong>required</strong>.
+                      Le nom d'utilisateur est <strong>obligatoire</strong>.
                     </mat-error>
                   </mat-form-field>
                 </div>
 
                 <div class="form-floating mb-3">
                   <mat-form-field appearance="outline">
-                    <mat-label>Enter Password</mat-label>
+                    <mat-label>Entrer le mot de passe</mat-label>
                     <input
                       matInput
-                      placeholder="Password"
+                      placeholder="Mot de Passe"
                       type="password"
                       formControlName="password"
                       id="password"
@@ -79,7 +80,8 @@
                         fI['password'].errors['minlength']
                       "
                     >
-                      Password must contain at least 6 characters.
+                      Le mot de passe doit contenir au moins
+                      <strong>6 caractères</strong>.
                     </mat-error>
                     <mat-error
                       *ngIf="
@@ -88,7 +90,7 @@
                         fI['password'].errors['required']
                       "
                     >
-                      Password is <strong>required</strong>.
+                      Le mot de passe est <strong>obligatoire</strong>.
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -104,7 +106,7 @@
                       <span class="form-check-sign">
                         <span class="check"></span>
                       </span>
-                      <label> Remember password </label>
+                      <label> Se souvenir du mot de passe </label>
                     </label>
                   </div>
                 </div>
@@ -114,10 +116,10 @@
                     class="btn btn-lg btn-wico btn-login text-uppercase fw-bold mb-2"
                     type="submit"
                   >
-                    Sign in
+                    Se connecter
                   </button>
                   <div class="text-center">
-                    <a class="small" href="#">Forgot password?</a>
+                    <a class="small" href="#">Mot de passe oublié?</a>
                   </div>
                 </div>
               </form>

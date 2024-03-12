@@ -1,39 +1,24 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import { tap, catchError, throwError, Observable } from "rxjs";
-import { AuthGuardService } from "./auth-guard.service";
+import { catchError, throwError } from "rxjs";
 import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService {
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private authGuard: AuthGuardService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  login(name: string, password: string) {
-    return this.http.post<any>(environment.loginUrl, { name, password }).pipe(
-      tap((response: any) => {
-        if (response && response.admin.token) {
-          this.authService.setToken(response.admin.token);
-        }
-      }),
-      catchError((error: any) => {
-        return this.handleError(error);
-      })
-    );
+  logout() {
+    this.authService.logout();
   }
 
   getAllUsers() {
-    this.authGuard.canActivate();
     return this.http.get<any>(environment.allUsersUrl).pipe(
       catchError((error: any) => {
         if (error.status === 401) {
-          this.authService.logout();
+          this.logout();
         }
         return this.handleError(error);
       })
@@ -41,7 +26,6 @@ export class UserService {
   }
 
   removeUser(userId: string) {
-    this.authGuard.canActivate();
     return this.http.delete(environment.deleteUserUrl + `/${userId}`).pipe(
       catchError((error: any) => {
         return this.handleError(error);
@@ -50,7 +34,6 @@ export class UserService {
   }
 
   updateUser(userId: string, userDetails: FormData) {
-    this.authGuard.canActivate();
     // check
     const fileKeys = [];
 
@@ -74,8 +57,6 @@ export class UserService {
   }
 
   addUser(userDetails: FormData) {
-    this.authGuard.canActivate();
-
     return this.http.post<any>(environment.addUserUrl, userDetails).pipe(
       catchError((error: any) => {
         if (error.status === 401) {

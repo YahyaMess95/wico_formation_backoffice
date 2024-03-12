@@ -5,7 +5,7 @@
         <div class="search-box col-md-6 pull-left custom-form-field">
           <mat-form-field class="example-form-field" appearance="outline">
             <mat-icon matPrefix>search</mat-icon>
-            <mat-label>Search</mat-label>
+            <mat-label>Recherche</mat-label>
             <input
               matInput
               type="text"
@@ -28,7 +28,7 @@
           (click)="openDialogAddUser()"
           class="btn btn-wico pull-right"
         >
-          Add User
+          Ajouter un utilisateur
         </button>
       </div>
       <div class="col-md-12">
@@ -37,20 +37,20 @@
             class="card-header card-header-wicocolor"
             style="display: flex; align-items: center"
           >
-            <h4 class="card-title" style="flex: 1">User List</h4>
+            <h4 class="card-title" style="flex: 1">Liste d'utilisateur</h4>
           </div>
           <div class="card-body">
             <div class="mat-elevation-z">
               <table mat-table *ngIf="!isLoading" [dataSource]="dataSource">
                 <!-- name Column -->
                 <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef>First Name</th>
+                  <th mat-header-cell *matHeaderCellDef>Prénom</th>
                   <td mat-cell *matCellDef="let element">{{ element.name }}</td>
                 </ng-container>
 
                 <!-- prenom Column -->
                 <ng-container matColumnDef="prenom">
-                  <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                  <th mat-header-cell *matHeaderCellDef>Nom</th>
                   <td mat-cell *matCellDef="let element">
                     {{ element.prename }}
                   </td>
@@ -58,7 +58,7 @@
 
                 <!-- email Column -->
                 <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <th mat-header-cell *matHeaderCellDef>E-mail</th>
                   <td mat-cell *matCellDef="let element">
                     {{ element.email }}
                   </td>
@@ -66,7 +66,7 @@
 
                 <!-- roles Column -->
                 <ng-container matColumnDef="roles">
-                  <th mat-header-cell *matHeaderCellDef>Roles</th>
+                  <th mat-header-cell *matHeaderCellDef>Rôle</th>
                   <td mat-cell *matCellDef="let element">
                     {{ element.roles }}
                   </td>
@@ -74,7 +74,7 @@
 
                 <!-- createdAt Column -->
                 <ng-container matColumnDef="createdAt">
-                  <th mat-header-cell *matHeaderCellDef>CreatedAt</th>
+                  <th mat-header-cell *matHeaderCellDef>Date de création</th>
                   <td mat-cell *matCellDef="let element">
                     {{ element.createdAt }}
                   </td>
@@ -124,9 +124,13 @@
               </div>
 
               <mat-paginator
-                [pageSizeOptions]="[5, 10, 20]"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                [length]="totalUsers"
+                [pageIndex]="currentPage - 1"
                 showFirstLastButtons
-                aria-label="Select page of periodic elements"
+                aria-label="Select page  "
+                (page)="onPageChange($event)"
               >
               </mat-paginator>
             </div>

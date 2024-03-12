@@ -12,18 +12,19 @@ import { NotifService } from "app/Services/notif.service";
   templateUrl: "./admin-seance-list.component.html",
   styleUrls: ["./admin-seance-list.component.css"],
 })
-export class AdminSeanceListComponent implements AfterViewInit, OnInit {
+export class AdminSeanceListComponent implements AfterViewInit {
   value: string = "";
   isLoading: boolean = true;
+  pageSizeOptions: number[] = [5, 10, 20];
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalUsers: number = 0;
+
   constructor(
     public dialog: MatDialog,
     private seanceService: SeanceService,
     private notifService: NotifService
   ) {}
-
-  ngOnInit() {
-    this.getAllSeances();
-  }
 
   applyFilter() {
     this.dataSource.filter = this.value.trim().toLowerCase();
@@ -35,17 +36,18 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
 
   displayedColumns: string[] = ["name", "lieu", "link", "date", "action"];
 
-  dataSource = new MatTableDataSource<PeriodicElement>([]);
+  dataSource = new MatTableDataSource<TableColumn>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.getAllSeances();
   }
 
   openDialogAddSeance() {
     const dialogRef = this.dialog.open(AdminSeanceDialogComponent);
 
     dialogRef.componentInstance.seanceAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllSeances();
     });
   }
@@ -55,30 +57,63 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.componentInstance.seanceAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllSeances();
     });
   }
 
   openDetails(element: any) {
-    const dialogRef = this.dialog.open(AdminDialogComponent, {
-      data: element,
+    const newKeys = [
+      "_id",
+      "Nom",
+      "Date",
+      "Lieu",
+      "Lien",
+      "Commentaire",
+      "Date de création",
+      "updatedAt",
+      "__v",
+    ];
+    const seancedetails = {};
+
+    Object.keys(element).forEach((key, index) => {
+      const newKey = newKeys[index] || key;
+      seancedetails[newKey] = element[key];
     });
-    console.log("Details for:", element);
+
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: seancedetails,
+    });
   }
-
+  onPageChange(event: any) {
+    this.isLoading = true;
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getAllSeances();
+  }
   getAllSeances() {
-    this.seanceService.getAllSeances().subscribe(
+    this.seanceService.getAllSeances(this.currentPage, this.pageSize).subscribe(
       (response) => {
-        console.log(response.seance);
-        const seances: PeriodicElement[] = response.seance.map(
-          (seance: any, index: number) => ({
-            ...seance,
-            createdAt: new Date(seance.createdAt).toLocaleDateString(), // Format date
-          })
-        );
+        if (
+          response &&
+          response.seance.results &&
+          Array.isArray(response.seance.results)
+        ) {
+          const seances: TableColumn[] = response.seance.results.map(
+            (seance: any, index: number) => ({
+              ...seance,
+              date: new Date(seance.date).toLocaleDateString(),
+              createdAt: new Date(seance.createdAt).toLocaleDateString(), // Format date
+            })
+          );
 
-        this.dataSource.data = seances;
-        this.isLoading = false;
+          this.dataSource.data = seances;
+          this.isLoading = false;
+
+          this.totalUsers = response.seance.totalCount;
+        } else {
+          console.error("Invalid response format:", response);
+        }
       },
       (error) => {
         console.error("Error fetching seances:", error);
@@ -90,10 +125,11 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
     const confirmed = await this.notifService.showNotificationconfirmation(
       "top",
       "center",
-      "Are you sure you want to remove this Seance ?",
+      "Êtes-vous sûr de vouloir supprimer cette séance ?",
       "confirm"
     );
     if (confirmed) {
+      this.isLoading = true;
       this.seanceService.removeSeance(sessionId).subscribe(
         () => {
           this.getAllSeances();
@@ -101,7 +137,7 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            "Seance deleted successful",
+            "Séance supprimée avec succès",
             "success"
           );
         },
@@ -119,7 +155,7 @@ export class AdminSeanceListComponent implements AfterViewInit, OnInit {
   }
 }
 
-export interface PeriodicElement {
+export interface TableColumn {
   name: string;
   lieu: string;
   link: string;

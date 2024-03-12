@@ -14,9 +14,14 @@ import { PhotoService } from "app/Services/photo.service";
   templateUrl: "./admin-session-list.component.html",
   styleUrls: ["./admin-session-list.component.css"],
 })
-export class AdminSessionListComponent implements AfterViewInit, OnInit {
+export class AdminSessionListComponent implements AfterViewInit {
   value: string = "";
   isLoading: boolean = true;
+  pageSizeOptions: number[] = [5, 10, 20];
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalUsers: number = 0;
+
   constructor(
     public dialog: MatDialog,
     private sessionService: SessionService,
@@ -25,9 +30,6 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     private photoService: PhotoService
   ) {}
 
-  ngOnInit() {
-    this.getAllSessions();
-  }
   applyFilter() {
     this.dataSource.filter = this.value.trim().toLowerCase();
   }
@@ -44,17 +46,18 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     "createdAt",
     "action",
   ];
-  dataSource = new MatTableDataSource<PeriodicElement>([]);
+  dataSource = new MatTableDataSource<TableColumn>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.getAllSessions();
   }
 
   openDialogAddSession() {
     const dialogRef = this.dialog.open(AdminSessionDialogComponent);
 
     dialogRef.componentInstance.sessionAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllSessions();
     });
   }
@@ -65,47 +68,85 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.componentInstance.sessionAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllSessions();
     });
   }
 
   openDetails(element: any) {
-    const dialogRef = this.dialog.open(AdminDialogComponent, {
-      data: element,
+    const newKeys = [
+      "_id",
+      "Formations",
+      "Seances",
+      "Nom",
+      "Date de début",
+      "Type",
+      "Organisation",
+      "Nombre maximum",
+      "photo",
+      "Date de création",
+      "updatedAt",
+      "__v",
+    ];
+    const sessiondetails = {};
+
+    Object.keys(element).forEach((key, index) => {
+      const newKey = newKeys[index] || key;
+      sessiondetails[newKey] = element[key];
     });
-    console.log("Details for:", element);
+
+    const dialogRef = this.dialog.open(AdminDialogComponent, {
+      data: sessiondetails,
+    });
+  }
+
+  onPageChange(event: any) {
+    this.isLoading = true;
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getAllSessions();
   }
 
   getAllSessions() {
-    this.sessionService.getAllSessions().subscribe(
-      (response) => {
-        console.log(response.session);
-        const userPromises: Promise<any>[] = response.session.map(
-          async (session: any) => {
-            try {
-              const photoData = await this.fetchPhoto(session.photo);
-              const imageUrl = this.getImageUrl(photoData);
-              session.photo = imageUrl;
-              session.createdAt = new Date(
-                session.createdAt
-              ).toLocaleDateString();
-              return session;
-            } catch (error) {
-              console.error("Error fetching photo:", error);
-              return session; // Return the session object even if there's an error
-            }
-          }
-        );
+    this.sessionService
+      .getAllSessions(this.currentPage, this.pageSize)
+      .subscribe(
+        (response) => {
+          if (
+            response &&
+            response.session.results &&
+            Array.isArray(response.session.results)
+          ) {
+            const sessionPromises: Promise<any>[] =
+              response.session.results.map(async (session: any) => {
+                try {
+                  const photoData = await this.fetchPhoto(session.photo);
+                  const imageUrl = this.getImageUrl(photoData);
+                  session.photo = imageUrl;
+                  session.createdAt = new Date(
+                    session.createdAt
+                  ).toLocaleDateString();
+                  return session;
+                } catch (error) {
+                  console.error("Error fetching photo:", error);
+                  return session; // Return the session object even if there's an error
+                }
+              });
 
-        Promise.all(userPromises).then((updatedSessions) => {
-          this.dataSource.data = updatedSessions;
-          this.isLoading = false;
-        });
-      },
-      (error) => {
-        console.error("Error fetching sessions:", error);
-      }
-    );
+            Promise.all(sessionPromises).then((updatedSessions) => {
+              this.dataSource.data = updatedSessions;
+              this.isLoading = false;
+            });
+            this.totalUsers = response.session.totalCount;
+            console.log("totalUsers: " + this.totalUsers);
+          } else {
+            console.error("Invalid response format:", response);
+          }
+        },
+        (error) => {
+          console.error("Error fetching sessions:", error);
+        }
+      );
   }
 
   fetchPhoto(photoName: string): Promise<any> {
@@ -139,10 +180,11 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
     const confirmed = await this.notifService.showNotificationconfirmation(
       "top",
       "center",
-      "Are you sure you want to remove this Session ?",
+      "Etes-vous sûr de vouloir supprimer cette session ?",
       "confirm"
     );
     if (confirmed) {
+      this.isLoading = true;
       this.sessionService.removeSession(sessionId).subscribe(
         () => {
           this.getAllSessions();
@@ -150,7 +192,7 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            "Session deleted successful",
+            "Session supprimée avec succès",
             "success"
           );
         },
@@ -168,7 +210,7 @@ export class AdminSessionListComponent implements AfterViewInit, OnInit {
   }
 }
 
-export interface PeriodicElement {
+export interface TableColumn {
   name: string;
   organisation: string;
   maxNbr: number;

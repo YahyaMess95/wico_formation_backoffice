@@ -1,9 +1,10 @@
-// const url = "https://backend-wico-formation.onrender.com";
-const url = "http://localhost:3000";
+const url = "https://backend-wico-formation.onrender.com";
+// const url = "http://localhost:3000";
 export const environment = {
   production: false,
   // serveur url
-  serverUrl: "http://localhost:3000",
+  serverUrl: "https://backend-wico-formation.onrender.com",
+  // serverUrl: "http://localhost:3000",
   // loginurl
   loginUrl: url + "/public/login",
   // user url

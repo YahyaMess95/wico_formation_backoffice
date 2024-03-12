@@ -67,7 +67,7 @@ export class AdminSeanceDialogComponent implements OnInit {
       this.notifService.showNotificationerror(
         "top",
         "center",
-        "Formulair invalid",
+        "Formulaire invalide",
         "danger"
       );
       return;
@@ -91,7 +91,7 @@ export class AdminSeanceDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Session added successful",
+          "Session ajoutée avec succès",
           "success"
         );
         this.seanceAdded.emit();
@@ -117,7 +117,7 @@ export class AdminSeanceDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Session updated successfully",
+          "Session mise à jour avec succès",
           "success"
         );
         this.seanceAdded.emit();

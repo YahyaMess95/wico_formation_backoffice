@@ -2,39 +2,18 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { catchError, tap, throwError } from "rxjs";
 import { AuthService } from "./auth.service";
-import { AuthGuardService } from "./auth-guard.service";
 import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: "root",
 })
 export class AdminService {
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private authGuard: AuthGuardService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  login(name: string, password: string) {
-    return this.http.post<any>(environment.loginUrl, { name, password }).pipe(
-      tap((response: any) => {
-        if (response && response.admin.token) {
-          this.authService.setToken(response.admin.token);
-        }
-      }),
-      catchError((error: any) => {
-        return this.handleError(error);
-      })
-    );
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  getAllUsers() {
-    this.authGuard.canActivate();
-    return this.http.get<any>(environment.allUsersUrl).pipe(
+  getAllUsers(page: number, pageSize: number) {
+    const url = `${environment.allUsersUrl}?page=${page}&pageSize=${pageSize}`;
+    // console.log("page: " + page + " pageSize: " + pageSize);
+    return this.http.get<any>(url).pipe(
       catchError((error: any) => {
         if (error.status === 401) {
           this.authService.logout();
@@ -45,7 +24,6 @@ export class AdminService {
   }
 
   removeUser(userId: string) {
-    this.authGuard.canActivate();
     return this.http.delete(environment.deleteUserUrl + `/${userId}`).pipe(
       catchError((error: any) => {
         return this.handleError(error);
@@ -54,7 +32,6 @@ export class AdminService {
   }
 
   updateUser(userId: string, userData: any) {
-    this.authGuard.canActivate();
     return this.http
       .patch(environment.updateUserUrl + `/${userId}`, userData)
       .pipe(
@@ -65,7 +42,6 @@ export class AdminService {
   }
 
   addUser(userDetails: any) {
-    this.authGuard.canActivate();
     return this.http.post<any>(environment.addUserUrl, userDetails).pipe(
       catchError((error: any) => {
         if (error.status === 401) {

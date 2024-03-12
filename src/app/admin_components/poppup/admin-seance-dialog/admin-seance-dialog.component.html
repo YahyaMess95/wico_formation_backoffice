@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span> {{ data ? "Modify Seance" : "Add Seance" }}</span>
+  <span> {{ data ? "Modifier la séance" : "Ajouter une séance" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -14,10 +14,10 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Name</mat-label>
+          <mat-label>Entrez le nom</mat-label>
           <input
             matInput
-            placeholder="Name"
+            placeholder="Nom"
             type="text"
             required
             formControlName="name"
@@ -31,20 +31,20 @@
               fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Name must contain 3 characters.
+            Le nom doit contenir <strong>3 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['name'] && fI['name'].errors && fI['name'].errors['required']
             "
           >
-            Name is <strong>required</strong>.
+            Le nom est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Lieu</mat-label>
+          <mat-label>Entrez le lieu</mat-label>
           <input
             matInput
             placeholder="Lieu"
@@ -61,23 +61,23 @@
               fI['lieu'] && fI['lieu'].errors && fI['lieu'].errors['minlength']
             "
           >
-            Lieu must contain 3 characters.
+            Lieu doit contenir <strong>3 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['lieu'] && fI['lieu'].errors && fI['lieu'].errors['required']
             "
           >
-            Lieu is <strong>required</strong>.
+            Lieu est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Link</mat-label>
+          <mat-label>Entrez le Lien</mat-label>
           <input
             matInput
-            placeholder="Link"
+            placeholder="Lien"
             type="text"
             required
             formControlName="link"
@@ -92,7 +92,7 @@
               fI['link'] && fI['link'].errors && fI['link'].errors['required']
             "
           >
-            Link is <strong>required</strong>.
+            Le lien est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -100,7 +100,7 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Choose a Date</mat-label>
+          <mat-label>Choisissez une date</mat-label>
           <input
             matInput
             [matDatepicker]="picker"
@@ -117,22 +117,22 @@
               fI['date'] && fI['date'].errors && fI['date'].errors['required']
             "
           >
-            Date is <strong>required</strong>.
+            La date est <strong>obligatoire</strong>.
           </mat-error>
           <mat-datepicker-toggle
             matSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-hint>MM/JJ/AAAA</mat-hint>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Comment</mat-label>
+          <mat-label>Entrez un commentaire</mat-label>
           <textarea
             matInput
-            placeholder="Comment"
+            placeholder="Commentaire"
             type="text"
             required
             formControlName="comment"
@@ -149,7 +149,7 @@
               fI['comment'].errors['minlength']
             "
           >
-            Comment must contain 6 characters.
+            Le commentaire doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -158,14 +158,14 @@
               fI['comment'].errors['required']
             "
           >
-            Comment is <strong>required</strong>.
+            Le commentaire est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      {{ data ? "Modify Seance" : "Add Seance" }}
+      {{ data ? "Modifier la séance" : "Ajouter une séance" }}
     </button>
     <div class="clearfix"></div>
   </form>

@@ -77,7 +77,7 @@ export class AdminSessionDialogComponent implements OnInit {
       this.notifService.showNotificationerror(
         "top",
         "center",
-        "Formulair invalid",
+        "Formulaire invalide",
         "danger"
       );
       return;
@@ -96,6 +96,7 @@ export class AdminSessionDialogComponent implements OnInit {
     const photo = this.fileUpload.nativeElement.files[0];
     const formData = new FormData();
     console.log(sessionDetails);
+
     Object.keys(sessionDetails).forEach((key) => {
       formData.append(key, sessionDetails[key]);
     });
@@ -109,7 +110,7 @@ export class AdminSessionDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Session added successful",
+          "Session ajoutée avec succès",
           "success"
         );
         this.sessionAdded.emit();
@@ -143,7 +144,7 @@ export class AdminSessionDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Session updated successfully",
+          "Session mise à jour avec succès",
           "success"
         );
         this.sessionAdded.emit();
@@ -174,28 +175,30 @@ export class AdminSessionDialogComponent implements OnInit {
 
   type = new FormControl("");
   typeList: string[] = ["Remotely", "Locally"];
-  // load foramtion
   selectedFormationIds: string[] = [];
   loadFormations(): void {
     console.log(this.data?.formations);
 
     if (this.data && this.data.formations) {
-      this.formationService.getAllFormations().subscribe(
+      this.formationService.getAllFormations(0, 0).subscribe(
         (response) => {
           const formationsFromBackend = response.formation;
-          // Check if formations is defined and is an array
           if (Array.isArray(formationsFromBackend)) {
-            // Extract formation names
             this.formations = formationsFromBackend.map((formation) => ({
               id: formation._id,
               name: formation.name,
             }));
-            // Select formations based on this.data.formationsif
 
-            this.selectedFormationIds = this.data.formations;
+            if (Array.isArray(this.data.formations)) {
+              this.selectedFormationIds = this.data.formations;
+            } else {
+              console.error(
+                "this.data.formations is not an array:",
+                this.data.formations
+              );
+            }
           } else {
             console.error("Sessions is not an array:", formationsFromBackend);
-            // Handle the error or set a default value for formationList
           }
         },
         (error) => {
@@ -203,14 +206,13 @@ export class AdminSessionDialogComponent implements OnInit {
         }
       );
     } else {
-      this.formationService.getAllFormations().subscribe(
+      this.formationService.getAllFormations(0, 0).subscribe(
         (response) => {
           const formationsFromBackend = response.formation;
-          // Extract formation names
           this.formations = formationsFromBackend.map((formation) => ({
             id: formation._id,
             name: formation.name,
-            checked: false, // Assuming formations from the database are initially unchecked
+            checked: false,
           }));
         },
         (error) => {
@@ -226,7 +228,7 @@ export class AdminSessionDialogComponent implements OnInit {
     console.log(this.data?.seances);
 
     if (this.data && this.data.seances) {
-      this.seanceService.getAllSeances().subscribe(
+      this.seanceService.getAllSeances(0, 0).subscribe(
         (response) => {
           const seancesFromBackend = response.seance;
           // Check if seances is defined and is an array
@@ -236,8 +238,7 @@ export class AdminSessionDialogComponent implements OnInit {
               id: seance._id,
               name: seance.name,
             }));
-            // Select seances based on this.data.seancesif
-
+            // Select seances based on this.data.seances
             this.selectedSeanceIds = this.data.seances;
           } else {
             console.error("Sessions is not an array:", seancesFromBackend);
@@ -249,7 +250,7 @@ export class AdminSessionDialogComponent implements OnInit {
         }
       );
     } else {
-      this.seanceService.getAllSeances().subscribe(
+      this.seanceService.getAllSeances(0, 0).subscribe(
         (response) => {
           const seancesFromBackend = response.seance;
           // Extract seance names

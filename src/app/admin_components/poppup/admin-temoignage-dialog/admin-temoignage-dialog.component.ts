@@ -85,7 +85,7 @@ export class AdminTemoignageDialogComponent implements OnInit {
       this.notifService.showNotificationerror(
         "top",
         "center",
-        "Formulair invalid",
+        "Formulaire invalide",
         "danger"
       );
       return;
@@ -108,8 +108,6 @@ export class AdminTemoignageDialogComponent implements OnInit {
     });
 
     formData.append("file", photo);
-    // formData.append("file", cv);
-    console.log("User Details:", photo);
 
     this.dialogRef.close();
     this.temoignageService.addTemoignage(formData).subscribe(
@@ -119,7 +117,7 @@ export class AdminTemoignageDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Temoignage added successfully",
+          "Témoignage ajouté avec succès",
           "success"
         );
 
@@ -159,7 +157,7 @@ export class AdminTemoignageDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "Temoignage updated successfully",
+          "Témoignage mis à jour avec succès",
           "success"
         );
         this.temoignageAdded.emit();

@@ -12,16 +12,20 @@ import { NotifService } from "app/Services/notif.service";
   templateUrl: "./admin-formation-list.component.html",
   styleUrls: ["./admin-formation-list.component.css"],
 })
-export class AdminFormationListComponent implements AfterViewInit, OnInit {
+export class AdminFormationListComponent implements AfterViewInit {
   value: string = "";
   isLoading: boolean = true;
+  pageSizeOptions: number[] = [5, 10, 20];
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalUsers: number = 0;
 
   displayedColumns: string[] = ["name", "description", "tags", "action"];
-  dataSource = new MatTableDataSource<PeriodicElement>([]);
+  dataSource = new MatTableDataSource<TableColumn>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.getAllFormations();
   }
 
   constructor(
@@ -29,9 +33,7 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
     private formationService: FormationService,
     private notifService: NotifService
   ) {}
-  ngOnInit() {
-    this.getAllFormations();
-  }
+
   applyFilter() {
     this.dataSource.filter = this.value.trim().toLowerCase();
   }
@@ -44,6 +46,7 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
     const dialogRef = this.dialog.open(AdminFormationDialogComponent);
 
     dialogRef.componentInstance.formationAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllFormations();
     });
   }
@@ -53,45 +56,79 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.componentInstance.formationAdded.subscribe(() => {
+      this.isLoading = true;
       this.getAllFormations();
     });
   }
 
   openDetails(element: any) {
+    const newKeys = [
+      "_id",
+      "Contenus",
+      "Nom",
+      "Description",
+      "Mots clés",
+      "Date de création",
+      "updatedAt",
+      "__v",
+    ];
+    const formationdetails = {};
+
+    Object.keys(element).forEach((key, index) => {
+      const newKey = newKeys[index] || key;
+      formationdetails[newKey] = element[key];
+    });
     const dialogRef = this.dialog.open(AdminDialogComponent, {
-      data: element,
+      data: formationdetails,
     });
     console.log("Details for:", element);
   }
-
+  onPageChange(event: any) {
+    this.isLoading = true;
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getAllFormations();
+  }
   getAllFormations() {
-    this.formationService.getAllFormations().subscribe(
-      (response) => {
-        console.log(response.formation);
-        const formations: PeriodicElement[] = response.formation.map(
-          (formation: any, index: number) => ({
-            ...formation,
-            createdAt: new Date(formation.createdAt).toLocaleDateString(), // Format date
-          })
-        );
+    this.formationService
+      .getAllFormations(this.currentPage, this.pageSize)
+      .subscribe(
+        (response) => {
+          if (
+            response &&
+            response.formation.results &&
+            Array.isArray(response.formation.results)
+          ) {
+            console.log(response.formation);
+            const formations: TableColumn[] = response.formation.results.map(
+              (formation: any, index: number) => ({
+                ...formation,
+                createdAt: new Date(formation.createdAt).toLocaleDateString(), // Format date
+              })
+            );
 
-        this.dataSource.data = formations;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error("Error fetching formations:", error);
-      }
-    );
+            this.dataSource.data = formations;
+            this.isLoading = false;
+            this.totalUsers = response.formation.totalCount;
+          } else {
+            console.error("Invalid response format:", response);
+          }
+        },
+        (error) => {
+          console.error("Error fetching formations:", error);
+        }
+      );
   }
 
   async removeFormation(sessionId: string) {
     const confirmed = await this.notifService.showNotificationconfirmation(
       "top",
       "center",
-      "Are you sure you want to remove this Formation ?",
+      "Êtes-vous sûr de vouloir supprimer cette formation ?",
       "confirm"
     );
     if (confirmed) {
+      this.isLoading = true;
       this.formationService.removeFormation(sessionId).subscribe(
         () => {
           this.getAllFormations();
@@ -99,7 +136,7 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            "Formation deleted successful",
+            "Formation supprimée avec succès",
             "success"
           );
         },
@@ -117,7 +154,7 @@ export class AdminFormationListComponent implements AfterViewInit, OnInit {
   }
 }
 
-export interface PeriodicElement {
+export interface TableColumn {
   name: string;
   description: string;
   tags: string;

@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span>{{ data ? "Modify Formation" : "Add Formation" }}</span>
+  <span>{{ data ? "Modifier la Formation" : "Ajouter une Formation" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -14,10 +14,10 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Name</mat-label>
+          <mat-label>Entrez le nom</mat-label>
           <input
             matInput
-            placeholder="Name"
+            placeholder="Nom"
             type="text"
             required
             formControlName="name"
@@ -31,20 +31,20 @@
               fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Name must contain 3 characters.
+            Le nom doit contenir <strong>3 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['name'] && fI['name'].errors && fI['name'].errors['required']
             "
           >
-            Name is <strong>required</strong>.
+            Le nom est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Enter Description</mat-label>
+          <mat-label>Entrez la description</mat-label>
           <input
             matInput
             placeholder="Description"
@@ -64,7 +64,7 @@
               fI['description'].errors['minlength']
             "
           >
-            Description must contain 8 characters.
+            La description doit contenir <strong>8 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -73,16 +73,16 @@
               fI['description'].errors['required']
             "
           >
-            Description is <strong>required</strong>.
+            La description est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline">
-          <mat-label>Tags</mat-label>
+          <mat-label>Mots clés</mat-label>
           <input
             matInput
-            placeholder="Tags"
+            placeholder="Mots clés"
             type="text"
             required
             formControlName="tags"
@@ -96,14 +96,14 @@
               fI['tags'] && fI['tags'].errors && fI['tags'].errors['minlength']
             "
           >
-            Tags must contain 1 characters.
+            Le mots clé doivent contenir <strong>1 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['tags'] && fI['tags'].errors && fI['tags'].errors['required']
             "
           >
-            Tags is <strong>required</strong>.
+            Mots clés est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -123,7 +123,7 @@
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      {{ data ? "Modify Formation" : "Add Formation" }}
+      {{ data ? "Modifier la Formation" : "Ajouter une Formation" }}
     </button>
     <div class="clearfix"></div>
   </form>

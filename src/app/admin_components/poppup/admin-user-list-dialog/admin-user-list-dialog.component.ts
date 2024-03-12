@@ -41,6 +41,7 @@ export class AdminUserListDialogComponent implements OnInit {
     this.initializeForm();
     console.log(this.sessions);
   }
+
   onFileSelected(event): void {
     const file: File = event.target.files[0];
     this.photoname = file.name;
@@ -103,7 +104,7 @@ export class AdminUserListDialogComponent implements OnInit {
       this.notifService.showNotificationerror(
         "top",
         "center",
-        "Formulair invalid",
+        "Formulaire invalide",
         "danger"
       );
       return;
@@ -135,13 +136,13 @@ export class AdminUserListDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "User added successful",
+          "L'utilisateur a été ajouté avec succès",
           "success"
         );
         this.userAdded.emit();
       },
       (error) => {
-        console.error("User addition failed", error);
+        console.error("L'ajout d'un utilisateur a échoué", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
@@ -171,14 +172,14 @@ export class AdminUserListDialogComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          "User updated successfully",
+          "L'utilisateur a été mis à jour avec succès",
           "success"
         );
 
         this.userAdded.emit();
       },
       (error) => {
-        console.error("User update failed", error);
+        console.error("Échec de la mise à jour utilisateur", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
@@ -207,7 +208,7 @@ export class AdminUserListDialogComponent implements OnInit {
     console.log(this.data?.sessions);
 
     if (this.data && this.data.sessions) {
-      this.sessionService.getAllSessions().subscribe(
+      this.sessionService.getAllSessions(0, 0).subscribe(
         (response) => {
           const sessionsFromBackend = response.session;
           // Check if sessions is defined and is an array
@@ -230,7 +231,7 @@ export class AdminUserListDialogComponent implements OnInit {
         }
       );
     } else {
-      this.sessionService.getAllSessions().subscribe(
+      this.sessionService.getAllSessions(0, 0).subscribe(
         (response) => {
           const sessionsFromBackend = response.session;
           // Extract session names
@@ -248,5 +249,10 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   roles = new FormControl("");
-  roleList: string[] = ["User", "Trainer", "Student"];
+  roleList: string[] = [
+    "Utilisateur",
+    "Formateur",
+    "Étudiant",
+    "Administrateur",
+  ];
 }

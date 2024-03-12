@@ -10,6 +10,7 @@ const routes: Routes = [
   {
     path: "",
     redirectTo: "login",
+
     pathMatch: "full",
   },
   {
@@ -19,10 +20,10 @@ const routes: Routes = [
   {
     path: "admin",
     component: AdminComponent,
+    canActivateChild: [AuthGuardService],
     children: [
       {
         path: "",
-        canActivate: [AuthGuardService],
         loadChildren: () =>
           import("./layouts/layouts.module").then((m) => m.LayoutsModule),
       },
@@ -31,10 +32,11 @@ const routes: Routes = [
   {
     path: "user",
     component: UserComponent,
+    canActivateChild: [AuthGuardService],
     children: [
       {
         path: "",
-        canActivate: [AuthGuardService],
+
         loadChildren: () =>
           import("./layouts/layouts.module").then((m) => m.LayoutsModule),
       },

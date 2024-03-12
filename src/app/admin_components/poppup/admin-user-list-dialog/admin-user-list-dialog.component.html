@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span>{{ data ? "Modify User" : "Add User" }}</span>
+  <span>{{ data ? "Modifier l'utilisateur" : "Ajouter un utilisateur" }}</span>
   <button
     mat-icon-button
     mat-dialog-close
@@ -14,10 +14,10 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter Name</mat-label>
+          <mat-label>Entrez le nom</mat-label>
           <input
             matInput
-            placeholder="Name"
+            placeholder="Nom"
             formControlName="name"
             id="name"
             required
@@ -30,23 +30,23 @@
               fI['name'] && fI['name'].errors && fI['name'].errors['minlength']
             "
           >
-            Name must contain at least <strong>6 characters</strong>.
+            Le nom doit contenir au moins <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['name'] && fI['name'].errors && fI['name'].errors['required']
             "
           >
-            Name is <strong>required</strong>
+            Le nom est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter Prenom</mat-label>
+          <mat-label>Entrer votre prénom</mat-label>
           <input
             matInput
-            placeholder="Prenom"
+            placeholder="Prénom"
             formControlName="prename"
             id="prename"
             required
@@ -61,7 +61,7 @@
               fI['prename'].errors['minlength']
             "
           >
-            Prenom must contain at least <strong>6 characters</strong>.
+            Prénom doit contenir au moins <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -70,13 +70,13 @@
               fI['prename'].errors['required']
             "
           >
-            Prenom is <strong>required</strong>
+            Prénom est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter Address</mat-label>
+          <mat-label>Entrer l'adresse</mat-label>
           <input
             matInput
             placeholder="Address"
@@ -96,7 +96,7 @@
               fI['addresse'].errors['minlength']
             "
           >
-            Address must contain at least <strong>6 characters</strong>.
+            L'adresse doit contenir au moins <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -105,7 +105,7 @@
               fI['addresse'].errors['required']
             "
           >
-            Address is <strong>required</strong>
+            L'adresse est <strong>obligatoire</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -113,7 +113,7 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter email</mat-label>
+          <mat-label>Entrer l'e-mail</mat-label>
           <input
             matInput
             placeholder="pat@example.com"
@@ -130,7 +130,7 @@
               fI['email'] && fI['email'].errors && fI['email'].errors['email']
             "
           >
-            The email address is <strong>invalid</strong>.
+            L'adresse e-mail est <strong>invalide</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -139,13 +139,13 @@
               fI['email'].errors['required']
             "
           >
-            Email address is <strong>required</strong>.
+            L'adresse e-mail est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter login</mat-label>
+          <mat-label>Entrer login</mat-label>
           <input
             matInput
             placeholder="login"
@@ -164,7 +164,7 @@
               fI['login'].errors['minlength']
             "
           >
-            login must contain at least <strong>6 characters</strong>.
+            la login doit contenir au moins <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -173,16 +173,16 @@
               fI['login'].errors['required']
             "
           >
-            login is <strong>required</strong>.
+            la login est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter Password</mat-label>
+          <mat-label>Entrer Mot de passe</mat-label>
           <input
             matInput
-            placeholder="Password"
+            placeholder="Mot de passe"
             type="password"
             formControlName="password"
             id="password"
@@ -199,7 +199,8 @@
               fI['password'].errors['minlength']
             "
           >
-            Password must contain at least <strong>6 characters</strong>.
+            Le mot de passe doit contenir au moins
+            <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -208,7 +209,7 @@
               fI['password'].errors['required']
             "
           >
-            Password is <strong>required</strong>.
+            Le mot de passe est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -216,7 +217,7 @@
     <div class="row">
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter Cin</mat-label>
+          <mat-label>Entrez Cin</mat-label>
           <input
             matInput
             placeholder="Cin"
@@ -236,28 +237,28 @@
               fI['cin'].errors['onlyNumbers']
             "
           >
-            Cin must contain only <strong>numbers</strong>.
+            Cin doit contenir uniquement des <strong>chiffres</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['cin'] && fI['cin'].errors && fI['cin'].errors['minlength']
             "
           >
-            Cin must contain <strong>8 number</strong>.
+            Cin doit contenir le <strong>8 chiffre</strong>.
           </mat-error>
           <mat-error
             *ngIf="
               fI['cin'] && fI['cin'].errors && fI['cin'].errors['required']
             "
           >
-            Cin is <strong>required</strong>.
+            Cin est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
 
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Enter Source</mat-label>
+          <mat-label>Entrez la source</mat-label>
           <input
             matInput
             placeholder="Source"
@@ -276,7 +277,7 @@
               fI['source'].errors['minlength']
             "
           >
-            Source must contain <strong>6 characters</strong>.
+            La source doit contenir <strong>6 caractères</strong>.
           </mat-error>
           <mat-error
             *ngIf="
@@ -285,21 +286,21 @@
               fI['source'].errors['required']
             "
           >
-            Source is <strong>required</strong>.
+            La source est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
 
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
-          <mat-label>Select Role</mat-label>
+          <mat-label>Sélectionnez un rôle</mat-label>
           <mat-select formControlName="roles">
             <mat-option *ngFor="let role of roleList" [value]="role">{{
               role
             }}</mat-option>
           </mat-select>
           <mat-error *ngIf="fI.roles?.errors?.required"
-            >Role is required</mat-error
+            >Le rôle est requis</mat-error
           >
         </mat-form-field>
       </div>
@@ -330,7 +331,7 @@
               fI['photo'].errors['required']
             "
           >
-            Image is <strong>required</strong>.
+            La photo est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>
       </div>
@@ -352,7 +353,7 @@
     </div>
 
     <button mat-raised-button type="submit" class="btn btn-wico pull-right">
-      {{ data ? "Modify User" : "Add User" }}
+      {{ data ? "Modifier l'utilisateur" : "Ajouter un utilisateur" }}
     </button>
     <div class="clearfix"></div>
   </form>
