@@ -10,7 +10,7 @@ declare interface RouteInfo {
 export const Admin_ROUTES: RouteInfo[] = [
   {
     path: "/admin/admin_dashboard",
-    title: "Page d'accès",
+    title: "Tableau de bord",
     icon: "dashboard",
     class: "",
   },
@@ -24,7 +24,7 @@ export const Admin_ROUTES: RouteInfo[] = [
   {
     path: "/admin/session-list",
     title: "Liste des sessions",
-    icon: " add_to_queue ",
+    icon: "airplay",
     class: "",
   },
   {

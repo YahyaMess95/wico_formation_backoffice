@@ -1,70 +1,142 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="mat-form-field-custom">
+            <mat-label
+              >Sélectionnez une année par défaut est {{ startYear }}
+            </mat-label>
+            <mat-select
+              [(ngModel)]="selectedYear"
+              (ngModelChange)="getCount(selectedYear)"
+              disableOptionCentering
+            >
+              <mat-option *ngFor="let year of yearsList" [value]="year">{{
+                year
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-warning card-header-icon">
+          <div class="spinner-container" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+          </div>
+          <div
+            class="card-header card-header-warning card-header-icon"
+            *ngIf="!isLoading"
+          >
             <div class="card-icon">
-              <i class="material-icons">content_copy</i>
+              <i class="material-icons">group</i>
             </div>
-            <p class="card-category">Used Space</p>
+            <p class="card-category">Utilisateurs</p>
             <h3 class="card-title">
-              49/50
-              <small>GBA</small>
+              {{ Countuser }}
             </h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons text-danger">warning</i>
-              <a href="javascript:void(0)">Get More Space...</a>
+              <a href="#/admin/user-list">Gérer les utilisateurs</a>
             </div>
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-success card-header-icon">
+          <div class="spinner-container" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+          </div>
+          <div
+            class="card-header card-header-success card-header-icon"
+            *ngIf="!isLoading"
+          >
             <div class="card-icon">
-              <i class="material-icons">store</i>
+              <i class="material-icons">airplay</i>
             </div>
-            <p class="card-category">Revenue</p>
-            <h3 class="card-title">$34,245</h3>
+            <p class="card-category">Sessions</p>
+            <h3 class="card-title">{{ Countsession }}</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">date_range</i> Last 24 Hours
+              <a href="#/admin/session-list">Gérer les Sessions</a>
             </div>
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-wicocolor card-header-icon">
+          <div class="spinner-container" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+          </div>
+          <div
+            class="card-header card-header-wicocolor card-header-icon"
+            *ngIf="!isLoading"
+          >
             <div class="card-icon">
-              <i class="material-icons">info_outline</i>
+              <i class="material-icons">cast_for_education</i>
             </div>
-            <p class="card-category">Fixed Issues</p>
-            <h3 class="card-title">75</h3>
+            <p class="card-category">Séances</p>
+            <h3 class="card-title">{{ Countseance }}</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">local_offer</i> Tracked from Github
+              <a href="#/admin/seance-list">Gérer les Séances</a>
             </div>
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="card card-stats">
-          <div class="card-header card-header-info card-header-icon">
+          <div class="spinner-container" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+          </div>
+          <div
+            class="card-header card-header-info card-header-icon"
+            *ngIf="!isLoading"
+          >
             <div class="card-icon">
-              <i class="fa fa-twitter"></i>
+              <i class="material-icons">card_membership</i>
             </div>
-            <p class="card-category">Followers</p>
-            <h3 class="card-title">+245</h3>
+            <p class="card-category">Formations</p>
+            <h3 class="card-title">{{ Countforamtion }}</h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons">update</i> Just Updated
+              <a href="#/admin/formation-list">Gérer les Formations</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="spinner-container" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+          </div>
+          <div
+            class="card-header card-header-info card-header-icon"
+            *ngIf="!isLoading"
+          >
+            <div class="card-icon">
+              <i class="material-icons">switch_account</i>
+            </div>
+            <p class="card-category">Témoignages</p>
+            <h3 class="card-title">{{ Counttemoignage }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <a href="#/admin/temoignage-list">Gérer les Témoignages</a>
             </div>
           </div>
         </div>
@@ -98,9 +170,10 @@
             <div class="ct-chart" id="websiteViewsChart"></div>
           </div>
           <div class="card-body">
-            <h4 class="card-title">Email Subscriptions</h4>
-            <p class="card-category">Last Campaign Performance</p>
+            <h4 class="card-title">Formations</h4>
+            <p class="card-category">Formations</p>
           </div>
+
           <div class="card-footer">
             <div class="stats">
               <i class="material-icons">access_time</i> campaign sent 2 days ago

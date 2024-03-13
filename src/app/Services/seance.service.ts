@@ -14,9 +14,6 @@ export class SeanceService {
     const url = `${environment.allSeancesUrl}?page=${page}&pageSize=${pageSize}`;
     return this.http.get<any>(url).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );
@@ -43,9 +40,6 @@ export class SeanceService {
   addSeance(seanceDetails: any) {
     return this.http.post<any>(environment.addSeanceUrl, seanceDetails).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );

@@ -17,9 +17,6 @@ export class UserService {
   getAllUsers() {
     return this.http.get<any>(environment.allUsersUrl).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.logout();
-        }
         return this.handleError(error);
       })
     );
@@ -59,9 +56,6 @@ export class UserService {
   addUser(userDetails: FormData) {
     return this.http.post<any>(environment.addUserUrl, userDetails).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );

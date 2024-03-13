@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -6,7 +7,7 @@ import {
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
-import { Observable } from "rxjs";
+import { Observable, catchError, throwError } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -31,6 +32,14 @@ export class AuthInterceptorService implements HttpInterceptor {
     }
 
     // Pass the cloned request to the next handler
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          // Unauthorized error, logout the user
+          this.authService.logout();
+        }
+        return throwError(error);
+      })
+    );
   }
 }

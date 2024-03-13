@@ -14,9 +14,6 @@ export class SessionService {
     const url = `${environment.allSessionsUrl}?page=${page}&pageSize=${pageSize}`;
     return this.http.get<any>(url).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );
@@ -45,9 +42,6 @@ export class SessionService {
   addSession(sessionDetails: any) {
     return this.http.post<any>(environment.addSessionUrl, sessionDetails).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );

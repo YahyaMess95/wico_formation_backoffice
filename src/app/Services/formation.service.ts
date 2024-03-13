@@ -14,9 +14,6 @@ export class FormationService {
     const url = `${environment.allFormationsUrl}?page=${page}&pageSize=${pageSize}`;
     return this.http.get<any>(url).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );

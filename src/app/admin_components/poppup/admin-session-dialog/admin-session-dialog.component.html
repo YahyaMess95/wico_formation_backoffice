@@ -147,7 +147,7 @@
       <div class="col-md-4">
         <mat-form-field appearance="outline">
           <mat-label>Sélectionner le type</mat-label>
-          <mat-select formControlName="type" required>
+          <mat-select formControlName="type" required disableOptionCentering>
             <mat-option *ngFor="let type of typeList" [value]="type">{{
               type
             }}</mat-option>
@@ -199,6 +199,7 @@
             formControlName="formations"
             multiple
             [value]="selectedFormationIds"
+            disableOptionCentering
           >
             <mat-option
               *ngFor="let formation of formations"
@@ -216,6 +217,7 @@
             formControlName="seances"
             multiple
             [value]="selectedSeanceIds"
+            disableOptionCentering
           >
             <mat-option *ngFor="let seance of seances" [value]="seance.id">
               {{ seance.name }}

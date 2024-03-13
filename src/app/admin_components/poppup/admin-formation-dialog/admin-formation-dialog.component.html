@@ -113,7 +113,11 @@
       <div class="col-md-4">
         <mat-form-field appearance="outline">
           <mat-label>Contenu</mat-label>
-          <mat-select formControlName="contenus" multiple>
+          <mat-select
+            formControlName="contenus"
+            multiple
+            disableOptionCentering
+          >
             <mat-option *ngFor="let contenu of contenuList" [value]="contenu">{{
               contenu
             }}</mat-option>

@@ -36,7 +36,8 @@ export class AdminDialogComponent implements OnInit {
         key !== "updatedAt" &&
         key !== "sessions" &&
         key !== "photo" &&
-        key !== "Cv"
+        key !== "Cv" &&
+        key !== "password"
     );
   }
 

@@ -1,0 +1,62 @@
+.mat-form-field-custom {
+    padding-bottom: 1em;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-custom {
+    margin: 0.5em 0;
+}
+
+/*  wico corlo #37517e */
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    /* Adjust height as needed */
+}
+
+.spinner {
+    width: 5px;
+    /* Adjust size of each circle */
+    height: 5px;
+    /* Adjust size of each circle */
+    border-radius: 100%;
+    background-color: #37517e;
+    /* Change color as needed */
+    margin: 0 5px;
+    /* Adjust spacing between circles */
+    animation: point-wave 1s ease-in-out infinite;
+}
+
+.spinner:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.spinner:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes point-wave {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        background-color: #37517e;
+    }
+
+    25% {
+        transform: translateY(-5px);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+
+    75% {
+        transform: translateY(5px);
+    }
+
+    99% {
+        background-color: #37517e;
+    }
+}

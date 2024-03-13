@@ -294,7 +294,7 @@
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
           <mat-label>Sélectionnez un rôle</mat-label>
-          <mat-select formControlName="roles">
+          <mat-select formControlName="roles" disableOptionCentering>
             <mat-option *ngFor="let role of roleList" [value]="role">{{
               role
             }}</mat-option>
@@ -343,6 +343,7 @@
             formControlName="sessions"
             multiple
             [value]="selectedSessionIds"
+            disableOptionCentering
           >
             <mat-option *ngFor="let session of sessions" [value]="session.id">
               {{ session.name }}

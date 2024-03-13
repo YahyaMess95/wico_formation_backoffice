@@ -91,7 +91,7 @@ export class AdminUserListComponent implements AfterViewInit {
       "Adresse",
       "E-mail",
       "Login",
-      "Mot de passe",
+      "password",
       "Cin",
       "Rôle",
       "Source",

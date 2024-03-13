@@ -15,9 +15,6 @@ export class AdminService {
     // console.log("page: " + page + " pageSize: " + pageSize);
     return this.http.get<any>(url).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );
@@ -44,9 +41,6 @@ export class AdminService {
   addUser(userDetails: any) {
     return this.http.post<any>(environment.addUserUrl, userDetails).pipe(
       catchError((error: any) => {
-        if (error.status === 401) {
-          this.authService.logout();
-        }
         return this.handleError(error);
       })
     );
