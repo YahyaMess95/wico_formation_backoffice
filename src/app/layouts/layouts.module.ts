@@ -29,6 +29,7 @@ import { AdminService } from "app/Services/admin.service";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptorService } from "app/Services/auth-interceptor.service";
 import { AuthService } from "app/Services/auth.service";
+import { PasswordRecoveryComponent } from "app/forgetpassword/password-recovery/password-recovery.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AuthService } from "app/Services/auth.service";
     TableListComponent,
     UserProfileComponent,
     LoginpageComponent,
+    PasswordRecoveryComponent,
   ],
   exports: [
     AdminComponent,
@@ -54,6 +56,7 @@ import { AuthService } from "app/Services/auth.service";
     TableListComponent,
     UserProfileComponent,
     LoginpageComponent,
+    PasswordRecoveryComponent,
   ],
   imports: [
     CommonModule,

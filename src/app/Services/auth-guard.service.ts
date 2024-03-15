@@ -24,6 +24,7 @@ export class AuthGuardService implements CanActivateChild {
     state: RouterStateSnapshot
   ): boolean {
     if (this.authService.isAuthenticated()) {
+      // this.router.navigate(["/admin"]);
       return true;
     } else {
       console.log("Admin is not authenticated. Redirecting to login page.");

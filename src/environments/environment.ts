@@ -7,7 +7,9 @@ export const environment = {
   // serverUrl: "http://localhost:3000",
   // loginurl
   loginUrl: url + "/public/login",
+
   // user url
+  recoveryUrl: url + "/user/recoverpassword",
   addUserUrl: url + "/user/create",
   allUsersUrl: url + "/user/getAll",
   countUrl: url + "/user/getState",
@@ -33,4 +35,9 @@ export const environment = {
   allTemoignagesUrl: url + "/temoignage/getAll",
   deleteTemoignageUrl: url + "/temoignage/delete",
   updateTemoignageUrl: url + "/temoignage/update",
+
+  // mailjs cord
+  SERVICE_ID: "service_zor1cnl",
+  TEMPLATE_ID: "template_stolkxc",
+  USER_ID: "UOnDJ0Tt7O1iwHU1B",
 };

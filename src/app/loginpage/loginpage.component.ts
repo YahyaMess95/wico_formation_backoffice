@@ -8,7 +8,9 @@ import {
 import { Router } from "@angular/router";
 import { AuthService } from "app/Services/auth.service";
 import { NotifService } from "app/Services/notif.service";
-import { UserService } from "app/Services/user.service";
+import { CookieService } from "ngx-cookie-service";
+import * as CryptoJS from "crypto-js";
+import { PasswordrecoverydialogService } from "app/Services/passwordrecoverydialog.service";
 
 @Component({
   selector: "app-loginpage",
@@ -19,22 +21,40 @@ export class LoginpageComponent implements OnInit {
   loginForm!: FormGroup;
   isLoading: boolean = true;
   submitted = false;
-  fileName = "";
-  ngOnInit() {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(["/admin"]);
-    }
-    this.loginForm = this.formBuilder.group({
-      login: ["", [Validators.required, Validators.minLength(3)]],
-      password: ["", [Validators.required, Validators.minLength(6)]],
-    });
-  }
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private notifService: NotifService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cookieService: CookieService,
+    private passwordrecoverydialogService: PasswordrecoverydialogService
   ) {}
+
+  ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(["/admin"]);
+    }
+
+    const rememberMe = this.cookieService.get("rememberMe");
+    if (rememberMe === "true") {
+      const encryptedLogin = this.cookieService.get("login");
+      const encryptedPassword = this.cookieService.get("password");
+      const login = this.decryptData(encryptedLogin);
+      const password = this.decryptData(encryptedPassword);
+      this.loginForm = this.formBuilder.group({
+        login: [login, [Validators.required, Validators.minLength(3)]],
+        password: [password, [Validators.required, Validators.minLength(6)]],
+        rememberMe: [true],
+      });
+    } else {
+      this.loginForm = this.formBuilder.group({
+        login: ["", [Validators.required, Validators.minLength(3)]],
+        password: ["", [Validators.required, Validators.minLength(6)]],
+        rememberMe: [false],
+      });
+    }
+  }
 
   login() {
     this.submitted = true;
@@ -43,15 +63,53 @@ export class LoginpageComponent implements OnInit {
     }
 
     const { login, password } = this.loginForm.value;
-    this.isLoading = false;
+    this.isLoading = true;
+
     this.authService.login(login, password).subscribe(
       (response) => {
         console.log("Login successfully", response);
-        this.loginForm.reset();
+        this.isLoading = false;
+
+        if (this.loginForm.get("rememberMe").value) {
+          const encryptedLogin = this.encryptData(login);
+          const encryptedPassword = this.encryptData(password);
+          this.cookieService.set(
+            "login",
+            encryptedLogin,
+            null,
+            null,
+            null,
+            true,
+            "Lax"
+          );
+          this.cookieService.set(
+            "password",
+            encryptedPassword,
+            null,
+            null,
+            null,
+            true,
+            "Lax"
+          );
+          this.cookieService.set(
+            "rememberMe",
+            "true",
+            null,
+            null,
+            null,
+            true,
+            "Lax"
+          );
+        } else {
+          this.cookieService.delete("login", null, null, true);
+          this.cookieService.delete("password", null, null, true);
+          this.cookieService.delete("rememberMe", null, null, true);
+        }
+
         this.router.navigate(["/admin"]);
       },
       (error) => {
-        this.isLoading = true;
+        this.isLoading = false;
         console.error("Login failed", error);
         this.notifService.showNotificationerror(
           "top",
@@ -65,5 +123,20 @@ export class LoginpageComponent implements OnInit {
 
   get fI(): { [key: string]: AbstractControl } {
     return this.loginForm.controls;
+  }
+
+  encryptData(data: string): string {
+    const encryptedData = CryptoJS.AES.encrypt(data, "secret-key").toString();
+    return encryptedData;
+  }
+
+  decryptData(encryptedData: string): string {
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedData, "secret-key");
+    const decryptedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    return decryptedData;
+  }
+
+  openPasswordRecoveryPopup(): void {
+    this.passwordrecoverydialogService.openPasswordRecoveryDialog();
   }
 }
