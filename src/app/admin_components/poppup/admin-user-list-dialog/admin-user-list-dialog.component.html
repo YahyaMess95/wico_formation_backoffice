@@ -310,6 +310,7 @@
         <mat-form-field appearance="outline" class="mat-form-field-custom">
           <mat-label>Photo</mat-label>
           <input
+            formControlName="photo"
             matInput
             type="file"
             class="file-input"
@@ -325,11 +326,7 @@
             </button>
           </div>
           <mat-error
-            *ngIf="
-              fI['photo'] &&
-              fI['photo'].errors &&
-              fI['photo'].errors['required']
-            "
+            *ngIf="fI['photo'].errors && fI['photo'].errors['required']"
           >
             La photo est <strong>obligatoire</strong>.
           </mat-error>

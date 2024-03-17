@@ -29,14 +29,12 @@ export class SessionService {
       );
   }
 
-  updateSession(sessionId: string, sessionData: any) {
-    return this.http
-      .patch(environment.updateSessionUrl + `/${sessionId}`, sessionData)
-      .pipe(
-        catchError((error: any) => {
-          return this.handleError(error);
-        })
-      );
+  updateSession(sessionDetails: any) {
+    return this.http.patch(environment.updateSessionUrl, sessionDetails).pipe(
+      catchError((error: any) => {
+        return this.handleError(error);
+      })
+    );
   }
 
   addSession(sessionDetails: any) {

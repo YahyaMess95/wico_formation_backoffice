@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
@@ -7,9 +6,6 @@ import { AdminUserListDialogComponent } from "../poppup/admin-user-list-dialog/a
 import { AdminService } from "app/Services/admin.service";
 import { NotifService } from "app/Services/notif.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { PhotoService } from "app/Services/photo.service";
-
 @Component({
   selector: "admin-user-list",
   templateUrl: "./admin-user-list.component.html",
@@ -27,9 +23,7 @@ export class AdminUserListComponent implements AfterViewInit {
   constructor(
     public dialog: MatDialog,
     private adminService: AdminService,
-    private notifService: NotifService,
-    private sanitizer: DomSanitizer,
-    private photoService: PhotoService
+    private notifService: NotifService
   ) {}
 
   applyFilter() {
@@ -129,9 +123,6 @@ export class AdminUserListComponent implements AfterViewInit {
           const userPromises: Promise<any>[] = response.users.users.map(
             async (user: any) => {
               try {
-                const photoData = await this.fetchPhoto(user.photo);
-                const imageUrl = this.getImageUrl(photoData);
-                user.photo = imageUrl;
                 user.createdAt = new Date(user.createdAt).toLocaleDateString();
 
                 return user;
@@ -158,29 +149,6 @@ export class AdminUserListComponent implements AfterViewInit {
     );
   }
 
-  fetchPhoto(photoName: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.photoService.getPhoto(photoName).subscribe(
-        (data) => {
-          resolve(data);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    });
-  }
-  getImageUrl(photoData: any): SafeUrl {
-    if (photoData instanceof Blob) {
-      const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
-        window.URL.createObjectURL(photoData)
-      );
-      return imageUrl;
-    } else {
-      console.error("Invalid photoData format:", photoData);
-      return "";
-    }
-  }
   async removeUser(userId: string) {
     const confirmed = await this.notifService.showNotificationconfirmation(
       "top",

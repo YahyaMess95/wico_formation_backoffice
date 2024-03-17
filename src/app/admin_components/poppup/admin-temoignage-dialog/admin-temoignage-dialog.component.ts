@@ -72,14 +72,22 @@ export class AdminTemoignageDialogComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      photo: new FormControl([Validators.required]),
-      cv: new FormControl(this.data?.cv || "", [Validators.required]),
+      photo: new FormControl(null, this.getValidators()),
+      cv: new FormControl(null, this.getValidators()),
     });
+  }
+
+  getValidators() {
+    if (this.data != null) {
+      return [];
+    } else {
+      return [Validators.required];
+    }
   }
 
   public saveOrUpdateTemoignage(): void {
     this.submittedIn = true;
-
+    const userDetails = this.formetemoignages.value;
     if (this.formetemoignages.invalid) {
       console.log("error ", this.formetemoignages.value);
       this.notifService.showNotificationerror(
@@ -92,22 +100,39 @@ export class AdminTemoignageDialogComponent implements OnInit {
     }
 
     if (this.data) {
-      this.updateTemoignage(this.data._id);
+      this.updateTemoignage(this.data._id, userDetails);
     } else {
-      this.addTemoignage();
+      this.addTemoignage(userDetails);
     }
   }
 
-  addTemoignage(): void {
-    const userDetails = this.formetemoignages.value;
-    const photo = this.fileUpload.nativeElement.files[0];
-    const cv = this.filecvUpload.nativeElement.files[0];
+  addTemoignage(userDetails): void {
+    let photo;
+    let cv;
+    const fileInput = this.fileUpload.nativeElement;
+    const filecvUpload = this.filecvUpload.nativeElement;
+
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      photo = fileInput.files[0];
+    }
+    if (filecvUpload && filecvUpload.files && filecvUpload.files.length > 0) {
+      cv = filecvUpload.files[0];
+    }
+
     const formData = new FormData();
     Object.keys(userDetails).forEach((key) => {
       formData.append(key, userDetails[key]);
     });
 
-    formData.append("file", photo);
+    // Append photo file
+    if (photo) {
+      formData.append("photo", photo);
+    }
+
+    // Append CV file
+    if (cv) {
+      formData.append("cv", cv);
+    }
 
     this.dialogRef.close();
     this.temoignageService.addTemoignage(formData).subscribe(
@@ -135,22 +160,52 @@ export class AdminTemoignageDialogComponent implements OnInit {
     );
   }
 
-  updateTemoignage(_id): void {
-    const userDetails = this.formetemoignages.value;
-    const photo = this.fileUpload.nativeElement.files[0];
-    const cv = this.filecvUpload.nativeElement.files[0];
+  updateTemoignage(_id, userDetails): void {
+    let photo;
+    let cv;
+    const fileInput = this.fileUpload.nativeElement;
+    const filecvInput = this.filecvUpload.nativeElement;
 
+    if (this.data) {
+      userDetails.photo = this.data?.photo;
+      userDetails.cv = this.data?.cv;
+    }
+    // Check if a new photo is uploaded
+    if (fileInput.files && fileInput.files.length > 0) {
+      photo = fileInput.files[0];
+    }
+
+    // Check if a new CV is uploaded
+    if (filecvInput.files && filecvInput.files.length > 0) {
+      cv = filecvInput.files[0];
+    }
+
+    // Create FormData object
     const formData = new FormData();
 
+    // Append user details to FormData
     Object.keys(userDetails).forEach((key) => {
       formData.append(key, userDetails[key]);
     });
 
-    formData.append("file", photo);
-    console.log("User Details:", photo);
-    console.log("User formData:", formData);
+    // Append photo if provided
+    if (photo) {
+      formData.append("photo", photo);
+    }
+
+    // Append cv if provided
+    if (cv) {
+      formData.append("cv", cv);
+    }
+
+    // Append _id for identification
+    formData.append("_id", _id);
+
+    // Close dialog
     this.dialogRef.close();
-    this.temoignageService.updateTemoignage(_id, formData).subscribe(
+
+    // Update temoignage with user details and optional photo/cv
+    this.temoignageService.updateTemoignage(formData).subscribe(
       (response) => {
         console.log("Temoignage updated successfully", response);
         this.formetemoignages.reset();

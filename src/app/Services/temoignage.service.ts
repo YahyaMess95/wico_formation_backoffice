@@ -29,12 +29,9 @@ export class TemoignageService {
       );
   }
 
-  updateTemoignage(temoignageId: string, temoignageData: FormData) {
+  updateTemoignage(temoignageData: FormData) {
     return this.http
-      .patch(
-        environment.updateTemoignageUrl + `/${temoignageId}`,
-        temoignageData
-      )
+      .patch(environment.updateTemoignageUrl, temoignageData)
       .pipe(
         catchError((error: any) => {
           return this.handleError(error);

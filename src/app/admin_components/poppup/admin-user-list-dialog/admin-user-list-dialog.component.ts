@@ -89,15 +89,21 @@ export class AdminUserListDialogComponent implements OnInit {
         Validators.minLength(6),
       ]),
       sessions: new FormControl(this.loadSessions()),
-      photo: new FormControl([Validators.required]),
+      photo: new FormControl(null, this.getValidators()),
     });
   }
 
+  getValidators() {
+    console.log(this.data);
+    if (this.data != null) {
+      return [];
+    } else {
+      return [Validators.required];
+    }
+  }
   public saveOrUpdateUser(): void {
     this.submittedIn = true;
-    console.log("value ", this.formeusers.value);
     const userDetails = this.formeusers.value;
-    console.log(userDetails);
 
     if (this.formeusers.invalid) {
       console.log("error ", this.formeusers.value);
@@ -118,16 +124,20 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   addUser(userDetails): void {
-    const photo = this.fileUpload.nativeElement.files[0];
+    let photo;
+    const fileInput = this.fileUpload.nativeElement;
+
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      photo = fileInput.files[0];
+    }
     const formData = new FormData();
-    console.log(userDetails);
+
     Object.keys(userDetails).forEach((key) => {
       formData.append(key, userDetails[key]);
     });
 
     formData.append("file", photo);
     this.dialogRef.close();
-    console.log(formData);
 
     this.userService.addUser(formData).subscribe(
       (response) => {
@@ -154,18 +164,31 @@ export class AdminUserListDialogComponent implements OnInit {
   }
 
   updateUser(_id, userDetails): void {
-    const photo = this.fileUpload.nativeElement.files[0];
-    const formData = new FormData();
+    let photo;
+    const fileInput = this.fileUpload.nativeElement;
+    if (this.data) {
+      userDetails.photo = this.data?.photo;
+    }
 
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      photo = fileInput.files[0];
+    }
+
+    const formData = new FormData();
     Object.keys(userDetails).forEach((key) => {
       formData.append(key, userDetails[key]);
     });
 
-    formData.append("file", photo);
+    // Check if photo is present
 
+    formData.append("file", photo);
+    formData.append("_id", _id);
+
+    // Close dialog
     this.dialogRef.close();
 
-    this.userService.updateUser(_id, formData).subscribe(
+    // Update user with user details and photo
+    this.userService.updateUser(formData).subscribe(
       (response) => {
         console.log("User updated successfully", response);
         this.formeusers.reset();
@@ -205,8 +228,6 @@ export class AdminUserListDialogComponent implements OnInit {
   selectedSessionIds: string[] = [];
 
   loadSessions(): void {
-    console.log(this.data?.sessions);
-
     if (this.data && this.data.sessions) {
       this.sessionService.getAllSessions(0, 0).subscribe(
         (response) => {

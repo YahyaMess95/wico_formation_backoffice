@@ -63,12 +63,19 @@ export class AdminSessionDialogComponent implements OnInit {
         Validators.required,
         Validators.minLength(1),
       ]),
-      photo: new FormControl([Validators.required]),
+      photo: new FormControl(null, this.getValidators()),
       formations: new FormControl(this.loadFormations()),
       seances: new FormControl(this.loadSeances()),
     });
   }
-
+  getValidators() {
+    console.log(this.data);
+    if (this.data != null) {
+      return [];
+    } else {
+      return [Validators.required];
+    }
+  }
   public saveOrUpdateSession(): void {
     this.submittedIn = true;
 
@@ -93,10 +100,13 @@ export class AdminSessionDialogComponent implements OnInit {
   }
 
   addSession(sessionDetails): void {
-    const photo = this.fileUpload.nativeElement.files[0];
-    const formData = new FormData();
-    console.log(sessionDetails);
+    let photo;
+    const fileInput = this.fileUpload.nativeElement;
 
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      photo = fileInput.files[0];
+    }
+    const formData = new FormData();
     Object.keys(sessionDetails).forEach((key) => {
       formData.append(key, sessionDetails[key]);
     });
@@ -128,16 +138,26 @@ export class AdminSessionDialogComponent implements OnInit {
   }
 
   updateSession(_id, sessionDetails): void {
-    const photo = this.fileUpload.nativeElement.files[0];
+    let photo;
+    const fileInput = this.fileUpload.nativeElement;
+    if (this.data) {
+      sessionDetails.photo = this.data?.photo;
+    }
+
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      photo = fileInput.files[0];
+    }
     const formData = new FormData();
-    console.log(sessionDetails);
+
     Object.keys(sessionDetails).forEach((key) => {
       formData.append(key, sessionDetails[key]);
     });
 
     formData.append("file", photo);
+    formData.append("_id", _id);
     this.dialogRef.close();
-    this.sessionService.updateSession(_id, FormData).subscribe(
+
+    this.sessionService.updateSession(formData).subscribe(
       (response) => {
         console.log("Session updated successfully", response);
         this.formesession.reset();
@@ -177,8 +197,6 @@ export class AdminSessionDialogComponent implements OnInit {
   typeList: string[] = ["Remotely", "Locally"];
   selectedFormationIds: string[] = [];
   loadFormations(): void {
-    console.log(this.data?.formations);
-
     if (this.data && this.data.formations) {
       this.formationService.getAllFormations(0, 0).subscribe(
         (response) => {
@@ -225,8 +243,6 @@ export class AdminSessionDialogComponent implements OnInit {
   // load seance
   selectedSeanceIds: string[] = [];
   loadSeances(): void {
-    console.log(this.data?.seances);
-
     if (this.data && this.data.seances) {
       this.seanceService.getAllSeances(0, 0).subscribe(
         (response) => {

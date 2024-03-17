@@ -8,8 +8,8 @@ import { environment } from "environments/environment";
 export class PhotoService {
   constructor(private http: HttpClient) {}
 
-  getPhoto(photoName: string): any {
-    return this.http.get(`${environment.serverUrl}/photos/${photoName}`, {
+  getPhoto(filename: string): any {
+    return this.http.get(environment.photoUrl + `/${filename}`, {
       responseType: "blob",
     });
   }

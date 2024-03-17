@@ -161,15 +161,13 @@
         <mat-form-field appearance="outline" class="mat-form-field-custom">
           <mat-label>Photo</mat-label>
           <input
+            formControlName="photo"
             matInput
             type="file"
             class="file-input"
             (change)="onFileSelected($event)"
             accept="image/*"
             #fileUpload
-            [ngClass]="{
-              'is-invalid': submittedIn && fI['photo'] && fI['photo'].errors
-            }"
           />
 
           <div class="file-upload uploadFile" (click)="fileUpload.click()">
@@ -179,11 +177,7 @@
             </button>
           </div>
           <mat-error
-            *ngIf="
-              fI['photo'] &&
-              fI['photo'].errors &&
-              fI['photo'].errors['required']
-            "
+            *ngIf="fI['photo'].errors && fI['photo'].errors['required']"
           >
             La photo est <strong>obligatoire</strong>.
           </mat-error>

@@ -254,15 +254,13 @@
         <mat-form-field appearance="outline" class="mat-form-field-custom">
           <mat-label>Photo</mat-label>
           <input
+            formControlName="photo"
             matInput
             type="file"
             class="file-input"
             id="photo"
             (change)="onImageSelected($event)"
             #fileUpload
-            [ngClass]="{
-              'is-invalid': submittedIn && fI['photo'] && fI['photo'].errors
-            }"
             accept="image/*"
           />
 
@@ -273,11 +271,7 @@
             </button>
           </div>
           <mat-error
-            *ngIf="
-              fI['photo'] &&
-              fI['photo'].errors &&
-              fI['photo'].errors['required']
-            "
+            *ngIf="fI['photo'].errors && fI['photo'].errors['required']"
           >
             La photo est <strong>obligatoire</strong>.
           </mat-error>
@@ -293,9 +287,7 @@
             id="cv"
             (change)="onCVSelected($event)"
             #filecvUpload
-            [ngClass]="{
-              'is-invalid': submittedIn && fI['cv'] && fI['cv'].errors
-            }"
+            formControlName="cv"
             accept="file/*"
           />
 
@@ -305,9 +297,7 @@
               <mat-icon>attach_file</mat-icon>
             </button>
           </div>
-          <mat-error
-            *ngIf="fI['cv'] && fI['cv'].errors && fI['cv'].errors['required']"
-          >
+          <mat-error *ngIf="fI['cv'].errors && fI['cv'].errors['required']">
             Le CV est <strong>obligatoire</strong>.
           </mat-error>
         </mat-form-field>

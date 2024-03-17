@@ -31,12 +31,14 @@ export class AdminSeanceDialogComponent implements OnInit {
   formeseance: FormGroup;
 
   initializeForm(): void {
+    const dateString = this.data?.date;
+    const dateObject = dateString ? new Date(dateString) : null;
     this.formeseance = new FormGroup({
       name: new FormControl(this.data?.name || "", [
         Validators.required,
         Validators.minLength(3),
       ]),
-      date: new FormControl(this.data?.date || "", [Validators.required]),
+      date: new FormControl(dateObject, [Validators.required]),
       lieu: new FormControl(this.data?.lieu || "", [
         Validators.required,
         Validators.minLength(3),

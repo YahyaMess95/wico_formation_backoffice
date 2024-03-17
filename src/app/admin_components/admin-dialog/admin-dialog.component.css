@@ -31,10 +31,12 @@
 }
 
 .image-container {
-  width: 100%;
+  position: relative;
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  overflow: hidden;
+  /* Ensure shimmer effect doesn't overflow */
 }
 
 .image {
@@ -42,6 +44,33 @@
   /* Adjust width as needed */
   max-height: 100px;
   /* Adjust height as needed */
+}
+
+.animated-background {
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background-color: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%);
+  background-size: 100% 100%;
+  /* Match background size with the image */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  /* Ensure the background stays behind the image */
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -100% 0;
+  }
+
+  100% {
+    background-position: 100% 0;
+  }
 }
 
 .list-item-content {

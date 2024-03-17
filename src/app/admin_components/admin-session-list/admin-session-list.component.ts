@@ -120,9 +120,9 @@ export class AdminSessionListComponent implements AfterViewInit {
             const sessionPromises: Promise<any>[] =
               response.session.results.map(async (session: any) => {
                 try {
-                  const photoData = await this.fetchPhoto(session.photo);
-                  const imageUrl = this.getImageUrl(photoData);
-                  session.photo = imageUrl;
+                  session.datedeb = new Date(
+                    session.datedeb
+                  ).toLocaleDateString();
                   session.createdAt = new Date(
                     session.createdAt
                   ).toLocaleDateString();

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import { catchError, throwError } from "rxjs";
+import { Observable, catchError, throwError } from "rxjs";
 import { AuthService } from "./auth.service";
 
 @Injectable({
@@ -30,27 +30,12 @@ export class UserService {
     );
   }
 
-  updateUser(userId: string, userDetails: FormData) {
-    // check
-    const fileKeys = [];
-
-    // If there are files, display their names
-    if (fileKeys.length > 0) {
-      console.log("Files attached:");
-      fileKeys.forEach(({ key, value }) => {
-        console.log(value.name);
-      });
-    } else {
-      console.log("No files attached.");
-    }
-
-    return this.http
-      .patch(environment.updateUserUrl + `/${userId}`, userDetails)
-      .pipe(
-        catchError((error: any) => {
-          return this.handleError(error);
-        })
-      );
+  updateUser(userDetails: any) {
+    return this.http.patch(environment.updateUserUrl, userDetails).pipe(
+      catchError((error: any) => {
+        return this.handleError(error);
+      })
+    );
   }
 
   addUser(userDetails: FormData) {

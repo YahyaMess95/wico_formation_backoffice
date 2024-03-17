@@ -117,9 +117,6 @@ export class AdminTemoignageListComponent implements AfterViewInit {
           const temoignagePromises: Promise<any>[] =
             response.temoignage.results.map(async (temoignage: any) => {
               try {
-                const photoData = await this.fetchPhoto(temoignage.photo);
-                const imageUrl = this.getImageUrl(photoData);
-                temoignage.photo = imageUrl;
                 temoignage.createdAt = new Date(
                   temoignage.createdAt
                 ).toLocaleDateString();
@@ -140,30 +137,6 @@ export class AdminTemoignageListComponent implements AfterViewInit {
           console.error("Error fetching temoignages:", error);
         }
       );
-  }
-
-  fetchPhoto(photoName: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.photoService.getPhoto(photoName).subscribe(
-        (data) => {
-          resolve(data);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    });
-  }
-  getImageUrl(photoData: any): SafeUrl {
-    if (photoData instanceof Blob) {
-      const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
-        window.URL.createObjectURL(photoData)
-      );
-      return imageUrl;
-    } else {
-      console.error("Invalid photoData format:", photoData);
-      return "";
-    }
   }
 
   async removeTemoignage(temoignageId: string) {

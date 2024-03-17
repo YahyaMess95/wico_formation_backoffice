@@ -1,7 +1,11 @@
 <div fxLayout="column" fxLayoutAlign="center center" class="dialog-content">
   <div mat-dialog-content class="content-wrapper static-size-dialog">
-    <div class="image-container" *ngIf="photoData">
-      <img [src]="photoData" alt="Photo" class="image" />
+    <div class="spinner-container" *ngIf="photo && isLoading">
+      <!-- Add your spinner or loading animation here -->
+      <div class="spinner"></div>
+    </div>
+    <div class="image-container" *ngIf="photo && !isLoading">
+      <img [src]="photo" alt="Photo" class="image" />
     </div>
     <div class="data-container">
       <ol class="custom-list">

@@ -7,7 +7,8 @@ export const environment = {
   // serverUrl: "http://localhost:3000",
   // loginurl
   loginUrl: url + "/public/login",
-
+  //photo url
+  photoUrl: url + "/photo",
   // user url
   recoveryUrl: url + "/user/recoverpassword",
   addUserUrl: url + "/user/create",

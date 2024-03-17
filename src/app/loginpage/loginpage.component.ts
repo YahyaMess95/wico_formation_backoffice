@@ -58,18 +58,15 @@ export class LoginpageComponent implements OnInit {
 
   login() {
     this.submitted = true;
+    this.isLoading = false;
     if (this.loginForm.invalid) {
       return;
     }
 
     const { login, password } = this.loginForm.value;
-    this.isLoading = true;
 
     this.authService.login(login, password).subscribe(
       (response) => {
-        console.log("Login successfully", response);
-        this.isLoading = false;
-
         if (this.loginForm.get("rememberMe").value) {
           const encryptedLogin = this.encryptData(login);
           const encryptedPassword = this.encryptData(password);
@@ -109,7 +106,7 @@ export class LoginpageComponent implements OnInit {
         this.router.navigate(["/admin"]);
       },
       (error) => {
-        this.isLoading = false;
+        this.isLoading = true;
         console.error("Login failed", error);
         this.notifService.showNotificationerror(
           "top",
