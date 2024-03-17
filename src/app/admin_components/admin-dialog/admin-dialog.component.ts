@@ -48,7 +48,8 @@ export class AdminDialogComponent implements AfterViewInit {
     );
   }
   getUserPhoto(): void {
-    const filename = this.urlphoto.replace("uploads\\", "");
+    // const filename = this.urlphoto.replace("uploads\\", "");
+    const filename = this.urlphoto.replace("uploads/", "");
     this.photoService.getPhoto(filename).subscribe(
       (photoData: Blob) => {
         const reader = new FileReader();
