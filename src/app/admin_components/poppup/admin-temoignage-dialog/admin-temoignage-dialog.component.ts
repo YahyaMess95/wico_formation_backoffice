@@ -126,12 +126,12 @@ export class AdminTemoignageDialogComponent implements OnInit {
 
     // Append photo file
     if (photo) {
-      formData.append("photo", photo);
+      formData.append("file", photo);
     }
 
     // Append CV file
     if (cv) {
-      formData.append("cv", cv);
+      formData.append("cvfile", cv);
     }
 
     this.dialogRef.close();
@@ -190,12 +190,12 @@ export class AdminTemoignageDialogComponent implements OnInit {
 
     // Append photo if provided
     if (photo) {
-      formData.append("photo", photo);
+      formData.append("file", photo);
     }
 
     // Append cv if provided
     if (cv) {
-      formData.append("cv", cv);
+      formData.append("cvfile", cv);
     }
 
     // Append _id for identification

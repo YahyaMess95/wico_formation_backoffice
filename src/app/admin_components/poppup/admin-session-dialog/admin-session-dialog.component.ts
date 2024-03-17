@@ -48,12 +48,14 @@ export class AdminSessionDialogComponent implements OnInit {
   formesession: FormGroup;
 
   initializeForm(): void {
+    const dateString = this.data?.datedeb;
+    const dateObject = dateString ? new Date(dateString) : null;
     this.formesession = new FormGroup({
       name: new FormControl(this.data?.name || "", [
         Validators.required,
         Validators.minLength(3),
       ]),
-      datedeb: new FormControl(this.data?.datedeb || "", [Validators.required]),
+      datedeb: new FormControl(dateObject, [Validators.required]),
       type: new FormControl(this.data?.type || "", [Validators.required]),
       organisation: new FormControl(this.data?.organisation || "", [
         Validators.required,

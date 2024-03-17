@@ -48,22 +48,22 @@ export class AdminDialogComponent implements AfterViewInit {
     );
   }
   getUserPhoto(): void {
-    // const filename = this.urlphoto.replace("uploads\\", "");
-    const filename = this.urlphoto.replace("uploads/", "");
-    this.photoService.getPhoto(filename).subscribe(
-      (photoData: Blob) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.photo = reader.result as string;
-        };
-        reader.readAsDataURL(photoData);
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error("Error fetching user photo:", error);
-        this.isLoading = false;
-        // Handle error gracefully
-      }
-    );
+    if (this.urlphoto) {
+      this.photoService.getPhoto(this.urlphoto).subscribe(
+        (photoData: Blob) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.photo = reader.result as string;
+          };
+          reader.readAsDataURL(photoData);
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error("Error fetching user photo:", error);
+          this.isLoading = false;
+          // Handle error gracefully
+        }
+      );
+    }
   }
 }
