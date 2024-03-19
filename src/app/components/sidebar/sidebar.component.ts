@@ -61,12 +61,6 @@ export const User_ROUTES: RouteInfo[] = [
     class: "",
   },
   {
-    path: "/client/profile",
-    title: "Profile",
-    icon: "person",
-    class: "",
-  },
-  {
     path: "/client/Training-list",
     title: "Training",
     icon: "content_paste",

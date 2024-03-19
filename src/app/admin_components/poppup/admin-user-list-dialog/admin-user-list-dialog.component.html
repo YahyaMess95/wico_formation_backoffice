@@ -111,7 +111,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4">
+      <div [ngClass]="{ 'col-md-4': !data, 'col-md-6': data }">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
           <mat-label>Entrer l'e-mail</mat-label>
           <input
@@ -143,7 +143,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="col-md-4">
+      <div [ngClass]="{ 'col-md-4': !data, 'col-md-6': data }">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
           <mat-label>Entrer login</mat-label>
           <input
@@ -177,7 +177,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4" *ngIf="!data">
         <mat-form-field appearance="outline" class="mat-form-field-custom">
           <mat-label>Entrer Mot de passe</mat-label>
           <input

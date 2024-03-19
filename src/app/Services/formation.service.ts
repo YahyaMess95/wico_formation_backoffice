@@ -18,7 +18,14 @@ export class FormationService {
       })
     );
   }
-
+  getOneFormation(formationId) {
+    const url = environment.oneFormationUrl + `/${formationId}`;
+    return this.http.get<any>(url).pipe(
+      catchError((error: any) => {
+        return this.handleError(error);
+      })
+    );
+  }
   removeFormation(formationId: string) {
     return this.http
       .delete(environment.deleteFormationUrl + `/${formationId}`)

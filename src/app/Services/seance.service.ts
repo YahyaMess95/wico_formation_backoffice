@@ -19,6 +19,15 @@ export class SeanceService {
     );
   }
 
+  getOneSeances(seanceId) {
+    const url = environment.oneSeancesUrl + `/${seanceId}`;
+    return this.http.get<any>(url).pipe(
+      catchError((error: any) => {
+        return this.handleError(error);
+      })
+    );
+  }
+
   removeSeance(seanceId: string) {
     return this.http.delete(environment.deleteSeanceUrl + `/${seanceId}`).pipe(
       catchError((error: any) => {

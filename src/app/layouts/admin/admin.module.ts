@@ -25,6 +25,7 @@ import { AdminTemoignageListComponent } from "../../admin_components/admin-temoi
 import { AdminDialogComponent } from "../../admin_components/admin-dialog/admin-dialog.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatCardModule } from "@angular/material/card";
+import { MatMenuModule } from "@angular/material/menu";
 import { AdminUserListDialogComponent } from "../../admin_components/poppup/admin-user-list-dialog/admin-user-list-dialog.component";
 import { AdminSessionDialogComponent } from "../../admin_components/poppup/admin-session-dialog/admin-session-dialog.component";
 import { AdminSeanceDialogComponent } from "../../admin_components/poppup/admin-seance-dialog/admin-seance-dialog.component";
@@ -58,6 +59,7 @@ import { AdminTemoignageDialogComponent } from "../../admin_components/poppup/ad
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    MatMenuModule,
     ComponentsModule,
     MatToolbarModule,
     MatPaginatorModule,

@@ -39,7 +39,6 @@ export class AdminUserListDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    console.log(this.sessions);
   }
 
   onFileSelected(event): void {
@@ -135,8 +134,10 @@ export class AdminUserListDialogComponent implements OnInit {
     Object.keys(userDetails).forEach((key) => {
       formData.append(key, userDetails[key]);
     });
+    if (photo) {
+      formData.append("file", photo);
+    }
 
-    formData.append("file", photo);
     this.dialogRef.close();
 
     this.userService.addUser(formData).subscribe(
@@ -181,13 +182,14 @@ export class AdminUserListDialogComponent implements OnInit {
 
     // Check if photo is present
 
-    formData.append("file", photo);
+    if (photo) {
+      formData.append("file", photo);
+    }
     formData.append("_id", _id);
 
     // Close dialog
     this.dialogRef.close();
 
-    // Update user with user details and photo
     this.userService.updateUser(formData).subscribe(
       (response) => {
         console.log("User updated successfully", response);

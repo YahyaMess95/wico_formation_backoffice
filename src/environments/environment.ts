@@ -9,10 +9,12 @@ export const environment = {
   loginUrl: url + "/public/login",
   //photo url
   photoUrl: url + "/photo",
+  updatephotoUrl: url + "/photo/update",
   // user url
   recoveryUrl: url + "/user/recoverpassword",
   addUserUrl: url + "/user/create",
   allUsersUrl: url + "/user/getAll",
+  oneUsersUrl: url + "/user/get",
   countUrl: url + "/user/getState",
   deleteUserUrl: url + "/user/delete",
   updateUserUrl: url + "/user/update",
@@ -24,11 +26,13 @@ export const environment = {
   // seance url
   addSeanceUrl: url + "/seance/create",
   allSeancesUrl: url + "/seance/getAll",
+  oneSeancesUrl: url + "/seance/get",
   deleteSeanceUrl: url + "/seance/delete",
   updateSeanceUrl: url + "/seance/update",
   // formation url
   addFormationUrl: url + "/formation/create",
   allFormationsUrl: url + "/formation/getAll",
+  oneFormationUrl: url + "/formation/get",
   deleteFormationUrl: url + "/formation/delete",
   updateFormationUrl: url + "/formation/update",
   // temoignage url

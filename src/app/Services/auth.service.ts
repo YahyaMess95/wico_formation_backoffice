@@ -26,24 +26,24 @@ export class AuthService {
   }
 
   setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    sessionStorage.setItem(this.tokenKey, token); // Update to sessionStorage
   }
 
   setUserName(name: string): void {
-    localStorage.setItem(this.username, name);
+    sessionStorage.setItem(this.username, name);
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.username);
+    sessionStorage.removeItem(this.tokenKey); // Update to sessionStorage
+    sessionStorage.removeItem(this.username);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return sessionStorage.getItem(this.tokenKey); // Update to sessionStorage
   }
 
   getUserName(): string | null {
-    return localStorage.getItem(this.username);
+    return sessionStorage.getItem(this.username);
   }
 
   isAuthenticated(): boolean {

@@ -6,8 +6,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { SessionService } from "app/Services/session.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 import { NotifService } from "app/Services/notif.service";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { PhotoService } from "app/Services/photo.service";
+import { FormationService } from "app/Services/formation.service";
+import { SeanceService } from "app/Services/seance.service";
 
 @Component({
   selector: "admin-session-list",
@@ -21,13 +21,16 @@ export class AdminSessionListComponent implements AfterViewInit {
   pageSize: number = 5;
   currentPage: number = 1;
   totalUsers: number = 0;
-
+  formationidList;
+  formationnameList;
+  seancesidList;
+  seancesnameList;
   constructor(
     public dialog: MatDialog,
     private sessionService: SessionService,
-    private notifService: NotifService,
-    private sanitizer: DomSanitizer,
-    private photoService: PhotoService
+    private seanceService: SeanceService,
+    private formationService: FormationService,
+    private notifService: NotifService
   ) {}
 
   applyFilter() {
@@ -92,7 +95,13 @@ export class AdminSessionListComponent implements AfterViewInit {
 
     Object.keys(element).forEach((key, index) => {
       const newKey = newKeys[index] || key;
-      sessiondetails[newKey] = element[key];
+      if (key === "formations") {
+        sessiondetails[newKey] = this.formationnameList;
+      } else if (key === "seances") {
+        sessiondetails[newKey] = this.seancesnameList;
+      } else {
+        sessiondetails[newKey] = element[key];
+      }
     });
 
     const dialogRef = this.dialog.open(AdminDialogComponent, {
@@ -117,9 +126,45 @@ export class AdminSessionListComponent implements AfterViewInit {
             response.session.results &&
             Array.isArray(response.session.results)
           ) {
+            this.formationidList = [];
+            this.formationnameList = [];
+            this.seancesidList = [];
+            this.seancesnameList = [];
             const sessionPromises: Promise<any>[] =
               response.session.results.map(async (session: any) => {
                 try {
+                  session.formations.forEach((formation) => {
+                    this.formationService.getOneFormation(formation).subscribe({
+                      next: (formationData: any) => {
+                        this.formationnameList.push(
+                          formationData.formation.name
+                        );
+                        this.formationidList.push(formationData.formation._id);
+                      },
+                      error: (error: any) => {
+                        console.error(
+                          `Error retrieving formation with ID ${formation.id}:`,
+                          error
+                        );
+                      },
+                    });
+                  });
+                  session.seances.forEach((seances) => {
+                    this.seanceService.getOneSeances(seances).subscribe({
+                      next: (seancesData: any) => {
+                        this.seancesnameList.push(seancesData.seance.name);
+                        this.seancesidList.push(seancesData.seance._id);
+                      },
+                      error: (error: any) => {
+                        console.error(
+                          `Error retrieving seances with ID ${seances.id}:`,
+                          error
+                        );
+                      },
+                    });
+                  });
+                  session.formations = this.formationidList;
+                  session.seances = this.seancesidList;
                   session.datedeb = new Date(
                     session.datedeb
                   ).toLocaleDateString();
@@ -147,33 +192,6 @@ export class AdminSessionListComponent implements AfterViewInit {
           console.error("Error fetching sessions:", error);
         }
       );
-  }
-
-  fetchPhoto(photoName: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.photoService.getPhoto(photoName).subscribe(
-        (data) => {
-          resolve(data); // Resolve the promise with the fetched photo data
-        },
-        (error) => {
-          reject(error); // Reject the promise if there's an error
-        }
-      );
-    });
-  }
-  getImageUrl(photoData: any): SafeUrl {
-    // console.log("Received photoData:", photoData);
-
-    if (photoData instanceof Blob) {
-      // If photoData is already a Blob object, proceed with creating the URL
-      const imageUrl = this.sanitizer.bypassSecurityTrustUrl(
-        window.URL.createObjectURL(photoData)
-      );
-      return imageUrl;
-    } else {
-      console.error("Invalid photoData format:", photoData);
-      return "";
-    }
   }
 
   async removeSession(sessionId: string) {

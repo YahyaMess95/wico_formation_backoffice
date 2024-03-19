@@ -21,6 +21,14 @@ export class UserService {
       })
     );
   }
+  getOneUsers() {
+    const token = this.authService.getToken();
+    return this.http.get<any>(environment.oneUsersUrl + `/${token}`).pipe(
+      catchError((error: any) => {
+        return this.handleError(error);
+      })
+    );
+  }
 
   removeUser(userId: string) {
     return this.http.delete(environment.deleteUserUrl + `/${userId}`).pipe(
@@ -30,7 +38,7 @@ export class UserService {
     );
   }
 
-  updateUser(userDetails: any) {
+  updateUser(userDetails: FormData) {
     return this.http.patch(environment.updateUserUrl, userDetails).pipe(
       catchError((error: any) => {
         return this.handleError(error);
