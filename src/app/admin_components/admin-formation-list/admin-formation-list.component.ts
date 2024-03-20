@@ -142,11 +142,11 @@ export class AdminFormationListComponent implements AfterViewInit {
           );
         },
         (error) => {
-          console.error("Error removing session:", error);
+          console.error("Error removing Formation:", error);
           this.notifService.showNotificationerror(
             "top",
             "center",
-            error,
+            "Erreur lors de la suppression de la formation",
             "danger"
           );
         }

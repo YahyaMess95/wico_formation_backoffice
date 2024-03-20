@@ -111,7 +111,7 @@ export class LoginpageComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "La connexion au serveur a échoué",
           "danger"
         );
       }

@@ -4,7 +4,7 @@ export const environment = {
   production: false,
   // serveur url
   serverUrl: "https://backend-wico-formation.onrender.com",
-  // serverUrl: "http://localhost:3000",
+  // serverUrl: "http://localhost:3000",s
   // loginurl
   loginUrl: url + "/public/login",
   //photo url

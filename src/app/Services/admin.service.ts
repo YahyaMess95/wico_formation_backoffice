@@ -54,6 +54,10 @@ export class AdminService {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
     }
     console.error(errorMessage);
+    if (error.status === 401) {
+      // Unauthorized error, logout the user
+      this.authService.logout();
+    }
     return throwError(error.error.message);
   }
 }

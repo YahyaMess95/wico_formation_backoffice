@@ -31,7 +31,7 @@ export class AdminSessionDialogComponent implements OnInit {
   seances: any[] = [];
   submittedIn = false;
   fileName;
-
+  isLoading: boolean = false;
   constructor(
     private notifService: NotifService,
     private sessionService: SessionService,
@@ -95,8 +95,10 @@ export class AdminSessionDialogComponent implements OnInit {
     const sessionDetails = this.formesession.value;
 
     if (this.data) {
+      this.isLoading = true;
       this.updateSession(this.data._id, sessionDetails);
     } else {
+      this.isLoading = true;
       this.addSession(sessionDetails);
     }
   }
@@ -117,6 +119,7 @@ export class AdminSessionDialogComponent implements OnInit {
 
     this.sessionService.addSession(formData).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("Session added successful", response);
         this.formesession.reset();
@@ -129,11 +132,12 @@ export class AdminSessionDialogComponent implements OnInit {
         this.sessionAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("Session addition failed", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "L'ajout de session a échoué",
           "danger"
         );
       }
@@ -161,6 +165,7 @@ export class AdminSessionDialogComponent implements OnInit {
 
     this.sessionService.updateSession(formData).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("Session updated successfully", response);
         this.formesession.reset();
@@ -173,11 +178,12 @@ export class AdminSessionDialogComponent implements OnInit {
         this.sessionAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("Session update failed", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "Échec de la mise à jour de la session",
           "danger"
         );
       }

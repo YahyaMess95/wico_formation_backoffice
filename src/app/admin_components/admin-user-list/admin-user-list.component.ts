@@ -174,7 +174,7 @@ export class AdminUserListComponent implements AfterViewInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            error,
+            "Erreur lors de la suppression de l'utilisateur",
             "danger"
           );
         }

@@ -29,6 +29,7 @@ export class AdminTemoignageDialogComponent implements OnInit {
   submittedIn = false;
   photo;
   cv;
+  isLoading: boolean = false;
   constructor(
     private notifService: NotifService,
     private temoignageService: TemoignageService,
@@ -100,8 +101,10 @@ export class AdminTemoignageDialogComponent implements OnInit {
     }
 
     if (this.data) {
+      this.isLoading = true;
       this.updateTemoignage(this.data._id, userDetails);
     } else {
+      this.isLoading = true;
       this.addTemoignage(userDetails);
     }
   }
@@ -136,6 +139,7 @@ export class AdminTemoignageDialogComponent implements OnInit {
 
     this.temoignageService.addTemoignage(formData).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("Temoignage added successfully", response);
         this.formetemoignages.reset();
@@ -149,11 +153,12 @@ export class AdminTemoignageDialogComponent implements OnInit {
         this.temoignageAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("Temoignage addition failed", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "L'ajout du témoignage a échoué",
           "danger"
         );
       }
@@ -204,6 +209,7 @@ export class AdminTemoignageDialogComponent implements OnInit {
     // Update temoignage with user details and optional photo/cv
     this.temoignageService.updateTemoignage(formData).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("Temoignage updated successfully", response);
         this.formetemoignages.reset();
@@ -216,11 +222,12 @@ export class AdminTemoignageDialogComponent implements OnInit {
         this.temoignageAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("Temoignage update failed", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "Échec de la mise à jour de Témoignage",
           "danger"
         );
       }

@@ -165,7 +165,7 @@ export class AdminTemoignageListComponent implements AfterViewInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            error,
+            "Erreur lors de la suppression du témoignage",
             "danger"
           );
         }

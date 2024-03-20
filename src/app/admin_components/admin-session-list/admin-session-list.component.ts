@@ -220,7 +220,7 @@ export class AdminSessionListComponent implements AfterViewInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            error,
+            "Erreur lors de la suppression de la session",
             "danger"
           );
         }

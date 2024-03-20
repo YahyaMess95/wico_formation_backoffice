@@ -29,6 +29,7 @@ export class AdminUserListDialogComponent implements OnInit {
   submittedIn = false;
   photoname;
   sessions: any[] = [];
+  isLoading: boolean = false;
   constructor(
     private notifService: NotifService,
     private userService: UserService,
@@ -116,8 +117,10 @@ export class AdminUserListDialogComponent implements OnInit {
     }
 
     if (this.data) {
+      this.isLoading = true;
       this.updateUser(this.data._id, userDetails);
     } else {
+      this.isLoading = true;
       this.addUser(userDetails);
     }
   }
@@ -140,6 +143,7 @@ export class AdminUserListDialogComponent implements OnInit {
 
     this.userService.addUser(formData).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("User added successful", response);
         this.formeusers.reset();
@@ -152,11 +156,12 @@ export class AdminUserListDialogComponent implements OnInit {
         this.userAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("L'ajout d'un utilisateur a échoué", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "L'ajout d'un utilisateur a échoué",
           "danger"
         );
       }
@@ -188,6 +193,7 @@ export class AdminUserListDialogComponent implements OnInit {
 
     this.userService.updateUser(formData).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("User updated successfully", response);
         this.formeusers.reset();
@@ -201,11 +207,12 @@ export class AdminUserListDialogComponent implements OnInit {
         this.userAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("Échec de la mise à jour utilisateur", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "Échec de la mise à jour utilisateur",
           "danger"
         );
       }

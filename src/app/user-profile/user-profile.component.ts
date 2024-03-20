@@ -125,7 +125,7 @@ export class UserProfileComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "Échec de la mise à jour utilisateur",
           "danger"
         );
       }
@@ -190,7 +190,7 @@ export class UserProfileComponent implements OnInit {
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "Erreur lors du téléchargement du fichier",
           "danger"
         );
         // Handle error as needed

@@ -5,11 +5,16 @@
     mat-dialog-close
     aria-label="Close"
     class="close-button"
+    *ngIf="!isLoading"
   >
     <mat-icon>close</mat-icon>
   </button>
 </h2>
-<mat-dialog-content class="mat-typography">
+<div class="spinner-container" *ngIf="isLoading">
+  <!-- Add your spinner or loading animation here -->
+  <div class="spinner"></div>
+</div>
+<mat-dialog-content class="mat-typography" *ngIf="!isLoading">
   <form [formGroup]="formeseance" (ngSubmit)="saveOrUpdateSession()">
     <div class="row">
       <div class="col-md-4">

@@ -147,7 +147,7 @@ export class AdminSeanceListComponent implements AfterViewInit {
           this.notifService.showNotificationerror(
             "top",
             "center",
-            error,
+            "Erreur lors de la suppression de la Séance",
             "danger"
           );
         }

@@ -17,6 +17,7 @@ import { SeanceService } from "app/Services/seance.service";
 export class AdminSeanceDialogComponent implements OnInit {
   @Output() seanceAdded: EventEmitter<void> = new EventEmitter<void>();
   submittedIn = false;
+  isLoading: boolean = false;
   constructor(
     private notifService: NotifService,
     private seanceService: SeanceService,
@@ -78,8 +79,10 @@ export class AdminSeanceDialogComponent implements OnInit {
     const sessionDetails = this.formeseance.value;
 
     if (this.data) {
+      this.isLoading = true;
       this.updateSeance(this.data._id, sessionDetails);
     } else {
+      this.isLoading = true;
       this.addSeance(sessionDetails);
     }
   }
@@ -87,6 +90,7 @@ export class AdminSeanceDialogComponent implements OnInit {
   addSeance(sessionDetails): void {
     this.seanceService.addSeance(sessionDetails).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("Session added successful", response);
         this.formeseance.reset();
@@ -99,11 +103,12 @@ export class AdminSeanceDialogComponent implements OnInit {
         this.seanceAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("Session addition failed", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "L'ajout de session a échoué",
           "danger"
         );
       }
@@ -113,6 +118,7 @@ export class AdminSeanceDialogComponent implements OnInit {
   updateSeance(_id, sessionDetails): void {
     this.seanceService.updateSeance(_id, sessionDetails).subscribe(
       (response) => {
+        this.isLoading = false;
         this.dialogRef.close();
         console.log("Session updated successfully", response);
         this.formeseance.reset();
@@ -125,11 +131,12 @@ export class AdminSeanceDialogComponent implements OnInit {
         this.seanceAdded.emit();
       },
       (error) => {
+        this.isLoading = false;
         console.error("Session update failed", error);
         this.notifService.showNotificationerror(
           "top",
           "center",
-          error,
+          "Échec de la mise à jour de la session",
           "danger"
         );
       }
