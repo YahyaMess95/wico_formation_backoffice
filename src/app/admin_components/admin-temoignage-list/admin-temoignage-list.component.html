@@ -92,7 +92,7 @@
                 <ng-container matColumnDef="cv">
                   <th mat-header-cell *matHeaderCellDef>Cv</th>
                   <td mat-cell *matCellDef="let element">
-                    <a href=" {{ element.cv }}">CV Link</a>
+                    <a [href]="downloadLink" download="file.txt">CV Link</a>
                   </td>
                 </ng-container>
 

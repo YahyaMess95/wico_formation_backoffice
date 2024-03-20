@@ -6,7 +6,6 @@ import { AdminTemoignageDialogComponent } from "../poppup/admin-temoignage-dialo
 import { TemoignageService } from "app/Services/temoignage.service";
 import { AdminDialogComponent } from "../admin-dialog/admin-dialog.component";
 import { NotifService } from "app/Services/notif.service";
-import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { PhotoService } from "app/Services/photo.service";
 
 @Component({
@@ -21,7 +20,7 @@ export class AdminTemoignageListComponent implements AfterViewInit {
   pageSize: number = 5;
   currentPage: number = 1;
   totalUsers: number = 0;
-
+  downloadLink: string = "";
   dataSource = new MatTableDataSource<TableColumn>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -29,7 +28,6 @@ export class AdminTemoignageListComponent implements AfterViewInit {
     public dialog: MatDialog,
     private temoignageService: TemoignageService,
     private notifService: NotifService,
-    private sanitizer: DomSanitizer,
     private photoService: PhotoService
   ) {}
   displayedColumns: string[] = [
@@ -42,6 +40,28 @@ export class AdminTemoignageListComponent implements AfterViewInit {
     "cv",
     "action",
   ];
+  getUsercv(urlcv: string): void {
+    if (urlcv) {
+      this.photoService.getPhoto(urlcv).subscribe(
+        (photoData: Blob) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64Data: string = reader.result as string;
+            // Create a data URI for the file
+            this.downloadLink = base64Data;
+          };
+          reader.onerror = (error) => {
+            console.error("Error reading CV data:", error);
+          };
+          reader.readAsDataURL(photoData);
+        },
+        (error) => {
+          console.error("Error fetching user CV:", error);
+          // Handle error gracefully
+        }
+      );
+    }
+  }
 
   ngAfterViewInit() {
     this.getAllTemoignages();
@@ -96,6 +116,7 @@ export class AdminTemoignageListComponent implements AfterViewInit {
       const newKey = newKeys[index] || key;
       temoignagedetails[newKey] = element[key];
     });
+    temoignagedetails["Cv"] = this.downloadLink;
 
     const dialogRef = this.dialog.open(AdminDialogComponent, {
       data: temoignagedetails,
@@ -118,6 +139,7 @@ export class AdminTemoignageListComponent implements AfterViewInit {
           const temoignagePromises: Promise<any>[] =
             response.temoignage.results.map(async (temoignage: any) => {
               try {
+                this.getUsercv(temoignage.cv);
                 temoignage.createdAt = new Date(
                   temoignage.createdAt
                 ).toLocaleDateString();
