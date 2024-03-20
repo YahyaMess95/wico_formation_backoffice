@@ -106,8 +106,8 @@ export class NotifService {
             $(this)
               .find(".btn-confirm")
               .click(function () {
-                $.notifyClose();
                 resolve(true);
+                $.notifyClose();
               });
 
             $(this)
