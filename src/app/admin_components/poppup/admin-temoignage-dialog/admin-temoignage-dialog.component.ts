@@ -139,7 +139,6 @@ export class AdminTemoignageDialogComponent implements OnInit {
 
     this.temoignageService.addTemoignage(formData).subscribe(
       (response) => {
-        this.isLoading = false;
         this.dialogRef.close();
         console.log("Temoignage added successfully", response);
         this.formetemoignages.reset();
@@ -209,7 +208,6 @@ export class AdminTemoignageDialogComponent implements OnInit {
     // Update temoignage with user details and optional photo/cv
     this.temoignageService.updateTemoignage(formData).subscribe(
       (response) => {
-        this.isLoading = false;
         this.dialogRef.close();
         console.log("Temoignage updated successfully", response);
         this.formetemoignages.reset();

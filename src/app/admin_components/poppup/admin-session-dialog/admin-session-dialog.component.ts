@@ -119,7 +119,6 @@ export class AdminSessionDialogComponent implements OnInit {
 
     this.sessionService.addSession(formData).subscribe(
       (response) => {
-        this.isLoading = false;
         this.dialogRef.close();
         console.log("Session added successful", response);
         this.formesession.reset();
@@ -165,7 +164,6 @@ export class AdminSessionDialogComponent implements OnInit {
 
     this.sessionService.updateSession(formData).subscribe(
       (response) => {
-        this.isLoading = false;
         this.dialogRef.close();
         console.log("Session updated successfully", response);
         this.formesession.reset();

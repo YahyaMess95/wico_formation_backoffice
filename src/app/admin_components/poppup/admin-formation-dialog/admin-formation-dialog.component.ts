@@ -90,7 +90,6 @@ export class AdminFormationDialogComponent implements OnInit {
   addFormation(sessionDetails): void {
     this.formationService.addFormation(sessionDetails).subscribe(
       (response) => {
-        this.isLoading = false;
         this.dialogRef.close();
         console.log("Formation added successful", response);
         this.formeformation.reset();
@@ -118,7 +117,6 @@ export class AdminFormationDialogComponent implements OnInit {
   updateFormation(_id, sessionDetails): void {
     this.formationService.updateFormation(_id, sessionDetails).subscribe(
       (response) => {
-        this.isLoading = false;
         this.dialogRef.close();
         console.log("Formation updated successfully", response);
         this.formeformation.reset();

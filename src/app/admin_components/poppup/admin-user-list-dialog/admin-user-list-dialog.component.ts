@@ -143,7 +143,6 @@ export class AdminUserListDialogComponent implements OnInit {
 
     this.userService.addUser(formData).subscribe(
       (response) => {
-        this.isLoading = false;
         this.dialogRef.close();
         console.log("User added successful", response);
         this.formeusers.reset();
@@ -193,10 +192,10 @@ export class AdminUserListDialogComponent implements OnInit {
 
     this.userService.updateUser(formData).subscribe(
       (response) => {
-        this.isLoading = false;
-        this.dialogRef.close();
-        console.log("User updated successfully", response);
         this.formeusers.reset();
+        this.dialogRef.close();
+
+        console.log("User updated successfully", response);
         this.notifService.showNotificationerror(
           "top",
           "center",
