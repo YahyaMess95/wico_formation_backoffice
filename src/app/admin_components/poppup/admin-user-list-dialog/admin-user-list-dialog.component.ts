@@ -138,10 +138,9 @@ export class AdminUserListDialogComponent implements OnInit {
       formData.append("file", photo);
     }
 
-    this.dialogRef.close();
-
     this.userService.addUser(formData).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("User added successful", response);
         this.formeusers.reset();
         this.notifService.showNotificationerror(
@@ -187,11 +186,9 @@ export class AdminUserListDialogComponent implements OnInit {
     }
     formData.append("_id", _id);
 
-    // Close dialog
-    this.dialogRef.close();
-
     this.userService.updateUser(formData).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("User updated successfully", response);
         this.formeusers.reset();
         this.notifService.showNotificationerror(

@@ -94,6 +94,7 @@ export class AdminFormationListComponent implements AfterViewInit {
       .getAllFormations(this.currentPage, this.pageSize)
       .subscribe(
         (response) => {
+          this.isLoading = true;
           if (
             response &&
             response.formation.results &&

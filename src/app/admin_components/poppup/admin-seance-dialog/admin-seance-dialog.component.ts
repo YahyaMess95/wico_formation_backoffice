@@ -85,9 +85,9 @@ export class AdminSeanceDialogComponent implements OnInit {
   }
 
   addSeance(sessionDetails): void {
-    this.dialogRef.close();
     this.seanceService.addSeance(sessionDetails).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Session added successful", response);
         this.formeseance.reset();
         this.notifService.showNotificationerror(
@@ -111,9 +111,9 @@ export class AdminSeanceDialogComponent implements OnInit {
   }
 
   updateSeance(_id, sessionDetails): void {
-    this.dialogRef.close();
     this.seanceService.updateSeance(_id, sessionDetails).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Session updated successfully", response);
         this.formeseance.reset();
         this.notifService.showNotificationerror(

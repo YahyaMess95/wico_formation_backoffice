@@ -115,6 +115,7 @@ export class AdminUserListComponent implements AfterViewInit {
   getAllUsers() {
     this.adminService.getAllUsers(this.currentPage, this.pageSize).subscribe(
       (response) => {
+        this.isLoading = true;
         if (
           response &&
           response.users.users &&
@@ -124,7 +125,6 @@ export class AdminUserListComponent implements AfterViewInit {
             async (user: any) => {
               try {
                 user.createdAt = new Date(user.createdAt).toLocaleDateString();
-
                 return user;
               } catch (error) {
                 console.error("Error fetching photo:", error);

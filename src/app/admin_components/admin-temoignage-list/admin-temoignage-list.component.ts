@@ -114,6 +114,7 @@ export class AdminTemoignageListComponent implements AfterViewInit {
       .getAllTemoignages(this.currentPage, this.pageSize)
       .subscribe(
         (response) => {
+          this.isLoading = true;
           const temoignagePromises: Promise<any>[] =
             response.temoignage.results.map(async (temoignage: any) => {
               try {

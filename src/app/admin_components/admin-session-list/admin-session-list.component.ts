@@ -121,6 +121,7 @@ export class AdminSessionListComponent implements AfterViewInit {
       .getAllSessions(this.currentPage, this.pageSize)
       .subscribe(
         (response) => {
+          this.isLoading = true;
           if (
             response &&
             response.session.results &&

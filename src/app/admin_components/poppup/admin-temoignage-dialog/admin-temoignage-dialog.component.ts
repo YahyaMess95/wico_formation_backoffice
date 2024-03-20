@@ -134,9 +134,9 @@ export class AdminTemoignageDialogComponent implements OnInit {
       formData.append("cvfile", cv);
     }
 
-    this.dialogRef.close();
     this.temoignageService.addTemoignage(formData).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Temoignage added successfully", response);
         this.formetemoignages.reset();
         this.notifService.showNotificationerror(
@@ -201,12 +201,10 @@ export class AdminTemoignageDialogComponent implements OnInit {
     // Append _id for identification
     formData.append("_id", _id);
 
-    // Close dialog
-    this.dialogRef.close();
-
     // Update temoignage with user details and optional photo/cv
     this.temoignageService.updateTemoignage(formData).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Temoignage updated successfully", response);
         this.formetemoignages.reset();
         this.notifService.showNotificationerror(

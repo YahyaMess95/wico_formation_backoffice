@@ -114,9 +114,10 @@ export class AdminSessionDialogComponent implements OnInit {
     });
 
     formData.append("file", photo);
-    this.dialogRef.close();
+
     this.sessionService.addSession(formData).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Session added successful", response);
         this.formesession.reset();
         this.notifService.showNotificationerror(
@@ -157,10 +158,10 @@ export class AdminSessionDialogComponent implements OnInit {
 
     formData.append("file", photo);
     formData.append("_id", _id);
-    this.dialogRef.close();
 
     this.sessionService.updateSession(formData).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Session updated successfully", response);
         this.formesession.reset();
         this.notifService.showNotificationerror(

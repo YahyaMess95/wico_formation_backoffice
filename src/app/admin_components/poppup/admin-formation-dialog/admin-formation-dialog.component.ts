@@ -85,9 +85,9 @@ export class AdminFormationDialogComponent implements OnInit {
   }
 
   addFormation(sessionDetails): void {
-    this.dialogRef.close();
     this.formationService.addFormation(sessionDetails).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Formation added successful", response);
         this.formeformation.reset();
         this.notifService.showNotificationerror(
@@ -111,9 +111,9 @@ export class AdminFormationDialogComponent implements OnInit {
   }
 
   updateFormation(_id, sessionDetails): void {
-    this.dialogRef.close();
     this.formationService.updateFormation(_id, sessionDetails).subscribe(
       (response) => {
+        this.dialogRef.close();
         console.log("Formation updated successfully", response);
         this.formeformation.reset();
         this.notifService.showNotificationerror(

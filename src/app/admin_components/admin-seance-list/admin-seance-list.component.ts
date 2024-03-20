@@ -94,6 +94,7 @@ export class AdminSeanceListComponent implements AfterViewInit {
   getAllSeances() {
     this.seanceService.getAllSeances(this.currentPage, this.pageSize).subscribe(
       (response) => {
+        this.isLoading = true;
         if (
           response &&
           response.seance.results &&

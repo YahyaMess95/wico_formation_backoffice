@@ -100,7 +100,10 @@
                         <mat-icon class="small-icon">edit</mat-icon>
                         <span>Modifier</span>
                       </button>
-                      <button mat-menu-item (click)="removeUser(element._id)">
+                      <button
+                        mat-menu-item
+                        (click)="removeSession(element._id)"
+                      >
                         <mat-icon class="small-icon">close</mat-icon>
                         <span>Retirer</span>
                       </button>
