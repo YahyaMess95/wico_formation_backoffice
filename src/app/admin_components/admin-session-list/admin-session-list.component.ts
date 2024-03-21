@@ -96,9 +96,11 @@ export class AdminSessionListComponent implements AfterViewInit {
     Object.keys(element).forEach((key, index) => {
       const newKey = newKeys[index] || key;
       if (key === "formations") {
-        sessiondetails[newKey] = this.formationnameList;
+        sessiondetails[newKey] = element[key].map(
+          (formation: any) => formation.name
+        ); // Use formation names from session object
       } else if (key === "seances") {
-        sessiondetails[newKey] = this.seancesnameList;
+        sessiondetails[newKey] = element[key].map((seance: any) => seance.name); // Use seance names from session object
       } else {
         sessiondetails[newKey] = element[key];
       }
@@ -127,62 +129,68 @@ export class AdminSessionListComponent implements AfterViewInit {
             response.session.results &&
             Array.isArray(response.session.results)
           ) {
-            this.formationidList = [];
-            this.formationnameList = [];
-            this.seancesidList = [];
-            this.seancesnameList = [];
             const sessionPromises: Promise<any>[] =
               response.session.results.map(async (session: any) => {
                 try {
-                  session.formations.forEach((formation) => {
-                    this.formationService.getOneFormation(formation).subscribe({
-                      next: (formationData: any) => {
-                        this.formationnameList.push(
-                          formationData.formation.name
-                        );
-                        this.formationidList.push(formationData.formation._id);
-                      },
-                      error: (error: any) => {
-                        console.error(
-                          `Error retrieving formation with ID ${formation.id}:`,
-                          error
-                        );
-                      },
-                    });
+                  // Fetch formations for the session
+                  const formationPromises = session.formations.map(
+                    (formationId: any) => {
+                      return this.formationService
+                        .getOneFormation(formationId)
+                        .toPromise(); // Convert observable to promise
+                    }
+                  );
+
+                  // Fetch seances for the session
+                  const seancesPromises = session.seances.map(
+                    (seanceId: any) => {
+                      return this.seanceService
+                        .getOneSeances(seanceId)
+                        .toPromise(); // Convert observable to promise
+                    }
+                  );
+
+                  // Wait for all formation and seance promises to resolve
+                  const formationResults = await Promise.all(formationPromises);
+                  const seancesResults = await Promise.all(seancesPromises);
+
+                  // Map formation names and ids
+                  session.formations = formationResults.map(
+                    (formationData: any) => {
+                      return {
+                        id: formationData.formation._id,
+                        name: formationData.formation.name,
+                      };
+                    }
+                  );
+
+                  // Map seance names and ids
+                  session.seances = seancesResults.map((seancesData: any) => {
+                    return {
+                      id: seancesData.seance._id,
+                      name: seancesData.seance.name,
+                    };
                   });
-                  session.seances.forEach((seances) => {
-                    this.seanceService.getOneSeances(seances).subscribe({
-                      next: (seancesData: any) => {
-                        this.seancesnameList.push(seancesData.seance.name);
-                        this.seancesidList.push(seancesData.seance._id);
-                      },
-                      error: (error: any) => {
-                        console.error(
-                          `Error retrieving seances with ID ${seances.id}:`,
-                          error
-                        );
-                      },
-                    });
-                  });
-                  session.formations = this.formationidList;
-                  session.seances = this.seancesidList;
+
+                  // Format date strings
                   session.datedeb = new Date(
                     session.datedeb
                   ).toLocaleDateString();
                   session.createdAt = new Date(
                     session.createdAt
                   ).toLocaleDateString();
-                  return session;
                 } catch (error) {
-                  console.error("Error fetching photo:", error);
-                  return session; // Return the session object even if there's an error
+                  console.error("Error fetching data:", error);
                 }
+                return session; // Return the session object even if there's an error
               });
 
+            // Wait for all session promises to resolve
             Promise.all(sessionPromises).then((updatedSessions) => {
               this.dataSource.data = updatedSessions;
               this.isLoading = false;
             });
+
             this.totalUsers = response.session.totalCount;
             console.log("totalUsers: " + this.totalUsers);
           } else {

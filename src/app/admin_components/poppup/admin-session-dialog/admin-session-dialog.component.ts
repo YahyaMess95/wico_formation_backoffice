@@ -215,7 +215,9 @@ export class AdminSessionDialogComponent implements OnInit {
             }));
 
             if (Array.isArray(this.data.formations)) {
-              this.selectedFormationIds = this.data.formations;
+              this.selectedFormationIds = this.data.formations.map(
+                (formation: any) => formation.id
+              );
             } else {
               console.error(
                 "this.data.formations is not an array:",
@@ -262,7 +264,10 @@ export class AdminSessionDialogComponent implements OnInit {
               name: seance.name,
             }));
             // Select seances based on this.data.seances
-            this.selectedSeanceIds = this.data.seances;
+
+            this.selectedSeanceIds = this.data.seances.map(
+              (seance: any) => seance.id
+            );
           } else {
             console.error("Sessions is not an array:", seancesFromBackend);
             // Handle the error or set a default value for seanceList

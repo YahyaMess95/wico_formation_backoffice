@@ -8,7 +8,7 @@ import { AuthService } from "./auth.service";
   providedIn: "root",
 })
 export class SessionService {
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   getAllSessions(page: number, pageSize: number) {
     const url = `${environment.allSessionsUrl}?page=${page}&pageSize=${pageSize}`;
