@@ -27,6 +27,7 @@ import { SessionService } from "app/Services/session.service";
 export class AdminSessionDialogComponent implements OnInit {
   @Output() sessionAdded: EventEmitter<void> = new EventEmitter<void>();
   @ViewChild("fileUpload") fileUpload: ElementRef;
+  minDate = new Date();
   formations: any[] = [];
   seances: any[] = [];
   submittedIn = false;

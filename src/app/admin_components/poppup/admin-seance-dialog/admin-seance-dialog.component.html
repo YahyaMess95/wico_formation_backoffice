@@ -112,6 +112,7 @@
             required
             formControlName="date"
             id="date"
+            [min]="minDate"
             [ngClass]="{
               'is-invalid': submittedIn && fI['date'] && fI['date'].errors
             }"

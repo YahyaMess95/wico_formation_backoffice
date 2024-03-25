@@ -18,6 +18,7 @@ export class AdminSeanceDialogComponent implements OnInit {
   @Output() seanceAdded: EventEmitter<void> = new EventEmitter<void>();
   submittedIn = false;
   isLoading: boolean = false;
+  minDate = new Date();
   constructor(
     private notifService: NotifService,
     private seanceService: SeanceService,
